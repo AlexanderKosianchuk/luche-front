@@ -1,3 +1,5 @@
+import './root.sass';
+
 import React, { Component } from 'react';
 import { AppContainer } from 'react-hot-loader';
 import { Provider } from 'react-redux';

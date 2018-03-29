@@ -2,6 +2,7 @@
 
 'use strict';
 
+import './assets/favicone.ico';
 import 'jquery';
 import facade from 'facade';
 
@@ -12,7 +13,7 @@ import { createBrowserHistory } from 'history';
 import { routerMiddleware } from 'react-router-redux';
 import { setLocale, loadTranslations } from 'react-redux-i18n';
 
-import Root from 'containers/Root'
+import App from 'containers/App'
 
 import configureStore from 'store/configureStore';
 
@@ -61,6 +62,6 @@ if (config && config.innerHTML !== '') {
 }
 
 ReactDOM.render(
-  <Root store={ store } history={ history } />,
+  <App store={ store } history={ history } />,
   document.getElementById('root')
 );

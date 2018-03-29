@@ -7,9 +7,6 @@
 import 'jquery';
 import 'bootstrap-loader';
 
-//old styles
-import 'style/style.css';
-
 // old prototypes
 import FlightUploader from 'FlightUploader';
 import ChartService from 'Chart';

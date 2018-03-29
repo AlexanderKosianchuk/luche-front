@@ -1,4 +1,4 @@
-import 'style/pages/chart.css';
+import 'assets/images/loading.gif';
 
 import 'flot-charts';
 import 'flot-charts/jquery.flot.time';
@@ -134,7 +134,7 @@ Chart.prototype.FillFactoryContaider = function(factoryContainer) {
   );
   self.loadingBox = $("div#loadingBox")
   self.loadingBox.append(
-    $('<img/>').attr('src', '/front/style/images/loading.gif')
+    $('<img/>').attr('src', './images/loading.gif')
   );
 
   self.placeholder.on("mouseover", function(e){

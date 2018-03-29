@@ -1,3 +1,5 @@
+import './workspace.sass';
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
@@ -61,7 +63,7 @@ class Workspace extends Component {
 
   render() {
     return (
-      <div>
+      <div className='chart-workspace'>
         <ThreeDimVisualisation flightId={ this.props.flightId } />
         <div id='container'></div>
       </div>

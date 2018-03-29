@@ -1,6 +1,6 @@
 'use strict';
 
-const NODE_ENV = process.env.NODE_ENV || 'prod';
+const NODE_ENV = 'production';
 
 const webpack = require('webpack');
 const path = require('path');
@@ -8,16 +8,11 @@ const { resolve } = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const OpenBrowserPlugin = require('open-browser-webpack-plugin');
 
 module.exports = {
   entry: [
     './index'
   ],
-  devServer: {
-    hot: true,
-    historyApiFallback: true
-  },
   context: resolve(__dirname, 'src'),
   output: {
     filename: 'bundle-[hash:6].js',
@@ -41,33 +36,31 @@ module.exports = {
       'FlightUploader': path.join(__dirname, 'src/proto/flight/FlightUploader.proto.js'),
     },
   },
-  devtool: (NODE_ENV == 'dev' ? 'source-map' : false),
-  watch: NODE_ENV == 'dev',
-  watchOptions: {
-    aggregateTimeout: 300,
-  },
+  devtool: 'cheap-module-source-map',
   module: {
     rules: [{
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        loader: 'babel-loader',
-        options: {
-          cacheDirectory: true,
-          plugins: ['react-hot-loader/babel'],
+        use: {
+          loader: 'babel-loader'
         }
       }, {
         test: /\.css$/,
-        loader: 'css-loader?name=[name]-[hash:6].css'
+        use: [MiniCssExtractPlugin.loader, 'css-loader?name=[name]-[hash:6].css']
       }, {
         test: /\.sass$/,
         exclude: /node_modules/,
         use: [
           'style-loader', {
             loader: 'css-loader',
-            query: { sourceMaps: true }
+            query: {
+              sourceMaps: false
+            }
           }, {
             loader: 'sass-loader',
-            options: { sourceMap: true }
+            options: {
+              sourceMap: false
+            }
           }
         ],
       }, {
@@ -83,12 +76,17 @@ module.exports = {
         test: /\.html$/,
         use: [{
           loader: 'html-loader',
-          options: { minimize: false }
+          options: { minimize: true }
         }]
       }
     ]
   },
   plugins: [
+    new CleanWebpackPlugin('dist', {
+      verbose: true,
+      dry: false
+    }),
+    new webpack.optimize.ModuleConcatenationPlugin(),
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery',
@@ -101,13 +99,17 @@ module.exports = {
     }),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.LoaderOptionsPlugin({
-      debug: true,
+      minimize: true,
+      debug: false,
     }),
     new webpack.DefinePlugin({
-      NODE_ENV: JSON.stringify('dev'),
-      ENTRY_URL: JSON.stringify('http://local.luch15.com/'),
+      NODE_ENV: JSON.stringify('production'),
+      ENTRY_URL: JSON.stringify('/'),
     }),
-    new webpack.NamedModulesPlugin(),
-    new webpack.HotModuleReplacementPlugin()
-  ]
+    new MiniCssExtractPlugin({
+      filename: '[name]-[hash:6].css',
+      chunkFilename: '[id]-[hash:6].css'
+    })
+  ],
+
 };

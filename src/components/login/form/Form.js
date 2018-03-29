@@ -1,3 +1,4 @@
+import 'assets/images/logo-bg.png';
 import './form.sass';
 
 import React, { Component } from 'react';
