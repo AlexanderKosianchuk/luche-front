@@ -1,0 +1,21 @@
+{
+  "presets": [
+    [
+      "env",
+      {
+        "loose": true,
+        "modules": false,
+        "targets": {
+          "browsers": "last 2 chrome versions"
+        }
+      }
+    ],
+    "es2015",
+    "stage-1",
+    "react"
+  ],
+  "plugins": [
+    "react-hot-loader/babel",
+    ["transform-class-properties", { "loose": true }]
+  ]
+}
