@@ -50,17 +50,6 @@ if (login && role && lang) {
   store.dispatch(setLocale('ru'));
 }
 
-const config = document.getElementsByClassName('config')[0];
-
-if (config && config.innerHTML !== '') {
-  store.dispatch({
-    type: 'APP_CONFIG_SET',
-    payload: {
-      config: JSON.parse(config.innerHTML)
-    }
-  });
-}
-
 ReactDOM.render(
   <App store={ store } history={ history } />,
   document.getElementById('root')

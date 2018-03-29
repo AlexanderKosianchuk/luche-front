@@ -90,7 +90,7 @@ Param.prototype.GetApParam = function(paramCode, i, lineWidth, dfd){
     data: pV,
     type: "POST",
     dataType: 'json',
-    url: ENTRY_URL+'chart/getApParamData',
+    url: REST_URL+'chart/getApParamData',
   }).done(function(receivedParamPoints){
     apDataArray = receivedParamPoints;
 
@@ -101,7 +101,7 @@ Param.prototype.GetApParam = function(paramCode, i, lineWidth, dfd){
         code: paramCode
       },
       dataType: 'json',
-      url: ENTRY_URL+'chart/getParamInfo',
+      url: REST_URL+'chart/getParamInfo',
     }).done(function(receivedInfo){
       var color = receivedInfo['color'],
         nm = receivedInfo['name'];
@@ -146,7 +146,7 @@ Param.prototype.GetBpParam = function(paramCode, i, lineWidth, dfd){
       code: paramCode
     },
     dataType: 'json',
-    url: ENTRY_URL+'chart/getBpParamData',
+    url: REST_URL+'chart/getBpParamData',
   }).done(function(receivedParamPoints){
     bpDataArray = receivedParamPoints;
 
@@ -157,7 +157,7 @@ Param.prototype.GetBpParam = function(paramCode, i, lineWidth, dfd){
         code: paramCode
       },
       dataType: 'json',
-      url: ENTRY_URL+'chart/getParamInfo',
+      url: REST_URL+'chart/getParamInfo',
     }).done(function(receivedInfo){
       var color = receivedInfo['color'],
         nm = receivedInfo['name'];

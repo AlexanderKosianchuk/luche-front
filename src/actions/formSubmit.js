@@ -5,7 +5,7 @@ export default function formSubmit(payload) {
         let form = document.createElement('form');
         form.target = payload.target || '_blank';
         form.method = payload.method || 'post';
-        form.action = ENTRY_URL + payload.action;
+        form.action = REST_URL + payload.action;
         form.style = 'display:none;';
 
         payload.controls.forEach((control) => {

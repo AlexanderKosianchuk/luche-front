@@ -14,7 +14,7 @@ export default function bindSocket(payload) {
 
     let io = sailsIOClient(socketIOClient);
 
-    io.sails.url = payload.interactionUrl;
+    io.sails.url = INTERACTION_URL;
     io.sails.reconnection = true;
 
     // workaround till not shure interaction always up

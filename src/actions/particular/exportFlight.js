@@ -3,7 +3,7 @@ import formurlencoded from 'form-urlencoded';
 export default function exportFlight(payload) {
   return function(dispatch) {
     return new Promise((resolve, reject) => {
-      fetch(ENTRY_URL+'flights/itemExport', {
+      fetch(REST_URL+'flights/itemExport', {
         credentials: 'same-origin',
         method: 'post',
         headers: {'Content-Type': 'application/x-www-form-urlencoded; utf-8' },

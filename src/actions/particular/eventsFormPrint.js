@@ -3,7 +3,7 @@ export default function eventsFormPrint(payload) {
     let form = document.createElement('form');
     form.target = '_blank';
     form.method = 'post';
-    form.action = ENTRY_URL+'flightEvents/printBlank';
+    form.action = REST_URL+'flightEvents/printBlank';
     form.style = 'display:none;';
 
     let flightIdInput = document.createElement('input');

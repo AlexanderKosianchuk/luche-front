@@ -9,7 +9,7 @@ export default function login(payload) {
     });
 
     return new Promise((resolve, reject) => {
-      fetch(ENTRY_URL + 'users/login/' + 'login/' + payload.login + '/pass/' + payload.pass,
+      fetch(REST_URL + 'users/login/' + 'login/' + payload.login + '/pass/' + payload.pass,
         { credentials: 'same-origin' }
       ).then((response) => {
           response

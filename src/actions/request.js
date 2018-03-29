@@ -20,7 +20,7 @@ export default function request(
     if (!Array.isArray(action)) {
       url = action;
     } else {
-      url = ENTRY_URL + action.join('/');
+      url = REST_URL + action.join('/');
     }
 
     let options = {

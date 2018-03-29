@@ -12,7 +12,7 @@ import bindSocket from 'actions/bindSocket';
 
 class Root extends Component {
   componentDidMount() {
-    this.props.bindSocket({ interactionUrl: this.props.appConfig.interactionUrl });
+    this.props.bindSocket({ interactionUrl: INTERACTION_URL });
   }
 
   render() {
@@ -27,9 +27,7 @@ class Root extends Component {
 };
 
 function mapStateToProps(state) {
-  return {
-    appConfig: state.appConfig.config,
-  };
+  return {};
 }
 
 function mapDispatchToProps(dispatch) {

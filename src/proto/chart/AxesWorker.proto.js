@@ -127,7 +127,7 @@ AxesWorker.prototype.LoadDistribution = function(yAxArr, apParams, bpParams, fli
       type: 'POST',
       data: pV,
       dataType: 'json',
-      url: ENTRY_URL+'chart/getParamMinMax',
+      url: REST_URL+'chart/getParamMinMax',
       async: false
     }).done(function(receivedMinMax){
       var minMax = receivedMinMax;
@@ -163,7 +163,7 @@ AxesWorker.prototype.SaveDistribution = function(yAxArr, apParams, bpParams, fli
           min: yAxArr[i].min,
           username: this.user
         },
-        url: ENTRY_URL+'chart/setParamMinMax',
+        url: REST_URL+'chart/setParamMinMax',
       }).done(function(e){
         self.distributionProc--;
       }).fail(function(e){

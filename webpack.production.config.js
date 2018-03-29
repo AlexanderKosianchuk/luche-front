@@ -104,7 +104,8 @@ module.exports = {
     }),
     new webpack.DefinePlugin({
       NODE_ENV: JSON.stringify('production'),
-      ENTRY_URL: JSON.stringify('/'),
+      REST_URL: JSON.stringify('http://local.luch15.com/'),
+      INTERACTION_URL: JSON.stringify('http://localhost:1337/'),
     }),
     new MiniCssExtractPlugin({
       filename: '[name]-[hash:6].css',

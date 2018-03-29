@@ -2,7 +2,7 @@ export default function exportFlightCoordinates(payload) {
   return function(dispatch) {
     let form = document.createElement('form');
     form.target = '_blank';
-    form.action = ENTRY_URL;
+    form.action = REST_URL;
     form.style = 'display:none;';
 
     let actionInput = document.createElement('input');

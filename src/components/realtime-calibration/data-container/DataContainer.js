@@ -31,7 +31,7 @@ class DataContainer extends Component {
       io: props.io,
       ioEvent: 'newData',
       bindedEvents: props.bindedEvents,
-      registerUrl: props.appConfig.interactionUrl+'/realtimeCalibration/register?uid='+ props.uid,
+      registerUrl: INTERACTION_URL + '/realtimeCalibration/register?uid='+ props.uid,
       reducerEvent: 'RECEIVED_REALTIME_CALIBRATING_NEW_FRAME'
     });
   }

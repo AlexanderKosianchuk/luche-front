@@ -2,7 +2,6 @@ import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 import { i18nReducer } from 'react-redux-i18n';
 
-import appConfig from 'reducers/appConfig';
 import flightFilter from 'reducers/flightFilter';
 import settlementFilter from 'reducers/settlementFilter';
 import settlementsReport from 'reducers/settlementsReport';
@@ -27,7 +26,6 @@ import userReducer from 'reducers/userReducer';
 import users from 'reducers/users';
 
 const appReducer = combineReducers({
-  appConfig,
   fdrs,
   flight,
   flights,

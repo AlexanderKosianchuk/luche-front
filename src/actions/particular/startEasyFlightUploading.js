@@ -8,7 +8,7 @@ export default function startEasyFlightUploading(payload) {
     });
 
     let checkProgress = function () {
-      fetch(ENTRY_URL+'uploader/getUploadingStatus/uploadingUid/'+payload.uploadingUid, {
+      fetch(REST_URL+'uploader/getUploadingStatus/uploadingUid/'+payload.uploadingUid, {
         method: 'GET',
         credentials: "same-origin"
       })
@@ -41,7 +41,7 @@ export default function startEasyFlightUploading(payload) {
 
     setTimeout(checkProgress, 1000);
 
-    fetch(ENTRY_URL + 'uploader/flightEasyUpload', {
+    fetch(REST_URL + 'uploader/flightEasyUpload', {
       method: 'POST',
       body: payload.form,
       credentials: "same-origin"

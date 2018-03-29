@@ -42,7 +42,7 @@ class Form extends Component {
       <form
         className='calibration-form-form__container form-horizontal'
         target='_blank'
-        action={ ENTRY_URL }
+        action={ REST_URL }
         ref={ (form) => { this.calibrationForm = form; }}
       >
         <div className='hidden'>

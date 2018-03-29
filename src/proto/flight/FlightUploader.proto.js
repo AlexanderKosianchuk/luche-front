@@ -70,7 +70,7 @@ FlightUploader.prototype.GetFlightParams = function(
         calibrationId: calibrationId
       },
       dataType: 'json',
-      url: ENTRY_URL + "uploader/flightUploadingOptions",
+      url: REST_URL + "uploader/flightUploadingOptions",
       async: false
     }).fail(function(msg){
       console.log(msg);
@@ -134,7 +134,7 @@ FlightUploader.prototype.GetSlicedFlightParams = function(
       fdrId: fdrId
     },
     dataType: 'json',
-    url: ENTRY_URL + "uploader/flightUploadingOptions",
+    url: REST_URL + "uploader/flightUploadingOptions",
     async: false
   }).fail(function(msg){
     console.log(msg);
@@ -265,7 +265,7 @@ FlightUploader.prototype.PreviewChart = function (parent,
         fdrId: fdrId,
       },
       dataType: 'json',
-      url: ENTRY_URL + "uploader/flightUploaderPreview",
+      url: REST_URL + "uploader/flightUploaderPreview",
     }).done(function(apDataArray){
       $("div#loadingBox" + index);//.remove();
       var prmData = Array(),
@@ -449,7 +449,7 @@ FlightUploader.prototype.SliceFlightButtSupport = function(parent, previewParams
               endSliceTime:  self.plotSelectedToRangeStack[curIndex]
             },
             dataType: 'json',
-            url: ENTRY_URL + 'uploader/'+action,
+            url: REST_URL + 'uploader/'+action,
             async: true
           }).done(function(answ){
             if(answ["status"] == 'ok') {
@@ -480,7 +480,7 @@ FlightUploader.prototype.InitiateFlightProccessing = function(data) {
     uploadingUid = data.uploadingUid;
 
   $.ajax({
-    url: ENTRY_URL + 'uploader/flightProcces',
+    url: REST_URL + 'uploader/flightProcces',
     type: "POST",
     data: data,
     dataType: 'json',
@@ -507,7 +507,7 @@ FlightUploader.prototype.Import = function(form, dfd) {
     dataType: 'json',
     processData: false,
     contentType: false,
-    url: ENTRY_URL+'uploader/itemImport'
+    url: REST_URL+'uploader/itemImport'
   }).done(function(answ){
     if (answ["status"] == 'ok') {
       dfd.resolve();

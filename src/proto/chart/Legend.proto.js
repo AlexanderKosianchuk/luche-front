@@ -166,7 +166,7 @@ Legend.prototype.ReceiveLegend = function(){
         paramCodes: paramCodes
       },
       type: 'POST',
-      url: ENTRY_URL + 'chart/getLegend',
+      url: REST_URL + 'chart/getLegend',
       dataType: 'json',
       success: function(inData){
         self.dfr.resolve;

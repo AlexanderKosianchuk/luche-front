@@ -6,9 +6,6 @@ const webpack = require('webpack');
 const path = require('path');
 const { resolve } = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const OpenBrowserPlugin = require('open-browser-webpack-plugin');
 
 module.exports = {
   entry: [
@@ -105,7 +102,8 @@ module.exports = {
     }),
     new webpack.DefinePlugin({
       NODE_ENV: JSON.stringify('dev'),
-      ENTRY_URL: JSON.stringify('http://local.luch15.com/'),
+      REST_URL: JSON.stringify('http://local.luch15.com/'),
+      INTERACTION_URL: JSON.stringify('http://localhost:1337/'),
     }),
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin()
