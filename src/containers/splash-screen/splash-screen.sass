@@ -1,0 +1,21 @@
+@keyframes rotateAircraft
+  0%
+    transform: rotate(-10deg)
+  50%
+    transform: rotate(2deg)
+  100%
+    transform: rotate(-10deg)
+
+.splash-screen
+  & &__img
+    position: fixed
+    width: 30%
+    height: 25%
+    top: 35%
+    left: 34%
+    transform: translate(-50%, -50%)
+    background: url('/images/aircraft.svg')
+    background-repeat: no-repeat
+    background-size: contain
+    background-position: center
+    animation: rotateAircraft 2500ms infinite linear

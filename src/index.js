@@ -30,24 +30,11 @@ store.dispatch(loadTranslations(translationsObject));
 
 facade(store);
 
-const html = document.getElementsByTagName('HTML')[0];
-const login = html.getAttribute('login');
-const role = html.getAttribute('role');
-const lang = html.getAttribute('lang');
-
-if (login && role && lang) {
-  store.dispatch({
-    type: 'USER_LOGGED_IN',
-    payload: {
-      login: login,
-      role: role,
-      lang: lang
-    }
-  });
-
-  store.dispatch(setLocale(lang.toLowerCase()));
+let browserLang = (navigator.language || navigator.userLanguage).substring(0, 2);
+if (Object.keys(translationsObject).indexOf(browserLang) !== -1) {
+  store.dispatch(setLocale(browserLang.toLowerCase()));
 } else {
-  store.dispatch(setLocale('ru'));
+  store.dispatch(setLocale('en'));
 }
 
 ReactDOM.render(

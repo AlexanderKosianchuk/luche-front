@@ -4,9 +4,11 @@ import './form.sass';
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Translate } from 'react-redux-i18n';
+import { setLocale, Translate } from 'react-redux-i18n';
 
-import login from 'actions/particular/login';
+import request from 'actions/request';
+import transmit from 'actions/transmit';
+import redirect from 'actions/redirect';
 
 class Form extends Component {
   constructor(props) {
@@ -20,14 +22,23 @@ class Form extends Component {
   auth(event) {
     event.preventDefault();
 
-    this.props.login({
-      login: this.loginInput.value,
-      pass: this.passInput.value
-    }).catch((response) => {
+    this.props.request(
+      ['users', 'login'],
+      'post',
+      'USER_LOGIN', {
+        login: this.loginInput.value,
+        pass: this.passInput.value
+      }
+    ).then((response) => {
+      this.props.transmit(null, setLocale(response.lang.toLowerCase()),  true);
+      this.props.redirect('/');
+    }, (response) => {
+      this.props.transmit('LOGIN_FAILED', response);
+
       this.setState({
         message: response.message
       });
-    })
+    });
   }
 
   render() {
@@ -81,7 +92,9 @@ class Form extends Component {
 
 function mapDispatchToProps(dispatch) {
   return {
-    login: bindActionCreators(login, dispatch)
+    request: bindActionCreators(request, dispatch),
+    transmit: bindActionCreators(transmit, dispatch),
+    redirect: bindActionCreators(redirect, dispatch)
   }
 }
 

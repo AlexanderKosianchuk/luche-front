@@ -38,11 +38,7 @@ module.exports = {
       'FlightUploader': path.join(__dirname, 'src/proto/flight/FlightUploader.proto.js'),
     },
   },
-  devtool: (NODE_ENV == 'dev' ? 'source-map' : false),
-  watch: NODE_ENV == 'dev',
-  watchOptions: {
-    aggregateTimeout: 300,
-  },
+  devtool: 'source-map',
   module: {
     rules: [{
         test: /\.(js|jsx)$/,

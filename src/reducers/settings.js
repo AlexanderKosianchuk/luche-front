@@ -5,6 +5,12 @@ const initialState = {
 
 export default function settings(state = initialState, action) {
   switch (action.type) {
+    case 'GET_USER_COMPLETE':
+    case 'POST_USER_LOGIN_COMPLETE':
+      return {
+        pending: false,
+        items: action.payload.response.settings
+      };
     case 'GET_USER_SETTINGS_START':
       return { ...state, ...{ pending: true }};
     case 'GET_USER_SETTINGS_COMPLETE':

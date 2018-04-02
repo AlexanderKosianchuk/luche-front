@@ -4,7 +4,7 @@
   "description": "Flight data processor (front). Initialy was developed for An 148, but got wide spread for many other aircrafts",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack-dev-server --mode development --open",
+    "dev": "cross-env NODE_ENV=dev webpack-dev-server --mode development --open",
     "build": "webpack --mode production --config webpack.production.config.js --progress --profile --colors",
     "watch": "cross-env NODE_ENV=dev webpack --watch",
     "clean": "rimraf dist",
@@ -44,7 +44,7 @@
     "eslint-plugin-react": "^6.10.3",
     "expect": "^21.1.0",
     "expect-jsx": "^4.0.0",
-    "extract-text-webpack-plugin": "^2.1.0",
+    "extract-text-webpack-plugin": "^2.1.2",
     "file-loader": "^1.1.11",
     "guid": "0.0.12",
     "html-loader": "^0.5.5",

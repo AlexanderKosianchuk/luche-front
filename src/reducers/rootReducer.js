@@ -22,7 +22,7 @@ import fdrTemplates from 'reducers/fdrTemplates';
 import flightTemplate from 'reducers/flightTemplate';
 import flightTemplates from 'reducers/flightTemplates';
 import flightEvents from 'reducers/flightEvents';
-import userReducer from 'reducers/userReducer';
+import user from 'reducers/user';
 import users from 'reducers/users';
 
 const appReducer = combineReducers({
@@ -48,7 +48,7 @@ const appReducer = combineReducers({
   settings,
   router: routerReducer,
   i18n: i18nReducer,
-  user: userReducer,
+  user: user,
   users: users
 });
 
@@ -60,6 +60,5 @@ const rootReducer = (state, action) => {
 
   return appReducer(state, action)
 };
-
 
 export default rootReducer;
