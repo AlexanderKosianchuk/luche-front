@@ -29,19 +29,17 @@ export default function user(state = initialState, action) {
         lang: action.payload.response.lang
       };
     }
-    case 'PUT_LANGUAGE_COMPLETE': {
-      let pl = action.payload;
-      if (pl.lang && state.lang !== pl.lang) {
-        return {
-          ...state,
-          ... {
-            lang: pl.lang
-          }
-        };
-      }
+    case 'POST_USER_CHANGE_LANGUAGE_COMPLETE': {
+      return {
+        ...state,
+        ...{ lang: action.payload.request.lang }
+      };
     }
-    case 'USER_LOGGED_OUT':
-      return initialState;
+    case 'POST_USER_LOGOUT_COMPLETE':
+      return {
+        ...state,
+        ...{ pending: false }
+      };
     default:
       return state;
   }

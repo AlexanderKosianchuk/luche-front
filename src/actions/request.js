@@ -24,7 +24,7 @@ export default function request(
     }
 
     let options = {
-      credentials: 'same-origin',
+      credentials: 'include',
       method: 'get'
     };
 

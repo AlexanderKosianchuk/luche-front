@@ -3,21 +3,28 @@ import './top-menu.sass';
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Translate, I18n } from 'react-redux-i18n';
+import { setLocale, Translate, I18n } from 'react-redux-i18n';
 
 import NavbarToggle from 'controls/navbar-toggle/NavbarToggle';
 import FlightUploaderDropdown from 'controls/top-menu/flight-uploader-dropdown/FlightUploaderDropdown';
 import FlightImporterDropdown from 'controls/top-menu/flight-importer-dropdown/FlightImporterDropdown';
 import FlightUploadingProgressIndicator from 'controls/top-menu/flight-uploading-progress-indicator/FlightUploadingProgressIndicator';
 
-import changeLanguage from 'actions/particular/changeLanguage';
 import redirect from 'actions/redirect';
 import request from 'actions/request';
+import transmit from 'actions/transmit';
 
 class TopMenu extends React.Component {
   changeLanguage(event) {
-    let language = event.target.getAttribute('data-lang');
-    this.props.changeLanguage({ language: language.toLowerCase() });
+    let language = event.target.getAttribute('data-lang').toLowerCase();
+    this.props.request(
+      ['users', 'changeLanguage'],
+      'post',
+      'USER_CHANGE_LANGUAGE',
+      { lang: language }
+    ).then(() => {
+      this.props.transmit(null, setLocale(language),  true);
+    });
   }
 
   buildLanguageMenu() {
@@ -126,7 +133,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     request: bindActionCreators(request, dispatch),
-    changeLanguage: bindActionCreators(changeLanguage, dispatch),
+    transmit: bindActionCreators(transmit, dispatch),
     redirect: bindActionCreators(redirect, dispatch)
   }
 }

@@ -53,7 +53,8 @@ class Root extends Component {
 
 function mapStateToProps(state) {
   return {
-    userPending: state.user.pending
+    userPending: state.user.pending,
+    userLang: state.i18n.locale
   };
 }
 
