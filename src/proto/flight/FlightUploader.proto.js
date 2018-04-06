@@ -70,6 +70,10 @@ FlightUploader.prototype.GetFlightParams = function(
         calibrationId: calibrationId
       },
       dataType: 'json',
+      xhrFields: {
+        withCredentials: true
+      },
+      crossDomain: true,
       url: REST_URL + "uploader/flightUploadingOptions",
       async: false
     }).fail(function(msg){

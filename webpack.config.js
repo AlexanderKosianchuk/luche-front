@@ -19,7 +19,7 @@ module.exports = {
   output: {
     filename: 'bundle-[hash:6].js',
     path: resolve(__dirname, 'dist'),
-    publicPath: '',
+    publicPath: '/',
   },
   resolve: {
     modules: [
@@ -50,7 +50,7 @@ module.exports = {
         }
       }, {
         test: /\.css$/,
-        loader: 'css-loader?name=[name]-[hash:6].css'
+        use: [ 'style-loader', 'css-loader' ]
       }, {
         test: /\.sass$/,
         exclude: /node_modules/,
@@ -78,6 +78,9 @@ module.exports = {
           loader: 'html-loader',
           options: { minimize: false }
         }]
+      }, {
+        test: /\.htaccess$/,
+        loader: 'file-loader?name=.htaccess'
       }
     ]
   },
@@ -98,7 +101,7 @@ module.exports = {
     }),
     new webpack.DefinePlugin({
       NODE_ENV: JSON.stringify('dev'),
-      REST_URL: JSON.stringify('http://local.luch15.com/'),
+      REST_URL: JSON.stringify('http://rest.luche.com/'),
       INTERACTION_URL: JSON.stringify('http://localhost:1337/'),
     }),
     new webpack.NamedModulesPlugin(),

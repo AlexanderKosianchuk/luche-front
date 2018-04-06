@@ -3,6 +3,10 @@
 'use strict';
 
 import './assets/favicone.ico';
+
+//workaround cause url rewrite need
+import '../.htaccess';
+
 import 'jquery';
 import facade from 'facade';
 

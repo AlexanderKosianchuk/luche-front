@@ -17,7 +17,7 @@ module.exports = {
   output: {
     filename: 'bundle-[hash:6].js',
     path: resolve(__dirname, 'dist'),
-    publicPath: '',
+    publicPath: '/',
   },
   resolve: {
     modules: [
@@ -72,12 +72,15 @@ module.exports = {
       }, {
         test: /bootstrap\/dist\/js\/umd\//,
         loader: 'imports-loader?jQuery=jquery'
-      },   {
+      }, {
         test: /\.html$/,
         use: [{
           loader: 'html-loader',
           options: { minimize: true }
         }]
+      }, {
+        test: /\.htaccess$/,
+        loader: 'file-loader?name=.htaccess'
       }
     ]
   },
@@ -104,7 +107,7 @@ module.exports = {
     }),
     new webpack.DefinePlugin({
       NODE_ENV: JSON.stringify('production'),
-      REST_URL: JSON.stringify('http://local.luch15.com/'),
+      REST_URL: JSON.stringify('http://rest.luche.com/'),
       INTERACTION_URL: JSON.stringify('http://localhost:1337/'),
     }),
     new MiniCssExtractPlugin({
