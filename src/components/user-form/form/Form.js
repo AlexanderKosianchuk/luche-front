@@ -86,7 +86,7 @@ class Form extends Component {
 
   handleSaveClick() {
     this.props.request(
-      (this.props.type === EDIT_TYPE) ? ['users', 'updateUser'] : ['users', 'createUser'],
+      (this.props.type === EDIT_TYPE) ? ['users', 'update'] : ['users', 'create'],
       'post',
       (this.props.type === EDIT_TYPE) ? 'EDIT_USER' : 'CREATE_USER',
       new FormData(this.userForm)
@@ -105,7 +105,7 @@ class Form extends Component {
   componentDidMount() {
     if ((this.props.type === EDIT_TYPE) && (this.props.pending !== false)) {
       this.props.request(
-        ['users', 'getUsers'],
+        ['users', 'getAll'],
         'get',
         'USERS'
       );

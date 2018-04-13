@@ -75,24 +75,22 @@ function Chart(store) {
   $(document).on('chart:fullSize', this.fullSize.bind(this) );
 }
 
-Chart.prototype.SetChartData = function(flightId, templateId,
-    stepLength, startCopyTime, startFrame, endFrame,
-    apParams, bpParams, hasCoordinates){
+Chart.prototype.SetChartData = function(data){
 
-  this.flightId = parseInt(flightId);
-  this.templateId = templateId;
-  this.stepLength = parseFloat(stepLength);
-  this.startCopyTime = parseInt(startCopyTime);
-  this.startFrame = parseInt(startFrame);
-  this.endFrame = parseInt(endFrame);
-  this.apParams = apParams;
-  this.bpParams = bpParams;
+  this.flightId = parseInt(data.flightId);
+  this.templateId = data.templateId;
+  this.stepLength = parseFloat(data.stepLength);
+  this.startCopyTime = parseInt(data.startCopyTime);
+  this.startFrame = parseInt(data.startFrame);
+  this.endFrame = parseInt(data.endFrame);
+  this.apParams = data.apParams;
+  this.bpParams = data.bpParams;
 
   this.startFrameTime = this.startCopyTime + (this.startFrame * this.stepLength);
   this.endFrameTime = this.startCopyTime + (this.endFrame * this.stepLength);
 
   this.markingCount = this.apParams.length + this.bpParams.length + 1;
-  this.hasCoordinates = hasCoordinates || false;
+  this.hasCoordinates = data.hasCoordinates || false;
 }
 
 Chart.prototype.FillFactoryContaider = function(factoryContainer) {
@@ -134,7 +132,7 @@ Chart.prototype.FillFactoryContaider = function(factoryContainer) {
   );
   self.loadingBox = $("div#loadingBox")
   self.loadingBox.append(
-    $('<img/>').attr('src', './images/loading.gif')
+    $('<img/>').attr('src', '/images/loading.gif')
   );
 
   self.placeholder.on("mouseover", function(e){
@@ -311,8 +309,8 @@ Chart.prototype.LoadFlotChart = function() {
 
   var lineWidth = self.placeholder.data('linewidth');
 
-  $.when(self.Prm.ReceiveParams(lineWidth)).then(
-    function(status) {
+  self.Prm.ReceiveParams(lineWidth)
+    .then((status) => {
       self.loadingBox.fadeOut();
       self.plot = $.plot(self.placeholder, self.Prm.data, self.plotOptions);
 
@@ -349,12 +347,6 @@ Chart.prototype.LoadFlotChart = function() {
 
       self.plot.draw();
       self.plot.pan(0);
-    },
-    function(status) {
-      console.log(status);
-    },
-    function(status) {
-      console.log(status);
     }
   );
 }

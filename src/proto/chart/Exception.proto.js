@@ -50,6 +50,8 @@ Exception.prototype.ReceiveExcepions = function(){
       type: 'POST',
       dataType: 'json',
       url: REST_URL+'chart/getFlightExceptions',
+      xhrFields: { withCredentials: true },
+      crossDomain: true,
       success: function(inData) { return inData; },
     }).done(function(excDataArray) {
       if(excDataArray.length > 0) {

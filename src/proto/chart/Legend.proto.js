@@ -168,6 +168,8 @@ Legend.prototype.ReceiveLegend = function(){
       type: 'POST',
       url: REST_URL + 'chart/getLegend',
       dataType: 'json',
+      xhrFields: { withCredentials: true },
+      crossDomain: true,
       success: function(inData){
         self.dfr.resolve;
       },

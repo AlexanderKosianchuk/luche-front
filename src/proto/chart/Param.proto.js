@@ -20,7 +20,6 @@ function Param(flightId,
   this.refParamArr = new Array();
   this.associativeParamsArr = new Array();
   this.data = Array();
-  this.receivedParams = Array();
 
   this.startFrame = startFrame;
   this.endFrame = endFrame;
@@ -42,39 +41,24 @@ function Param(flightId,
 //=============================================================
 
 //=============================================================
-Param.prototype.ReceiveParams = function(lineWidth){
-  var self = this,
-    dfd = new $.Deferred();
-  self.receivedParams = Array();
+Param.prototype.ReceiveParams = function(lineWidth) {
+  return new Promise((resolve, reject) => {
+    let promises =
+      this.apArr.map((param, i) =>
+        this.GetApParam(param, i, lineWidth)
+      ).concat(
+        this.bpArr.map((param, i) =>
+          this.GetBpParam(param, i, lineWidth)
+        )
+      );
 
-  // Show a "working..." message every half-second
-  setTimeout(function working() {
-    if ( dfd.state() === "pending" ) {
-      dfd.notify( "working... " );
-      setTimeout( working, 500 );
-    }
-  }, 1 );
-
-  //iterational receiving ap data arrays
-  for (var i = 0; i < this.apCount; i++) {
-    var apName = self.apArr[i];
-    self.GetApParam(apName, i, lineWidth, dfd);
-  }
-  //=============================================================
-
-  //=============================================================
-  //iterational receiving bp data arrays
-  for (var i = 0; i < this.bpCount; i++) {
-    var bpName = self.bpArr[i];
-    self.GetBpParam(bpName, i, lineWidth, dfd);
-  }
-
-  return dfd.promise();
+    Promise.all(promises).then(resolve, reject);
+  });
 };
 //=============================================================
 
 //=============================================================
-Param.prototype.GetApParam = function(paramCode, i, lineWidth, dfd){
+Param.prototype.GetApParam = function(paramCode, i, lineWidth){
   var self = this,
     apDataArray = Array(),
     pV = {
@@ -86,50 +70,51 @@ Param.prototype.GetApParam = function(paramCode, i, lineWidth, dfd){
       isPrintPage: self.isPrintPage
     };
 
-  $.ajax({
-    data: pV,
-    type: "POST",
-    dataType: 'json',
-    url: REST_URL+'chart/getApParamData',
-  }).done(function(receivedParamPoints){
-    apDataArray = receivedParamPoints;
-
+  return new Promise((resolve, reject) => {
     $.ajax({
+      data: pV,
       type: "POST",
-      data: {
-        flightId: self.flightId,
-        code: paramCode
-      },
       dataType: 'json',
-      url: REST_URL+'chart/getParamInfo',
-    }).done(function(receivedInfo){
-      var color = receivedInfo['color'],
-        nm = receivedInfo['name'];
-      var apDataFlotSeries = {
-          data: apDataArray,
-          label: paramCode + " " + nm + " = 0.00",
-          yaxis: i + 1,
-          color: "#" + color,
-          shadowSize: 0,
-          lines: { lineWidth: lineWidth, show: true }
-        };
-      self.data[i] = apDataFlotSeries;
-      if (self.associativeParamsArr[paramCode] === undefined) {
-        self.associativeParamsArr[paramCode] = [i, color];
-      }
+      url: REST_URL+'chart/getApParamData',
+      xhrFields: { withCredentials: true },
+      crossDomain: true
+    }).done(function(receivedParamPoints){
+      apDataArray = receivedParamPoints;
 
-      self.receivedParams.push(paramCode);
-      if(self.receivedParams.length == (self.apCount + self.bpCount)) {
-        dfd.resolve(paramCode);
-      }
+      $.ajax({
+        type: "POST",
+        data: {
+          flightId: self.flightId,
+          code: paramCode
+        },
+        dataType: 'json',
+        url: REST_URL+'chart/getParamInfo',
+        xhrFields: { withCredentials: true },
+        crossDomain: true
+      }).done(function(receivedInfo){
+        var color = receivedInfo['color'],
+          nm = receivedInfo['name'];
+        var apDataFlotSeries = {
+            data: apDataArray,
+            label: paramCode + " " + nm + " = 0.00",
+            yaxis: i + 1,
+            color: "#" + color,
+            shadowSize: 0,
+            lines: { lineWidth: lineWidth, show: true }
+          };
+        self.data[i] = apDataFlotSeries;
+        if (self.associativeParamsArr[paramCode] === undefined) {
+          self.associativeParamsArr[paramCode] = [i, color];
+        }
 
+        resolve(paramCode);
+      }).fail(function(mess){
+        reject(mess);
+      });
     }).fail(function(mess){
-      dfd.reject(mess);
+      reject(mess);
     });
-  }).fail(function(mess){
-    dfd.reject(mess);
   });
-
 }
 //=============================================================
 
@@ -139,17 +124,7 @@ Param.prototype.GetBpParam = function(paramCode, i, lineWidth, dfd){
     bpDataArray = Array(),
     color = String();
 
-  $.ajax({
-    type: "POST",
-    data: {
-      flightId: self.flightId,
-      code: paramCode
-    },
-    dataType: 'json',
-    url: REST_URL+'chart/getBpParamData',
-  }).done(function(receivedParamPoints){
-    bpDataArray = receivedParamPoints;
-
+  return new Promise((resolve, reject) => {
     $.ajax({
       type: "POST",
       data: {
@@ -157,35 +132,47 @@ Param.prototype.GetBpParam = function(paramCode, i, lineWidth, dfd){
         code: paramCode
       },
       dataType: 'json',
-      url: REST_URL+'chart/getParamInfo',
-    }).done(function(receivedInfo){
-      var color = receivedInfo['color'],
-        nm = receivedInfo['name'];
+      url: REST_URL+'chart/getBpParamData',
+      xhrFields: { withCredentials: true },
+      crossDomain: true
+    }).done(function(receivedParamPoints){
+      bpDataArray = receivedParamPoints;
 
-      var bpDataFlotSeries = {
-          data: bpDataArray,
-          label: paramCode + " " + nm + " = F",
-          yaxis: self.apCount + i + 1,
-          color: "#" + color,
-          points: { symbol: "square", show: true, radius: lineWidth + 1, fillColor: "#" + color},
-          shadowSize: 0,
-          lines: { lineWidth: lineWidth, show: true, }
-        };
-      self.data[self.apCount + i] = bpDataFlotSeries;
-      if (self.associativeParamsArr[paramCode] === undefined) {
-        self.associativeParamsArr[paramCode] = [self.apCount + i, color];
-      }
+      $.ajax({
+        type: "POST",
+        data: {
+          flightId: self.flightId,
+          code: paramCode
+        },
+        dataType: 'json',
+        url: REST_URL+'chart/getParamInfo',
+        xhrFields: { withCredentials: true },
+        crossDomain: true
+      }).done(function(receivedInfo){
+        var color = receivedInfo['color'],
+          nm = receivedInfo['name'];
 
-      self.receivedParams.push(paramCode);
-      if(self.receivedParams.length == (self.apCount + self.bpCount)) {
-        dfd.resolve(paramCode);
-      }
+        var bpDataFlotSeries = {
+            data: bpDataArray,
+            label: paramCode + " " + nm + " = F",
+            yaxis: self.apCount + i + 1,
+            color: "#" + color,
+            points: { symbol: "square", show: true, radius: lineWidth + 1, fillColor: "#" + color},
+            shadowSize: 0,
+            lines: { lineWidth: lineWidth, show: true, }
+          };
+        self.data[self.apCount + i] = bpDataFlotSeries;
+        if (self.associativeParamsArr[paramCode] === undefined) {
+          self.associativeParamsArr[paramCode] = [self.apCount + i, color];
+        }
 
+        resolve(paramCode);
+      }).fail(function(mess){
+        reject(mess);
+      });
     }).fail(function(mess){
-      dfd.reject(mess);
+      reject(mess);
     });
-  }).fail(function(mess){
-    dfd.reject(mess);
   });
 }
 

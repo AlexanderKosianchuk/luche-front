@@ -47,22 +47,9 @@ export default function facade(store) {
     });
   });
 
-  $(document).on('chartShow', function (
-    e, showcase,
-    flightId, templateId,
-    stepLength, startCopyTime,
-    startFrame, endFrame,
-    apParams, bpParams,
-    hasCoordinates
-  ) {
+  $(document).on('chartShow', function (e, showcase, data) {
     var C = new ChartService(store);
-    C.SetChartData(
-      flightId, templateId,
-      stepLength, startCopyTime,
-      startFrame, endFrame,
-      apParams, bpParams,
-      hasCoordinates
-    );
+    C.SetChartData(data);
     C.FillFactoryContaider(showcase);
   });
 

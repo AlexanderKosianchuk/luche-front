@@ -24,7 +24,7 @@ class Form extends Component {
     let form = new FormData(this.calibrationForm);
 
     this.props.request(
-      ['calibration', 'saveCalibration'],
+      ['calibration', 'save'],
       'post',
       (this.props.calibrationId === null) ? 'CREATE_CALIBRATION' : 'UPDATE_CALIBRATION',
       form

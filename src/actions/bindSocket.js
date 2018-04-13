@@ -17,28 +17,14 @@ export default function bindSocket(payload) {
     io.sails.url = INTERACTION_URL;
     io.sails.reconnection = true;
 
-    // workaround till not shure interaction always up
-    var up = () => {
-      request(
-        ['interaction', 'up'],
-        'get'
-      ).then((resp) => {
-        io.socket.on('connect', () => {
-          dispatch({
-            type: 'WEBSOCKET_CONNECTED',
-            payload: {
-              io: io
-            }
-          });
-        });
-      }, () => {
-        setTimeout(() => {
-          up();
-        }, 1000);
+    io.socket.on('connect', () => {
+      dispatch({
+        type: 'WEBSOCKET_CONNECTED',
+        payload: {
+          io: io
+        }
       });
-    }
-
-    up();
+    });
 
     //TODO: io.socket.on('error', () => {});
   }

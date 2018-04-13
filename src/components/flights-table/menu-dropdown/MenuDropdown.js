@@ -87,7 +87,7 @@ class MenuDropdown extends React.Component {
     for (var ii = 0; ii < this.props.flights.chosenItems.length; ii++) {
       let item = this.props.flights.chosenItems[ii];
       this.props.request(
-        ['flights', 'deleteFlight'],
+        ['flights', 'delete'],
         'delete',
         'FLIGHT',
         { id: item.id }

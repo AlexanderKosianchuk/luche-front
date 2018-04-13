@@ -70,7 +70,7 @@ class Table extends Component {
     this.isLoading = true;
 
     this.props.request(
-      ['users', 'getUserActivity'],
+      ['users', 'getActivity'],
       'get',
       'USER_ACTIVITY',
       {

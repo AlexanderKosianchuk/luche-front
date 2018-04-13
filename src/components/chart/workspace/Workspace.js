@@ -24,13 +24,13 @@ class Workspace extends Component {
         }
       ),
       this.props.request(
-        ['flights', 'getFlightInfo'],
+        ['flights', 'getInfo'],
         'get',
         'FLIGHT',
         { flightId: this.props.flightId }
       ),
       this.props.request(
-        ['users', 'getUserSettings'],
+        ['users', 'getSettings'],
         'get',
         'USER_SETTINGS',
       )
@@ -45,26 +45,26 @@ class Workspace extends Component {
         .filter((item) => (item.type === 'bp'))
         .map((item) => item.code);
 
-      this.props.showPage('chartShow', [
-        this.props.flightId,
-        this.props.templateId,
-        this.props.stepLength,
-        this.props.startFlightTime,
-        this.props.fromFrame,
-        this.props.toFrame,
-        analogParamsCodes,
-        binaryParamsCodes,
-        this.props.settings.mainChartColor,
-        this.props.settings.lineWidth,
-        this.props.hasCoordinates
-      ]);
+      this.props.showPage('chartShow', [{
+        flightId: this.props.flightId,
+        templateId: this.props.templateId,
+        stepLength: this.props.stepLength,
+        startCopyTime: this.props.startFlightTime,
+        startFrame: this.props.fromFrame,
+        endFrame: this.props.toFrame,
+        apParams: analogParamsCodes,
+        bpParams: binaryParamsCodes,
+        hasCoordinates: this.props.hasCoordinates
+      }]);
     });
   }
 
   render() {
     return (
       <div className='chart-workspace'>
-        <ThreeDimVisualisation flightId={ this.props.flightId } />
+        { this.props.hasCoordinates &&
+          (<ThreeDimVisualisation flightId={ this.props.flightId } />)
+        }
         <div id='container'></div>
       </div>
     );

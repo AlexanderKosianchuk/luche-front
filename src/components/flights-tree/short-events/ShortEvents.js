@@ -36,7 +36,7 @@ class ShortEvents extends React.Component {
       )
     ) {
       this.props.request(
-        ['flightEvents', 'getFlightEvents'],
+        ['flightEvents', 'get'],
         'get',
         'FLIGHT_EVENTS',
         { flightId: chosenFlight.id }

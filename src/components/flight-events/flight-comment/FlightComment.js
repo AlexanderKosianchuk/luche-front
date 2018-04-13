@@ -30,7 +30,7 @@ class FlightComment extends Component {
 
   componentDidMount() {
     this.props.request(
-      ['flightComment', 'getComment'],
+      ['flightComment', 'get'],
       'GET',
       null,
       { flightId: this.props.flightId}
@@ -64,7 +64,7 @@ class FlightComment extends Component {
   handleSave() {
     this.setState({ fetched: null });
     this.props.request(
-      ['flightComment', 'setComment'],
+      ['flightComment', 'set'],
       'POST',
       null,
       {

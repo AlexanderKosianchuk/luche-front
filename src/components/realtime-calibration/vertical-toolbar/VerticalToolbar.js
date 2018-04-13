@@ -31,7 +31,7 @@ class VerticalToolbar extends Component {
       let data = this.gatherInteractionData();
 
       this.props.request(
-        INTERACTION_URL + '/realtimeCalibration/stopUdp',
+        INTERACTION_URL + 'realtimeCalibration/stopUdp',
         'post',
         'REALTIME_CALIBRATION_BREAK',
         data
@@ -46,7 +46,7 @@ class VerticalToolbar extends Component {
       let data = this.gatherInteractionData();
 
       this.props.request(
-        INTERACTION_URL + '/realtimeCalibration/startUdp',
+        INTERACTION_URL + 'realtimeCalibration/startUdp',
         'post',
         'REALTIME_CALIBRATION_RECEIVING',
         data
@@ -61,7 +61,7 @@ class VerticalToolbar extends Component {
       let data = this.gatherInteractionData();
 
       this.props.request(
-        INTERACTION_URL + '/realtimeCalibration/pauseUdp',
+        INTERACTION_URL + 'realtimeCalibration/pauseUdp',
         'post',
         'REALTIME_CALIBRATION_FREEZE',
         data
@@ -76,7 +76,7 @@ class VerticalToolbar extends Component {
       let data = this.gatherInteractionData();
 
       this.props.request(
-        INTERACTION_URL + '/realtimeCalibration/startUdp',
+        INTERACTION_URL + 'realtimeCalibration/startUdp',
         'post',
         'REALTIME_CALIBRATION_RECEIVING',
         data

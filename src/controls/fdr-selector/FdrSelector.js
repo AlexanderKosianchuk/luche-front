@@ -25,7 +25,7 @@ class FdrSelector extends Component {
   componentDidMount() {
     if (this.props.pending === null) {
       this.props.request(
-        ['fdr', 'getFdrs'],
+        ['fdr', 'getAll'],
         'get',
         'FDRS'
       ).then((resp) => {

@@ -23,7 +23,7 @@ class CalibrationSelector extends Component {
   componentDidMount() {
     if (this.props.pending === null) {
       this.props.request(
-        ['calibration', 'getCalibrationsList'],
+        ['calibration', 'getAll'],
         'get',
         'CALIBRATIONS'
       );

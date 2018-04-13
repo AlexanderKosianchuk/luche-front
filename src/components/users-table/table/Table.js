@@ -80,7 +80,7 @@ class Table extends Component {
   handleDeleteClick(id) {
     if (confirm(I18n.t('usersTable.table.confimUserDeleting'))) {
       this.props.request(
-        ['users', 'deleteUser'],
+        ['users', 'delete'],
         'post',
         'DELETE_USER',
         { userId: id }
@@ -93,7 +93,7 @@ class Table extends Component {
 
     if (this.props.pending !== false) {
       this.props.request(
-        ['users', 'getUsers'],
+        ['users', 'getAll'],
         'get',
         'USERS'
       );

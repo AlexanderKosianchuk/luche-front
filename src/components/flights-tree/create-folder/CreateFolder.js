@@ -23,7 +23,7 @@ class CreateFolder extends Component {
     });
 
     this.props.request(
-      ['folder', 'createFolder'],
+      ['folder', 'create'],
       'post',
       'FOLDER',
       { folderName: folderName }

@@ -85,7 +85,7 @@ class Table extends Component {
   handleDeleteClick(id) {
     if (confirm(I18n.t('calibration.table.confimDeleting'))) {
       this.props.request(
-        ['calibration', 'deleteCalibration'],
+        ['calibration', 'delete'],
         'post',
         'DELETE_CALIBRATION',
         { calibrationId: id }
@@ -128,7 +128,7 @@ class Table extends Component {
     }
 
     this.props.request(
-      ['calibration', 'getCalibrationsPage'],
+      ['calibration', 'getPage'],
       'get',
       null, {
         ...obj,

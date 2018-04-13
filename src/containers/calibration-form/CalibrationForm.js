@@ -23,7 +23,7 @@ class CalibrationForm extends Component {
   componentDidMount() {
     if (this.props.action === 'update') {
       this.props.request(
-        ['calibration', 'getCalibrationById'],
+        ['calibration', 'get'],
         'get',
         'CALIBRATION',
         { id: this.props.calibrationId }
@@ -34,7 +34,7 @@ class CalibrationForm extends Component {
       && (this.props.cycloFdrId !== this.props.fdrId)
     ) {
       this.props.request(
-        ['calibration', 'getCalibrationParams'],
+        ['calibration', 'getParams'],
         'get',
         'CALIBRATION_PARAMS',
         { fdrId: this.props.fdrId }

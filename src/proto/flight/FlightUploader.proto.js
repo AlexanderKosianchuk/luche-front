@@ -70,9 +70,7 @@ FlightUploader.prototype.GetFlightParams = function(
         calibrationId: calibrationId
       },
       dataType: 'json',
-      xhrFields: {
-        withCredentials: true
-      },
+      xhrFields: { withCredentials: true },
       crossDomain: true,
       url: REST_URL + "uploader/flightUploadingOptions",
       async: false
@@ -139,7 +137,9 @@ FlightUploader.prototype.GetSlicedFlightParams = function(
     },
     dataType: 'json',
     url: REST_URL + "uploader/flightUploadingOptions",
-    async: false
+    async: false,
+    xhrFields: { withCredentials: true },
+    crossDomain: true
   }).fail(function(msg){
     console.log(msg);
   }).done(function(answ) {
@@ -269,6 +269,8 @@ FlightUploader.prototype.PreviewChart = function (parent,
         fdrId: fdrId,
       },
       dataType: 'json',
+      xhrFields: { withCredentials: true },
+      crossDomain: true,
       url: REST_URL + "uploader/flightUploaderPreview",
     }).done(function(apDataArray){
       $("div#loadingBox" + index);//.remove();
@@ -454,7 +456,9 @@ FlightUploader.prototype.SliceFlightButtSupport = function(parent, previewParams
             },
             dataType: 'json',
             url: REST_URL + 'uploader/'+action,
-            async: true
+            async: true,
+            xhrFields: { withCredentials: true },
+            crossDomain: true
           }).done(function(answ){
             if(answ["status"] == 'ok') {
               var newFileName = answ["data"];
@@ -488,6 +492,8 @@ FlightUploader.prototype.InitiateFlightProccessing = function(data) {
     type: "POST",
     data: data,
     dataType: 'json',
+    xhrFields: { withCredentials: true },
+    crossDomain: true
   }).done(function(answ){
     $(document).trigger("endProccessing", [uploadingUid, answ.item]);
   }).fail(function(mess){
@@ -511,7 +517,9 @@ FlightUploader.prototype.Import = function(form, dfd) {
     dataType: 'json',
     processData: false,
     contentType: false,
-    url: REST_URL+'uploader/itemImport'
+    url: REST_URL+'uploader/itemImport',
+    xhrFields: { withCredentials: true },
+    crossDomain: true
   }).done(function(answ){
     if (answ["status"] == 'ok') {
       dfd.resolve();

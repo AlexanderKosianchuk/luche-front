@@ -17,7 +17,7 @@ import redirect from 'actions/redirect';
 class List extends React.Component {
   componentDidMount() {
     this.props.request(
-      ['users', 'getUserSettings'],
+      ['users', 'getSettings'],
       'get',
       'USER_SETTINGS',
     );
@@ -61,7 +61,7 @@ class List extends React.Component {
 
   onClick() {
     this.props.request(
-      ['users', 'setUserSettings'],
+      ['users', 'setSettings'],
       'put',
       'USER_SETTINGS',
       { settings: this.props.settings.items }

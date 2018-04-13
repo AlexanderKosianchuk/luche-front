@@ -8,7 +8,7 @@ export default function processFlight(payload) {
     });
 
     return new Promise((resolve, reject) => {
-      fetch('/entry.php?action=flights/processFlight&' + queryString.stringify(payload),
+      fetch('/entry.php?action=flights/process&' + queryString.stringify(payload),
         { credentials: "same-origin" }
       ).then(response => response.json())
       .then(json => {

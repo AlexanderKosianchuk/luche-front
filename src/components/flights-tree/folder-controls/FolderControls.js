@@ -20,7 +20,7 @@ class FolderControls extends Component {
   handleClickTrash () {
     if (confirm(I18n.t('flightsTree.folderControls.confirm'))) {
       this.props.request(
-        ['folder', 'deleteFolder'],
+        ['folder', 'delete'],
         'delete',
         'FOLDER',
         { id: this.props.folderInfo.id * -1 }
@@ -41,7 +41,7 @@ class FolderControls extends Component {
       });
 
       this.props.request(
-        ['folder', 'renameFolder'],
+        ['folder', 'rename'],
         'put',
         'FOLDER_RENAME',
         {
@@ -58,7 +58,7 @@ class FolderControls extends Component {
     });
 
     this.props.request(
-      ['folder', 'renameFolder'],
+      ['folder', 'rename'],
       'put',
       'FOLDER_RENAME',
       {

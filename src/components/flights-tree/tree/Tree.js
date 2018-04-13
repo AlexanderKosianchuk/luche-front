@@ -77,17 +77,17 @@ class Tree extends Component {
 
     if (this.props.pending !== false) {
       this.props.request(
-        ['folder', 'getFolders'],
+        ['folder', 'getAll'],
         'get',
         'FOLDERS'
       );
       this.props.request(
-        ['flights', 'getFlights'],
+        ['flights', 'getAll'],
         'get',
         'FLIGHTS'
       );
       this.props.request(
-        ['users', 'getUserSettings'],
+        ['users', 'getSettings'],
         'get',
         'USER_SETTINGS'
       );
@@ -235,14 +235,14 @@ class Tree extends Component {
 
     if (node.type === FLIGHT_TYPE) {
       this.props.request(
-        ['flights', 'changeFlightPath'],
+        ['flights', 'changePath'],
         'put',
         'FLIGHT_PATH',
         data
       );
     } else if (node.type === FOLDER_TYPE) {
       this.props.request(
-        ['folder', 'changeFolderPath'],
+        ['folder', 'changePath'],
         'put',
         'FOLDER_PATH',
         data
@@ -252,7 +252,7 @@ class Tree extends Component {
 
   expandHandler({ treeData, node, expanded }) {
     this.props.request(
-      ['folder', 'toggleFolderExpanding'],
+      ['folder', 'toggleExpanding'],
       'put',
       'FOLDER_EXPANDING',
       {

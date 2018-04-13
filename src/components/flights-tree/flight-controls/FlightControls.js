@@ -19,7 +19,7 @@ class FlightControls extends Component {
   handleClickTrash() {
     if (confirm(I18n.t('flightsTree.flightControls.confirm'))) {
       this.props.request(
-        ['flights', 'deleteFlight'],
+        ['flights', 'delete'],
         'delete',
         'FLIGHT',
         { id: this.props.flight.id }

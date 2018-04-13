@@ -10,7 +10,7 @@ export default function startFlightUploading(payload) {
     let checkProgress = function () {
       fetch(REST_URL+'uploader/getUploadingStatus/uploadingUid/'+payload.uploadingUid, {
         method: 'GET',
-        credentials: 'same-origin'
+        credentials: 'include'
       })
       .then((response) => {
         try {  return response.json() }

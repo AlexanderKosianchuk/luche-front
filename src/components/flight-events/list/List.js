@@ -22,7 +22,7 @@ class List extends React.Component {
       )
     ) {
       this.props.request(
-        ['flights', 'getFlightInfo'],
+        ['flights', 'getInfo'],
         'get',
         'FLIGHT',
         { flightId: this.props.flightId }
@@ -35,7 +35,7 @@ class List extends React.Component {
       )
     ) {
       this.props.request(
-        ['flightEvents', 'getFlightEvents'],
+        ['flightEvents', 'get'],
         'get',
         'FLIGHT_EVENTS',
         { flightId: this.props.flightId }

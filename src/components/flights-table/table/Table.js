@@ -43,7 +43,7 @@ class Table extends Component {
 
     if (this.props.pending !== false) {
       this.props.request(
-        ['flights', 'getFlights'],
+        ['flights', 'getAll'],
         'get',
         'FLIGHTS'
       );

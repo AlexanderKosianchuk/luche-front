@@ -31,7 +31,7 @@ class DataContainer extends Component {
       io: props.io,
       ioEvent: 'newData',
       bindedEvents: props.bindedEvents,
-      registerUrl: INTERACTION_URL + '/realtimeCalibration/register?uid='+ props.uid,
+      registerUrl: INTERACTION_URL + 'realtimeCalibration/register?uid='+ props.uid,
       reducerEvent: 'RECEIVED_REALTIME_CALIBRATING_NEW_FRAME'
     });
   }
@@ -65,7 +65,6 @@ function mapStateToProps(state) {
   return {
     status: state.webSockets.status,
     io: state.webSockets.io,
-    appConfig: state.appConfig.config,
     bindedEvents: state.webSockets.bindedEvents,
     errorCode: state.realtimeCalibrationData.errorCode,
   };
