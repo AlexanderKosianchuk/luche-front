@@ -2,9 +2,6 @@ import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
 import { i18nReducer } from 'react-redux-i18n';
 
-import flightFilter from 'reducers/flightFilter';
-import settlementFilter from 'reducers/settlementFilter';
-import settlementsReport from 'reducers/settlementsReport';
 import fdrs from 'reducers/fdrs';
 import flight from 'reducers/flight';
 import flights from 'reducers/flights';
@@ -22,6 +19,8 @@ import fdrTemplates from 'reducers/fdrTemplates';
 import flightTemplate from 'reducers/flightTemplate';
 import flightTemplates from 'reducers/flightTemplates';
 import flightEvents from 'reducers/flightEvents';
+import flightFilter from 'reducers/flightFilter';
+import flightStatistics from 'reducers/flightStatistics';
 import user from 'reducers/user';
 import users from 'reducers/users';
 
@@ -43,8 +42,7 @@ const appReducer = combineReducers({
   flightTemplate,
   flightTemplates,
   flightEvents,
-  settlementFilter,
-  settlementsReport,
+  flightStatistics,
   settings,
   router: routerReducer,
   i18n: i18nReducer,

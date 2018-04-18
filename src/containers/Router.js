@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import { ConnectedRouter, routerActions } from 'react-router-redux';
 
 import Login from 'containers/login/Login';
-import Results from 'containers/results/Results';
 import FlightsTree from 'containers/flights-tree/FlightsTree';
 import FlightsTable from 'containers/flights-table/FlightsTable';
+import FlightStatistics from 'containers/flight-statistics/FlightStatistics';
 import Settings from 'containers/settings/Settings';
 import Calibrations from 'containers/calibrations/Calibrations';
 import CalibrationForm from 'containers/calibration-form/CalibrationForm';
@@ -32,7 +32,7 @@ class Router extends Component {
       { isExact: false, path: '/flights/tree', component: FlightsTree },
       { isExact: false, path: '/flights/table', component: FlightsTable },
       { isExact: false, path: '/user-settings', component: Settings },
-      { isExact: false, path: '/results', component: Results },
+      { isExact: false, path: '/flight-statistics', component: FlightStatistics },
 
       { isExact: true, path: '/calibrations/fdr-id/:fdrId/page/:page/page-size/:pageSize', component: Calibrations },
       { isExact: true, path: '/calibrations/fdr-id/:fdrId/page/:page', component: Calibrations },

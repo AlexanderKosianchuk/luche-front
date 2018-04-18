@@ -19,7 +19,7 @@ class MainMenu extends React.Component {
           <span className='main-menu__label'><Translate value='mainMenu.flights'/></span>
         </div>
         <div className='main-menu__row'
-            onClick={ this.props.handleMenuItemClick.bind(null, '/results') }>
+            onClick={ this.props.handleMenuItemClick.bind(null, '/flight-statistics') }>
           <span className='main-menu__glyphicon glyphicon glyphicon-stats'></span>
           <span className='main-menu__label'><Translate value='mainMenu.results'/></span>
         </div>

@@ -85,7 +85,7 @@ const translationsRu = {
         flightShowAction: 'Действие с полетом по умолчанию'
       }
     },
-    results: {
+    flightStatistics: {
       toolbar: {
         aggregatedStatistics: 'Агрегированая статистика',
       },
@@ -100,18 +100,18 @@ const translationsRu = {
         departureFromDate: 'От даты отправления',
         departureToDate: 'До даты отправления'
       },
-      settlementFilter: {
+      paramsFilter: {
         apply: 'Принять',
         putFlightFilter: 'Задайте параметры фильтра',
         noMonitoredParamsOnSpecifyedFilter: 'Нет отслеживаемых параметров по указанному фильтру',
         monitoredParameters: 'Отслеживаемые параметры',
       },
-      settlementsReport: {
-        settlementsReport: 'Результаты',
+      values: {
+        results: 'Результаты',
         setParamsForReportGenerating: 'Задайте параметры для формирования результатов',
         noDataToGenerateReport: 'Нет данных для формирования результатов',
       },
-      settlementsReportRow: {
+      valuesRow: {
         title: 'Параметр',
         count: 'Количество',
         min: 'Мин',

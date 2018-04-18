@@ -83,7 +83,7 @@ const translationsEs = {
         flightShowAction: 'Flight show action'
       }
     },
-    results: {
+    flightStatistics: {
       toolbar: {
         aggregatedStatistics: 'Aggregated statistics',
       },
@@ -98,18 +98,18 @@ const translationsEs = {
         departureAirport: 'Aeropuerto de salida',
         arrivalAirport: 'Aterrizaje de aeropuertos',
       },
-      settlementFilter: {
+      paramsFilter: {
         apply: 'Aplicar',
         putFlightFilter: 'Put flight filter',
         noMonitoredParamsOnSpecifyedFilter: 'No monitored params on specifyed filter',
         monitoredParameters: 'Monitored parameters',
       },
-      settlementsReport: {
-        settlementsReport: 'Report',
+      values: {
+        results: 'Report',
         setParamsForReportGenerating: 'Set params for report generating',
         noDataToGenerateReport: 'No data to generate report'
       },
-      settlementsReportRow: {
+      valuesRow: {
         title: 'Param',
         count: 'Count',
         min: 'Min',

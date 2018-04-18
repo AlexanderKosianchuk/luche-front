@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-export default class SettlementsFilterItem extends React.Component {
+export default class ParamsFilterItem extends Component {
   static checkbox = null;
 
   constructor(props) {
@@ -25,9 +25,9 @@ export default class SettlementsFilterItem extends React.Component {
 
   render() {
     return (
-      <div className="checkbox">
+      <div className='checkbox'>
         <label>
-          <input type="checkbox" checked={this.state.isChecked}
+          <input type='checkbox' checked={this.state.isChecked}
             id={this.props.id} onChange={this.changeCheckstate.bind(this)}
             ref={(input) => { this.checkbox = input; }} />
           <span>{this.props.label}</span>
