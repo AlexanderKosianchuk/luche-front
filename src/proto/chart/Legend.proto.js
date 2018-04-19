@@ -51,11 +51,11 @@ function Legend(flightId, legendContainer, apParams, bpParams, associativeParams
 
   this.ccCont.append(this.visirTimeBox);
 
-  $("<div></div>")
-  .attr("id","leadParamValBox")
-  .addClass("LeadParamValBox")
-  .appendTo($('body'));
-  this.leadParamValBox = $("#leadParamValBox");
+  this.leadParamValBox = $("<div></div>")
+    .attr("id","leadParamValBox")
+    .addClass("LeadParamValBox");
+
+  this.ccCont.append(this.leadParamValBox);
 
   this.displayNeed = false;
   this.vizirBarContainer = Object();
@@ -204,10 +204,12 @@ Legend.prototype.ShowVisirTime = function(){
 //show lead param val in div above point
 Legend.prototype.ShowLeadParamVal = function(val, label){
   if (this.pos.x > this.xax.min && this.pos.x < this.xax.max) {
+    let offsets = this.ccCont.offset();
+
     this.leadParamValBox.text(label + " = " + val);
     this.leadParamValBox.css({
-      'left': this.pos.pageX + 10,
-      'top': this.pos.pageY - 25,
+      'left': this.pos.pageX - offsets.left + 10,
+      'top': this.pos.pageY - offsets.top - 25,
       });
   }
 };

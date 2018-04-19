@@ -8,6 +8,10 @@ const { resolve } = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+
+const cesiumSource = resolve(__dirname, 'node_modules/cesium/Source');
+const cesiumWorkers = '../Build/Cesium/Workers';
 
 module.exports = {
   entry: [
@@ -18,6 +22,15 @@ module.exports = {
     filename: 'bundle-[hash:6].js',
     path: resolve(__dirname, 'dist'),
     publicPath: '/',
+    sourcePrefix: ''
+  },
+  amd: {
+    // Enable webpack-friendly use of require in Cesium
+    toUrlUndefined: true
+  },
+  node: {
+    // Resolve node module use of fs
+    fs: 'empty'
   },
   resolve: {
     modules: [
@@ -26,18 +39,21 @@ module.exports = {
     ],
     extensions: ['.js', '.jsx'],
     alias: {
-      'facade': path.join(__dirname, 'src/facade-to-prototypes.js'),
-      'AxesWorker': path.join(__dirname, 'src/proto/chart/AxesWorker.proto.js'),
-      'Chart': path.join(__dirname, 'src/proto/chart/Chart.proto.js'),
-      'Coordinate': path.join(__dirname, 'src/proto/chart/Coordinate.proto.js'),
-      'Exception': path.join(__dirname, 'src/proto/chart/Exception.proto.js'),
-      'Legend': path.join(__dirname, 'src/proto/chart/Legend.proto.js'),
-      'Param': path.join(__dirname, 'src/proto/chart/Param.proto.js'),
-      'FlightUploader': path.join(__dirname, 'src/proto/flight/FlightUploader.proto.js'),
+      facade: path.join(__dirname, 'src/facade-to-prototypes.js'),
+      AxesWorker: path.join(__dirname, 'src/proto/chart/AxesWorker.proto.js'),
+      Chart: path.join(__dirname, 'src/proto/chart/Chart.proto.js'),
+      Coordinate: path.join(__dirname, 'src/proto/chart/Coordinate.proto.js'),
+      Exception: path.join(__dirname, 'src/proto/chart/Exception.proto.js'),
+      Legend: path.join(__dirname, 'src/proto/chart/Legend.proto.js'),
+      Param: path.join(__dirname, 'src/proto/chart/Param.proto.js'),
+      FlightUploader: path.join(__dirname, 'src/proto/flight/FlightUploader.proto.js'),
+      // Cesium module name
+      cesium: path.resolve(__dirname, cesiumSource)
     },
   },
   devtool: 'cheap-module-source-map',
   module: {
+    unknownContextCritical: false,
     rules: [{
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
@@ -100,6 +116,9 @@ module.exports = {
       filename: 'index.html',
       inject: 'body',
     }),
+    new CopyWebpackPlugin([ { from: path.join(cesiumSource, cesiumWorkers), to: 'Workers' } ]),
+    new CopyWebpackPlugin([ { from: path.join(cesiumSource, 'Assets'), to: 'Assets' } ]),
+    new CopyWebpackPlugin([ { from: path.join(cesiumSource, 'Widgets'), to: 'Widgets' } ]),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.LoaderOptionsPlugin({
       minimize: true,
@@ -109,11 +128,11 @@ module.exports = {
       NODE_ENV: JSON.stringify('production'),
       REST_URL: JSON.stringify('http://rest.luche.com/'),
       INTERACTION_URL: JSON.stringify('http://localhost:1337/'),
+      CESIUM_BASE_URL: JSON.stringify('')
     }),
     new MiniCssExtractPlugin({
       filename: '[name]-[hash:6].css',
       chunkFilename: '[id]-[hash:6].css'
     })
   ],
-
 };

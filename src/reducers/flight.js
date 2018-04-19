@@ -28,7 +28,7 @@ export default function flight(state = initialState, action) {
           startFlightTime: action.payload.response.startFlightTime,
           selectedStartFrame: 0,
           selectedEndFrame: action.payload.response.duration,
-          hasCoordinates: false,
+          hasCoordinates: action.payload.response.hasCoordinates,
           data: action.payload.response.data,
         }
       };
