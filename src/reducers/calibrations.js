@@ -1,6 +1,7 @@
 const initialState = {
   pending: null,
-  items: []
+  items: [],
+  chosen: null
 };
 
 export default function calibration(state = initialState, action) {
@@ -16,6 +17,10 @@ export default function calibration(state = initialState, action) {
         pending: false,
         items: action.payload.response,
         chosen: action.payload.response[0] || {}
+      }};
+    case 'SET_CHOSEN_CALIBRATION':
+      return { ...state, ...{
+        chosen: action.payload.chosen || null
       }};
     case 'POST_DELETE_CALIBRATION_COMPLETE':
       let deleteId = action.payload.request.calibrationId;

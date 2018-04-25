@@ -6,6 +6,8 @@ import FlightViewOptionsSwitch from 'controls/flight-view-options-switch/FlightV
 import Print from 'components/chart/print/Print';
 import FullSize from 'components/chart/full-size/FullSize';
 import ParamsToggle from 'components/chart/params-toggle/ParamsToggle';
+import ThreeDimToggle from 'components/chart/three-dim-toggle/ThreeDimToggle';
+import Player from 'components/chart/player/Player';
 
 import NavbarToggle from 'controls/navbar-toggle/NavbarToggle';
 
@@ -26,11 +28,19 @@ export default class Toolbar extends React.Component {
             <FlightViewOptionsSwitch
               flightId={ this.props.flightId }
             />
+            <Player
+              flightId={ this.props.flightId }
+              threeDimIsShown={ this.props.threeDimIsShown }
+            />
             <Print
               flightId={ this.props.flightId }
             />
             <FullSize/>
             <ParamsToggle/>
+            <ThreeDimToggle
+              threeDimIsShown={ this.props.threeDimIsShown }
+              toggleThreeDimIsShown={ this.props.toggleThreeDimIsShown }
+            />
           </div>
         </div>
       </nav>

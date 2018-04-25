@@ -543,13 +543,18 @@ FlightUploader.prototype.uploadPreviewed = function() {
         fileName = $el.data("filename"),
         uploadingUid = $el.data("uploading-uid"),
         fdrId = $el.data("fdr-id"),
-        calibrationId = $el.data("calibration-id"),
         index = $el.data("index"),
         ignoreDueUploading = $el.find("#ignoreDueUploading" + index),
         flightInfo = [],
         flightAditionalInfo = [],
         flightInfoCells = $el.find("input.FlightUploadingInputs"),
         flightAditionalInfoCells = $el.find("input.FlightUploadingInputsAditionalInfo");
+
+      var calibrationId = null;
+
+      if ($el.data("calibration-id").length) {
+        calibrationId = parseInt($el.data("calibration-id"));
+      }
 
       if((ignoreDueUploading.prop('checked') == false) &&
           (!ignoreDueUploading.attr('checked'))) {

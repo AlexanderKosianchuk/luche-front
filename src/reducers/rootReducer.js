@@ -10,6 +10,7 @@ import fdrCyclo from 'reducers/fdrCyclo';
 import calibration from 'reducers/calibration';
 import calibrations from 'reducers/calibrations';
 import flightUploadingState from 'reducers/flightUploadingState';
+import realtimePlayback from 'reducers/realtimePlayback';
 import realtimeCalibrationData from 'reducers/realtimeCalibrationData';
 import realtimeCalibrationParams from 'reducers/realtimeCalibrationParams';
 import realtimeCalibrationCharts from 'reducers/realtimeCalibrationCharts';
@@ -33,6 +34,7 @@ const appReducer = combineReducers({
   calibration,
   calibrations,
   flightUploadingState,
+  realtimePlayback,
   realtimeCalibrationData,
   realtimeCalibrationCharts,
   realtimeCalibrationParams,

@@ -75,7 +75,7 @@ Param.prototype.GetApParam = function(paramCode, i, lineWidth){
       data: pV,
       type: "POST",
       dataType: 'json',
-      url: REST_URL+'chart/getApParamData',
+      url: REST_URL+'flightData/getApParamData',
       xhrFields: { withCredentials: true },
       crossDomain: true
     }).done(function(receivedParamPoints){
@@ -88,7 +88,7 @@ Param.prototype.GetApParam = function(paramCode, i, lineWidth){
           code: paramCode
         },
         dataType: 'json',
-        url: REST_URL+'chart/getParamInfo',
+        url: REST_URL+'fdr/getParamInfo',
         xhrFields: { withCredentials: true },
         crossDomain: true
       }).done(function(receivedInfo){
@@ -145,7 +145,7 @@ Param.prototype.GetBpParam = function(paramCode, i, lineWidth, dfd){
           code: paramCode
         },
         dataType: 'json',
-        url: REST_URL+'chart/getParamInfo',
+        url: REST_URL+'fdr/getParamInfo',
         xhrFields: { withCredentials: true },
         crossDomain: true
       }).done(function(receivedInfo){

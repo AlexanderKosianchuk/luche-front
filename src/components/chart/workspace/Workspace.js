@@ -9,7 +9,6 @@ import ThreeDimVisualisation from 'components/chart/three-dim-visualisation/Thre
 
 import trigger from 'actions/trigger';
 import request from 'actions/request';
-import showPage from 'actions/showPage';
 
 class Workspace extends Component {
   componentDidMount() {
@@ -45,7 +44,8 @@ class Workspace extends Component {
         .filter((item) => (item.type === 'bp'))
         .map((item) => item.code);
 
-      this.props.showPage('chartShow', [{
+      this.props.trigger('chartShow', [{
+        container: '#container',
         flightId: this.props.flightId,
         templateId: this.props.templateId,
         stepLength: this.props.stepLength,
@@ -54,17 +54,23 @@ class Workspace extends Component {
         endFrame: this.props.toFrame,
         apParams: analogParamsCodes,
         bpParams: binaryParamsCodes,
-        hasCoordinates: this.props.hasCoordinates
+        threeDimIsShown: (this.props.hasCoordinates && this.props.threeDimIsShown)
       }]);
     });
+  }
+
+  showThreeDim() {
+    if (this.props.hasCoordinates && this.props.threeDimIsShown) {
+      return <ThreeDimVisualisation flightId={ this.props.flightId } />;
+    }
+
+    return null;
   }
 
   render() {
     return (
       <div className='chart-workspace'>
-        { this.props.hasCoordinates &&
-          (<ThreeDimVisualisation flightId={ this.props.flightId } />)
-        }
+        { this.showThreeDim() }
         <div id='container'></div>
       </div>
     );
@@ -96,7 +102,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     request: bindActionCreators(request, dispatch),
-    showPage: bindActionCreators(showPage, dispatch)
+    trigger: bindActionCreators(trigger, dispatch)
   }
 }
 

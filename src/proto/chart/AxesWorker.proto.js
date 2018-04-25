@@ -127,7 +127,7 @@ AxesWorker.prototype.LoadDistribution = function(yAxArr, apParams, bpParams, fli
       type: 'POST',
       data: pV,
       dataType: 'json',
-      url: REST_URL+'chart/getParamMinMax',
+      url: REST_URL+'flightTemplate/getParamMinMax',
       async: false,
       xhrFields: { withCredentials: true },
       crossDomain: true
@@ -165,7 +165,7 @@ AxesWorker.prototype.SaveDistribution = function(yAxArr, apParams, bpParams, fli
           min: yAxArr[i].min,
           username: this.user
         },
-        url: REST_URL+'chart/setParamMinMax',
+        url: REST_URL+'flightTemplate/setParamMinMax',
         xhrFields: { withCredentials: true },
         crossDomain: true
       }).done(function(e){

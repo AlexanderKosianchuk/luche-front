@@ -37,10 +37,7 @@ class FdrSelector extends Component {
           this.props.handleChange(resp[0]);
         }
 
-        this.props.transmit('CHOOSE_FDR', resp[0])
-          .then(() => {
-            this.props.transmit('CLEAR_FDR_TEMPLATES');
-          });
+        this.transmitChooseFdr(resp[0]);
       });
     } else {
       if (Number.isInteger(parseInt(this.props.chosenFdrId))
@@ -59,12 +56,7 @@ class FdrSelector extends Component {
           this.props.handleChange(this.props.fdrs[chosenIndex]);
         }
 
-        this.props.transmit(
-          'CHOOSE_FDR',
-          this.props.fdrs[chosenIndex]
-        ).then(() => {
-          this.props.transmit('CLEAR_FDR_TEMPLATES');
-        });
+        this.transmitChooseFdr(this.props.fdrs[chosenIndex]);
       }
     }
   }
@@ -104,9 +96,16 @@ class FdrSelector extends Component {
       this.props.handleChange(chosen);
     }
 
+    this.transmitChooseFdr(chosen);
+  }
+
+  transmitChooseFdr(chosen) {
     this.props.transmit('CHOOSE_FDR', chosen)
       .then(() => {
         this.props.transmit('CLEAR_FDR_TEMPLATES');
+        this.props.transmit('SET_CHOSEN_CALIBRATION', {
+          chosen: chosen.calibrations[0] || null
+        });
       });
   }
 

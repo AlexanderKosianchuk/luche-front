@@ -6,8 +6,6 @@ import Menu from 'controls/menu/Menu';
 import Toolbar from 'components/flight-params/toolbar/Toolbar';
 import CycloParams from 'controls/cyclo-params/CycloParams';
 
-import showPage from 'actions/showPage';
-
 const CYCLO_CONTEXT = 'flightParams';
 
 class FlightParams extends React.Component {
@@ -35,9 +33,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return {
-    showPage: bindActionCreators(showPage, dispatch)
-  }
+  return {}
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FlightParams);

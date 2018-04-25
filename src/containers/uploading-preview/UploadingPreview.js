@@ -5,12 +5,12 @@ import { bindActionCreators } from 'redux';
 import Menu from 'controls/menu/Menu';
 import Toolbar from 'components/uploading-preview/toolbar/Toolbar';
 
-import showPage from 'actions/showPage';
+import trigger from 'actions/trigger';
 
 class UploadingPreview extends React.Component {
   componentDidMount() {
-    this.props.showPage('uploadWithPreview',
-      [this.props.uploadingUid, this.props.fdrId, this.props.calibrationId]
+    this.props.trigger('uploadWithPreview',
+      ['#container', this.props.uploadingUid, this.props.fdrId, this.props.calibrationId]
     );
   }
 
@@ -35,7 +35,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    showPage: bindActionCreators(showPage, dispatch)
+    trigger: bindActionCreators(trigger, dispatch)
   }
 }
 

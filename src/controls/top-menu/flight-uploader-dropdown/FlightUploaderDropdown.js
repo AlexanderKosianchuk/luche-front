@@ -58,19 +58,24 @@ class FlightUploaderDropdown extends Component {
       ).then(() => {
         this.props.redirect('/uploading/' + uploadingUid
           + '/fdr-id/' + this.props.chosenFdr.id
-          + (this.props.chosenCalibration.id
+          + ((this.props.chosenCalibration && this.props.chosenCalibration.id)
             ? ('/calibration-id/' + this.props.chosenCalibration.id || '')
             : '')
         );
       });
     } else {
       form.append('fdrId', this.props.chosenFdr.id);
-      form.append('calibrationId', this.props.chosenCalibration.id || '');
+
+      let chosenCalibrationId = '';
+
+      if (this.props.chosenCalibration && this.props.chosenCalibration.id) {
+        chosenCalibrationId = this.props.chosenCalibration.id;
+      }
 
       this.props.startEasyUploading({
         form: form,
         fdrId: this.props.chosenFdr.id,
-        calibrationId: this.props.chosenCalibration.id || '',
+        calibrationId: chosenCalibrationId,
         uploadingUid: uploadingUid
       });
     }

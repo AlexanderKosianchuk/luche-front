@@ -49,7 +49,7 @@ Exception.prototype.ReceiveExcepions = function(){
       },
       type: 'POST',
       dataType: 'json',
-      url: REST_URL+'chart/getFlightExceptions',
+      url: REST_URL+'flightEvents/getByCode',
       xhrFields: { withCredentials: true },
       crossDomain: true,
       success: function(inData) { return inData; },

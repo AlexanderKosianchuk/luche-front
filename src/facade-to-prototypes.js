@@ -15,6 +15,8 @@ import { push } from 'react-router-redux'
 import startFlightUploading from 'actions/particular/startFlightUploading';
 
 export default function facade(store) {
+  let chartService = null;
+
   $(document).on('importItem', function (e, form) {
     let dfd = $.Deferred();
     let FU = new FlightUploader(store);
@@ -26,9 +28,16 @@ export default function facade(store) {
     });
   });
 
-  $(document).on('uploadWithPreview', function (e, showcase, uploadingUid, fdrId, calibrationId) {
+  $(document).on('uploadWithPreview', function (e, container, uploadingUid, fdrId, calibrationId) {
     let FU = new FlightUploader(store);
-    FU.FillFactoryContaider(showcase, uploadingUid, fdrId, calibrationId);
+    FU.FillFactoryContaider($(container), uploadingUid, fdrId, calibrationId);
+  });
+
+  $(document).on('uploadPreviewedFlight', function(uploadingUid, fdrId, calibrationId) {
+    let FU = new FlightUploader(store);
+    FU.uploadPreviewed().then(() => {
+      store.dispatch(push('/'));
+    });
   });
 
   $(document).on('startProccessing', function (e, uploadingUid) {
@@ -47,16 +56,17 @@ export default function facade(store) {
     });
   });
 
-  $(document).on('chartShow', function (e, showcase, data) {
-    var C = new ChartService(store);
-    C.SetChartData(data);
-    C.FillFactoryContaider(showcase);
+  $(document).on('chartShow', function (e, data) {
+    chartService = new ChartService(store);
+    chartService.SetChartData(data);
+    chartService.FillFactoryContaider($(data.container));
   });
 
-  $(document).on('uploadPreviewedFlight', function(uploadingUid, fdrId, calibrationId) {
-    let FU = new FlightUploader(store);
-    FU.uploadPreviewed().then(() => {
-      store.dispatch(push('/'));
-    });
+  $(document).on('toggleThreeDimIsShown', function () {
+    if (chartService !== null) {
+      chartService.threeDimIsShown = !chartService.threeDimIsShown;
+      chartService.ResizeChart();
+      chartService.PlotRedraw();
+    }
   });
 }

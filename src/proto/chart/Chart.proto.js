@@ -68,7 +68,7 @@ function Chart(store) {
   this.startFrameTime = null;
   this.endFrameTime = null;
   this.mouseInChat = false;
-  this.hasCoordinates = false;
+  this.threeDimIsShown = false;
 
   $(document).on('chart:hideParamsList', this.hideParamsList.bind(this) );
   $(document).on('chart:showParamsList', this.showParamsList.bind(this) );
@@ -90,7 +90,7 @@ Chart.prototype.SetChartData = function(data){
   this.endFrameTime = this.startCopyTime + (this.endFrame * this.stepLength);
 
   this.markingCount = this.apParams.length + this.bpParams.length + 1;
-  this.hasCoordinates = data.hasCoordinates || false;
+  this.threeDimIsShown = data.threeDimIsShown || false;
 }
 
 Chart.prototype.FillFactoryContaider = function(factoryContainer) {
@@ -188,8 +188,8 @@ Chart.prototype.showParamsList = function() {
 Chart.prototype.fullSize = function() {
   this.ResizeChart(
     null, {
-      height: (height = $(window).height() - HEADER_HEIGHT)
-        * (this.hasCoordinates ? CHART_WITH_3D_RATIO : 1),
+      height: ($(window).height() - HEADER_HEIGHT)
+        * (this.threeDimIsShown ? CHART_WITH_3D_RATIO : 1),
       width: $(window).width()
     }
   );
@@ -201,7 +201,7 @@ Chart.prototype.ResizeChart = function(e, size = null) {
   var self = this;
 
   let baseHeight = ($(window).height() - HEADER_HEIGHT)
-    * (this.hasCoordinates ? CHART_WITH_3D_RATIO : 1);
+    * (this.threeDimIsShown ? CHART_WITH_3D_RATIO : 1);
   let baseWidth = $(window).width();
 
   if (size && size.height && size.width) {
