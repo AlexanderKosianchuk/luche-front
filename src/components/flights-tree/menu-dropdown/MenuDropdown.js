@@ -10,7 +10,7 @@ import ContentLoader from 'controls/content-loader/ContentLoader';
 import transmit from 'actions/transmit';
 import request from 'actions/request';
 import exportFlight from 'actions/particular/exportFlight';
-import exportFlightCoordinates from 'actions/particular/exportFlightCoordinates';
+import formSubmit from 'actions/formSubmit';
 import processFlight from 'actions/particular/processFlight';
 import redirect from 'actions/redirect';
 
@@ -124,8 +124,12 @@ class MenuDropdown extends React.Component {
 
   handleExportCoordinates() {
     if (this.props.flights.chosenItems.length === 1) {
-      this.props.exportFlightCoordinates({
-        id: this.props.flights.chosenItems[0].id
+      this.props.formSubmit({
+        action: 'flights/coordinates',
+        controls: [{
+          name: 'id',
+          value: this.props.flights.chosenItems[0].id
+        }]
       });
     }
   }
@@ -192,7 +196,7 @@ function mapDispatchToProps(dispatch) {
     transmit: bindActionCreators(transmit, dispatch),
     request: bindActionCreators(request, dispatch),
     exportFlight: bindActionCreators(exportFlight, dispatch),
-    exportFlightCoordinates: bindActionCreators(exportFlightCoordinates, dispatch),
+    formSubmit: bindActionCreators(formSubmit, dispatch),
     processFlight: bindActionCreators(processFlight, dispatch),
     redirect: bindActionCreators(redirect, dispatch),
   }

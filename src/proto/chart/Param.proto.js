@@ -132,7 +132,7 @@ Param.prototype.GetBpParam = function(paramCode, i, lineWidth, dfd){
         code: paramCode
       },
       dataType: 'json',
-      url: REST_URL+'chart/getBpParamData',
+      url: REST_URL+'flightData/getBpParamData',
       xhrFields: { withCredentials: true },
       crossDomain: true
     }).done(function(receivedParamPoints){

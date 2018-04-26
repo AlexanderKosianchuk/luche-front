@@ -4,12 +4,10 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import {
-  Transforms,
-  Cartesian3,
-  Model
+  Cartesian3
 } from 'cesium/Cesium';
 
-class ThreeDimCesiumModel extends Component {
+class ThreeDimCesiumCamera extends Component {
   constructor(props) {
     super(props);
 
@@ -17,20 +15,18 @@ class ThreeDimCesiumModel extends Component {
       next: (cesiumViewer) => {
         if (cesiumViewer !== null) {
           this.viewer = cesiumViewer;
+
+          this.putCamera(0);
         }
       }
     });
   }
 
-  componentDidMount() {
-    this.putModel(0);
-  }
-
   componentDidUpdate() {
-    this.putModel(this.props.frameNum);
+    this.putCamera(this.props.frameNum);
   }
 
-  couldPutModel (frameNum) {
+  couldPutCamera (frameNum) {
     if ((this.viewer !== null)
       && this.props.latitude
       && this.props.longitude
@@ -48,30 +44,28 @@ class ThreeDimCesiumModel extends Component {
     return false;
   }
 
-  putModel(frameNum) {
-    console.log('putModel', frameNum);
-    if (this.couldPutModel(frameNum)) {
-      let modelMatrix = Transforms.eastNorthUpToFixedFrame(
-        Cartesian3.fromDegrees(
-          this.props.longitude[frameNum],
-          this.props.latitude[frameNum],
-          this.props.altitude[frameNum]
-        )
+  putCamera(frameNum) {
+    if (this.couldPutCamera(frameNum)) {
+      var direction = Cartesian3.UNIT_Y.clone();
+      var up = Cartesian3.UNIT_Z.clone();
+
+      /*up.x = 100;
+      up.y = 1000;
+      up.z = 10000;
+
+      // initial position and orientation
+      this.viewer.camera.position = new Cartesian3(
+        this.props.latitude[0],
+        this.props.longitude[0],
+        this.props.altitude[0]
       );
+      this.viewer.camera.setView({
+        orientation: {
+          direction: direction,
+          up: up
+      }});*/
 
-      if (!this.model) {
-        this.model = this.viewer.scene.primitives.add(Model.fromGltf({
-          url : REST_URL + 'models/CesiumMilkTruck.gltf',
-          modelMatrix : modelMatrix,
-          minimumPixelSize : 300,
-          maximumScale : 20000,
-        }));
-      } else {
-        this.model.modelMatrix = modelMatrix;
-      }
-
-      console.log('trackedEntity');
-      this.viewer.trackedEntity = this.model;
+      console.log(this.viewer.camera.position);
     }
   }
 
@@ -98,4 +92,4 @@ function mapDispatchToProps(dispatch) {
   return {}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ThreeDimCesiumModel);
+export default connect(mapStateToProps, mapDispatchToProps)(ThreeDimCesiumCamera);

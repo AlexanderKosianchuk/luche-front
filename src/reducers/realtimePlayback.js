@@ -22,7 +22,6 @@ export default function realtimePlayback(state = initialState, action) {
         }
       };
     case 'GET_FLIGHT_GEO_COMPLETE':
-
       return { ...state,
         ...{
           flightId: action.payload.request.flightId,
@@ -47,7 +46,7 @@ export default function realtimePlayback(state = initialState, action) {
         return { ...state,
           ...{
             status: 'flying',
-            frameNum: state.frameNum + 1,
+            frameNum: state.frameNum + 100,
             timestamp: state.timeline[state.frameNum + 1]
           }
         };
