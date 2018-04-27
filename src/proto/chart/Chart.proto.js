@@ -1,5 +1,7 @@
 import 'assets/images/loading.gif';
 
+import _throttle from 'lodash.throttle';
+
 import 'flot-charts';
 import 'flot-charts/jquery.flot.time';
 import 'flot-charts/jquery.flot.symbol';
@@ -23,10 +25,10 @@ var HEADER_HEIGHT = 105;
 function Chart(store) {
   this.store = store;
 
-  let state = store.getState();
+  this.state = store.getState();
 
-  this.mainChartColor = state.settings.items.mainChartColor || 'fff';
-  this.lineWidth = state.settings.items.lineWidth || 1;
+  this.mainChartColor = this.state.settings.items.mainChartColor || 'fff';
+  this.lineWidth = this.state.settings.items.lineWidth || 1;
 
   this.chartFactoryContainer = null;
   this.chartWorkspace = null;
@@ -73,6 +75,21 @@ function Chart(store) {
   $(document).on('chart:hideParamsList', this.hideParamsList.bind(this) );
   $(document).on('chart:showParamsList', this.showParamsList.bind(this) );
   $(document).on('chart:fullSize', this.fullSize.bind(this) );
+  this.unsubscribe = this.store.subscribe(this.handleChange.bind(this));
+}
+
+Chart.prototype.handleChange = function() {
+  let newState = this.store.getState();
+
+  if (newState.realtimePlayback.status === 'flying') {
+    if (this.state.realtimePlayback.frameNum
+      !== newState.realtimePlayback.frameNum
+    ) {
+      _throttle(this.putThreshold.bind(this, newState.realtimePlayback.timestamp), 1000);
+    }
+  }
+
+  this.state = newState;
 }
 
 Chart.prototype.SetChartData = function(data){
@@ -389,9 +406,9 @@ Chart.prototype.SupportPlotEvents = function(e) {
       } else {
         self.Legnd.updateLegendTimeout =
           setTimeout(function() {
-            var values = self.Prm.GetValue(self.plotDataset, self.Legnd.vizirFreezePos.x);
-            var binaries = self.Prm.GetBinaries(self.plotDataset, self.Legnd.vizirFreezePos.x);
-            self.Legnd.UpdateLegend(self.Legnd.vizirFreezePos.x, values, binaries);
+            var values = self.Prm.GetValue(self.plotDataset, self.Legnd.vizirFreezeTimestamp.x);
+            var binaries = self.Prm.GetBinaries(self.plotDataset, self.Legnd.vizirFreezeTimestamp.x);
+            self.Legnd.UpdateLegend(self.Legnd.vizirFreezeTimestamp.x, values, binaries);
           }, 200);
       }
     }
@@ -569,6 +586,19 @@ Chart.prototype.SupportLegendEvents = function(e) {
   });
 }
 
+Chart.prototype.putThreshold = function(timestamp) {
+  console.log('putThreshold');
+  this.Legnd.crosshairLocked = true;
+  this.plot.lockCrosshair(1);
+  this.Legnd.RemoveSectionBar($(this.Legnd.vizirBarContainer));
+  this.Legnd.vizirFreezeTimestamp = timestamp;
+  this.Legnd.vLineColor = "rgba(170, 0, 0, 0.80)";
+  this.Legnd.vizirBarContainer = this.Legnd.AppendSectionBar(timestamp).barMainContainer;
+  this.Legnd.vLineColor = 'darkgrey';
+  this.Legnd.UpdateBarContainersPos();
+  this.Legnd.displayNeed = false;
+  this.Legnd.ShowSeriesNames();
+}
 //=============================================================
 
 //=============================================================
@@ -663,13 +693,13 @@ Chart.prototype.SupportKeyBoardEvents = function(e) {
     }
 
     //freeze vizir
-    if(event.which == KEY_F){
-      if(self.Legnd.crosshairLocked) {
+    if (event.which == KEY_F){
+      if (self.Legnd.crosshairLocked) {
         self.Legnd.RemoveSectionBar($(self.Legnd.vizirBarContainer));
         self.plot.unlockCrosshair();
         self.Legnd.crosshairLocked = !self.Legnd.crosshairLocked;
       } else {
-        self.Legnd.vizirFreezePos = self.Legnd.pos;
+        self.Legnd.vizirFreezeTimestamp = self.Legnd.pos.x;
         self.Legnd.vLineColor = "rgba(170, 0, 0, 0.80)";
         self.Legnd.vizirBarContainer = self.Legnd.AppendSectionBar().barMainContainer;
         self.Legnd.vLineColor = 'darkgrey';

@@ -223,6 +223,7 @@ Legend.prototype.AppendSectionBar = function(manualPosX, hasText){
   if(manualPosX) {
     posx = manualPosX;
   }
+  console.log('manualPosX', manualPosX)
   this.lastMovedPosX = posx;
   if (posx > this.xax.min && posx < this.xax.max) {
     var startId = this.barContainersArr.length,
