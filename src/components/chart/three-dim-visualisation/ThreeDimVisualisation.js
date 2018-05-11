@@ -3,9 +3,9 @@ import './three-dim-visualisation.sass';
 import React, { Component } from 'react';
 import { Subject } from 'rxjs/Subject';
 
-import ThreeDimCesiumViewer from 'components/chart/three-dim-cesium-viewer/ThreeDimCesiumViewer';
-import ThreeDimCesiumModel from 'components/chart/three-dim-cesium-model/ThreeDimCesiumModel';
-import ThreeDimCesiumCamera from 'components/chart/three-dim-cesium-camera/ThreeDimCesiumCamera';
+import Viewer from 'components/chart/three-dim-cesium-viewer/ThreeDimCesiumViewer';
+import Model from 'components/chart/three-dim-cesium-model/ThreeDimCesiumModel';
+import Clock from 'components/chart/three-dim-cesium-clock/ThreeDimCesiumClock';
 
 const CHART_WITH_3D_RATIO = 0.6;
 const HEADER_HEIGHT = 105;
@@ -34,15 +34,10 @@ export default class ThreeDimVisualisation extends Component {
         id='cesiumContainer'
         ref={ (container) => this.container = container }
       >
-        <ThreeDimCesiumViewer
-          setCesiumViewer={ this.setCesiumViewer.bind(this) }
-        />
-        <ThreeDimCesiumModel
-          subjectViewer={ this.subjectViewer }
-        />
-        <ThreeDimCesiumCamera
-          subjectViewer={ this.subjectViewer }
-        />
+        <Viewer setCesiumViewer={ this.setCesiumViewer.bind(this) } />
+        <Model subjectViewer={ this.subjectViewer } />
+        <Clock subjectViewer={ this.subjectViewer } />
+        <Camera subjectViewer={ this.subjectViewer } />
       </div>
     );
   }

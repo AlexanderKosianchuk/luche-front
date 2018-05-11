@@ -38,7 +38,6 @@ function Legend(flightId, legendContainer, apParams, bpParams, associativeParams
   this.legndCont = legendContainer;
   this.legendTitlesNotReceived = true;
   this.legendTitlesNotSet = true;
-  this.updateLegendTimeout = null;
   this.lastMovedPosX = null;
   this.verticalTextInput = false;
 
@@ -58,7 +57,7 @@ function Legend(flightId, legendContainer, apParams, bpParams, associativeParams
   this.ccCont.append(this.leadParamValBox);
 
   this.displayNeed = false;
-  this.vizirBarContainer = Object();
+  this.vizirBarContainer = null;
   this.vizirFreezePos = 0;
   this.crosshairLocked = false;
   this.showSeriesLabelsNeed = false;
@@ -80,7 +79,6 @@ Legend.prototype.UpdateLegend = function(posx, valuesArr,
   binariesArr)
 {
   //update each time legends because it can be lost after zoom or pan
-  this.updateLegendTimeout = null;
   var legndLabls = this.legndCont.find(".legendLabel");
   let y = 0;
   let s = 0;
@@ -223,14 +221,14 @@ Legend.prototype.AppendSectionBar = function(manualPosX, hasText){
   if(manualPosX) {
     posx = manualPosX;
   }
-  console.log('manualPosX', manualPosX)
+
   this.lastMovedPosX = posx;
   if (posx > this.xax.min && posx < this.xax.max) {
     var startId = this.barContainersArr.length,
       legndLabls = this.legndCont.find(".legendLabel"),
       labelText = legndLabls.eq(0).text(),
       value = labelText.substring(labelText.indexOf('=') + 1, labelText.length);
-    if(value != null){
+    if (value != null) {
       for (var i = 0; i < this.apCount; i++) {
         var labelText = legndLabls.eq(i).text(),
           id = "barLabel" + (this.barContainersArr.length + 1),
@@ -515,6 +513,10 @@ Legend.prototype.CreateTextContainer = function(time, hasText) {
 //=============================================================
 //
 Legend.prototype.RemoveSectionBar = function(mainBar) {
+  if (!mainBar || !mainBar.length) {
+    return false;
+  }
+
   var startId = mainBar.data('startid');
   var endId = mainBar.data('endid');
   var lineId = mainBar.data('lineid');

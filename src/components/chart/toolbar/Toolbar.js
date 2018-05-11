@@ -1,6 +1,6 @@
 import './toolbar.sass'
 
-import React from 'react';
+import React, { Component } from 'react';
 
 import FlightViewOptionsSwitch from 'controls/flight-view-options-switch/FlightViewOptionsSwitch';
 import Print from 'components/chart/print/Print';
@@ -11,11 +11,7 @@ import Player from 'components/chart/player/Player';
 
 import NavbarToggle from 'controls/navbar-toggle/NavbarToggle';
 
-export default class Toolbar extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
+export default class Toolbar extends Component {
   render() {
     return (
       <nav className='flight-events-toolbar navbar navbar-default'>
@@ -30,7 +26,6 @@ export default class Toolbar extends React.Component {
             />
             <Player
               flightId={ this.props.flightId }
-              threeDimIsShown={ this.props.threeDimIsShown }
             />
             <Print
               flightId={ this.props.flightId }

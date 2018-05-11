@@ -18,6 +18,7 @@ export default class ThreeDimCesiumViewer extends Component {
     });
 
     this.viewer = new Viewer('cesiumContainer', {
+      shouldAnimate : true,
       imageryProvider: mapbox,
       baseLayerPicker: false,
       animation: false,
@@ -37,6 +38,7 @@ export default class ThreeDimCesiumViewer extends Component {
 
   componentWillUnmount() {
     if (this.viewer) {
+      this.viewer.trackedEntity = null;
       this.viewer.destroy();
     }
   }

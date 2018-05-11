@@ -30,13 +30,13 @@ function Chart(store) {
   this.mainChartColor = this.state.settings.items.mainChartColor || 'fff';
   this.lineWidth = this.state.settings.items.lineWidth || 1;
 
-  this.chartFactoryContainer = null;
   this.chartWorkspace = null;
   this.chartContent = null;
 
   this.legend = null;
   this.placeholder = null;
   this.plot = null;
+  this.pos = 0;
   this.plotOptions = {};
   this.Prm = null;
   this.plotYaxArr = null;
@@ -85,7 +85,7 @@ Chart.prototype.handleChange = function() {
     if (this.state.realtimePlayback.frameNum
       !== newState.realtimePlayback.frameNum
     ) {
-      _throttle(this.putThreshold.bind(this, newState.realtimePlayback.timestamp), 1000);
+      this.playbackThresholdThrottle(newState.realtimePlayback.timestamp)();
     }
   }
 
@@ -112,9 +112,7 @@ Chart.prototype.SetChartData = function(data){
 
 Chart.prototype.FillFactoryContaider = function(factoryContainer) {
   var self = this;
-  this.chartFactoryContainer = factoryContainer;
-
-  this.chartFactoryContainer.append(
+  factoryContainer.append(
     $('<div></div>')
       .attr('id', 'chartWorkspace')
       .addClass('WorkSpace')
@@ -394,23 +392,20 @@ Chart.prototype.SupportPlotEvents = function(e) {
   //scaling chart and moving it up and down
   var prevPos = null;
   self.placeholder.on('plothover', function (event, pos, item) {
-    //label
-    if (!self.Legnd.updateLegendTimeout) {
-      if(!self.Legnd.crosshairLocked) {
-        self.Legnd.updateLegendTimeout =
-          setTimeout(function() {
-            var values = self.Prm.GetValue(self.plotDataset, pos.x);
-            var binaries = self.Prm.GetBinaries(self.plotDataset, pos.x);
-            self.Legnd.UpdateLegend(pos.x, values, binaries);
-          }, 200);
-      } else {
-        self.Legnd.updateLegendTimeout =
-          setTimeout(function() {
-            var values = self.Prm.GetValue(self.plotDataset, self.Legnd.vizirFreezeTimestamp.x);
-            var binaries = self.Prm.GetBinaries(self.plotDataset, self.Legnd.vizirFreezeTimestamp.x);
-            self.Legnd.UpdateLegend(self.Legnd.vizirFreezeTimestamp.x, values, binaries);
-          }, 200);
-      }
+    self.pos = pos;
+
+    if (self.Legnd.crosshairLocked) {
+      _throttle(() => {
+        var values = self.Prm.GetValue(self.plotDataset, self.Legnd.vizirFreezeTimestamp.x);
+        var binaries = self.Prm.GetBinaries(self.plotDataset, self.Legnd.vizirFreezeTimestamp.x);
+        self.Legnd.UpdateLegend(self.Legnd.vizirFreezeTimestamp.x, values, binaries);
+      }, 100)();
+    } else {
+      _throttle(() => {
+        var values = self.Prm.GetValue(self.plotDataset, pos.x);
+        var binaries = self.Prm.GetBinaries(self.plotDataset, pos.x);
+        self.Legnd.UpdateLegend(pos.x, values, binaries);
+      }, 100)();
     }
 
     if(self.clicked){
@@ -529,9 +524,7 @@ Chart.prototype.dispatchIntervalChange = function () {
      )
   ));
 }
-//=============================================================
 
-//=============================================================
 Chart.prototype.SupportLegendEvents = function(e) {
   var self = this;
 
@@ -560,10 +553,6 @@ Chart.prototype.SupportLegendEvents = function(e) {
     }
   });
 
-  //=============================================================
-
-  //=============================================================
-
   self.legend.on("mouseout", function(e){
     var el = $(e.target);
     if(el.attr('class') == 'legendLabel'){
@@ -586,18 +575,47 @@ Chart.prototype.SupportLegendEvents = function(e) {
   });
 }
 
-Chart.prototype.putThreshold = function(timestamp) {
-  console.log('putThreshold');
+Chart.prototype.playbackThresholdThrottle = function(timestamp) {
+  return _throttle(this.playbackThreshold.bind(this, timestamp), 1000);
+}
+
+Chart.prototype.playbackThreshold = function(timestamp) {
+  var values = this.Prm.GetValue(this.plotDataset, timestamp);
+  var binaries = this.Prm.GetBinaries(this.plotDataset, timestamp);
+  this.Legnd.UpdateLegend(timestamp, values, binaries);
   this.Legnd.crosshairLocked = true;
   this.plot.lockCrosshair(1);
   this.Legnd.RemoveSectionBar($(this.Legnd.vizirBarContainer));
-  this.Legnd.vizirFreezeTimestamp = timestamp;
+  this.Legnd.vizirFreezeTimestamp = this.pos;
   this.Legnd.vLineColor = "rgba(170, 0, 0, 0.80)";
   this.Legnd.vizirBarContainer = this.Legnd.AppendSectionBar(timestamp).barMainContainer;
   this.Legnd.vLineColor = 'darkgrey';
   this.Legnd.UpdateBarContainersPos();
   this.Legnd.displayNeed = false;
   this.Legnd.ShowSeriesNames();
+}
+
+Chart.prototype.setThresholdState = function() {
+  if (this.Legnd.crosshairLocked) {
+    this.Legnd.RemoveSectionBar($(this.Legnd.vizirBarContainer));
+    this.plot.unlockCrosshair();
+    this.Legnd.crosshairLocked = !this.Legnd.crosshairLocked;
+  } else {
+    this.Legnd.vizirFreezeTimestamp = this.pos;
+    this.Legnd.vLineColor = "rgba(170, 0, 0, 0.80)";
+    this.Legnd.vizirBarContainer = this.Legnd.AppendSectionBar().barMainContainer;
+    this.Legnd.vLineColor = 'darkgrey';
+    this.Legnd.UpdateBarContainersPos();
+    this.plot.lockCrosshair(1);
+    this.Legnd.crosshairLocked = !this.Legnd.crosshairLocked;
+    this.Legnd.displayNeed = false;
+    this.Legnd.ShowSeriesNames();
+
+    this.store.dispatch(transmit(
+      'FLIGHT_GEO_FLY',
+       { timestamp: this.Legnd.vizirFreezeTimestamp.x }
+    ));
+  }
 }
 //=============================================================
 
@@ -694,21 +712,7 @@ Chart.prototype.SupportKeyBoardEvents = function(e) {
 
     //freeze vizir
     if (event.which == KEY_F){
-      if (self.Legnd.crosshairLocked) {
-        self.Legnd.RemoveSectionBar($(self.Legnd.vizirBarContainer));
-        self.plot.unlockCrosshair();
-        self.Legnd.crosshairLocked = !self.Legnd.crosshairLocked;
-      } else {
-        self.Legnd.vizirFreezeTimestamp = self.Legnd.pos.x;
-        self.Legnd.vLineColor = "rgba(170, 0, 0, 0.80)";
-        self.Legnd.vizirBarContainer = self.Legnd.AppendSectionBar().barMainContainer;
-        self.Legnd.vLineColor = 'darkgrey';
-        self.Legnd.UpdateBarContainersPos();
-        self.plot.lockCrosshair(1);
-        self.Legnd.crosshairLocked = !self.Legnd.crosshairLocked;
-        self.Legnd.displayNeed = false;
-        self.Legnd.ShowSeriesNames();
-      }
+      self.setThresholdState();
     }
 
     //exact param by curr startFrame and endFrame

@@ -41,16 +41,9 @@ class Player extends Component {
 
   handleClick() {
     if (this.props.status === 'flying') {
-      clearInterval(this.interval);
-      this.props.transmit('FLIGHT_GEO_FLY_MUTE');
+      this.props.transmit('SET_FLIGHT_GEO_FLY_STATE', { state: 'mute' });
     } else {
-      if (this.interval !== undefined) {
-        clearInterval(this.interval);
-      }
-
-      this.interval = setInterval(() => {
-        this.props.transmit('FLIGHT_GEO_FLY');
-      }, 100);
+      this.props.transmit('SET_FLIGHT_GEO_FLY_STATE', { state: 'flying' });
     }
   }
 
@@ -86,7 +79,6 @@ class Player extends Component {
 
 Player.propTypes = {
   flightId: PropTypes.number.isRequired,
-  threeDimIsShown: PropTypes.bool.isRequired,
 };
 
 

@@ -6,7 +6,9 @@ import { connect } from 'react-redux';
 import {
   Transforms,
   Cartesian3,
-  Model
+  Model,
+  Math,
+  HeadingPitchRoll
 } from 'cesium/Cesium';
 
 class ThreeDimCesiumModel extends Component {
@@ -49,28 +51,34 @@ class ThreeDimCesiumModel extends Component {
   }
 
   putModel(frameNum) {
-    console.log('putModel', frameNum);
     if (this.couldPutModel(frameNum)) {
-      let modelMatrix = Transforms.eastNorthUpToFixedFrame(
-        Cartesian3.fromDegrees(
-          this.props.longitude[frameNum],
-          this.props.latitude[frameNum],
-          this.props.altitude[frameNum]
-        )
+      let modelMatrix = Cartesian3.fromDegrees(
+        this.props.longitude[frameNum],
+        this.props.latitude[frameNum],
+        this.props.altitude[frameNum]
       );
 
       if (!this.model) {
-        this.model = this.viewer.scene.primitives.add(Model.fromGltf({
-          url : REST_URL + 'models/CesiumMilkTruck.gltf',
-          modelMatrix : modelMatrix,
-          minimumPixelSize : 300,
-          maximumScale : 20000,
-        }));
+        let heading = Math.toRadians(135);
+        let pitch = 0;
+        let roll = 0;
+        let hpr = new HeadingPitchRoll(heading, pitch, roll);
+        let orientation = Transforms.headingPitchRollQuaternion(modelMatrix, hpr);
+
+        this.model = this.viewer.entities.add({
+          name:  REST_URL + 'models/CesiumMilkTruck.gltf',
+          position: modelMatrix,
+          orientation: orientation,
+          model: {
+            uri: REST_URL + 'models/CesiumMilkTruck.gltf',
+            minimumPixelSize: 10,
+            maximumScale: 10
+          }
+        });
       } else {
-        this.model.modelMatrix = modelMatrix;
+        this.model.position = modelMatrix;
       }
 
-      console.log('trackedEntity');
       this.viewer.trackedEntity = this.model;
     }
   }

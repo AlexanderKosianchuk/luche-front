@@ -2,6 +2,7 @@ const initialState = {
   status: null,
   flightId: null,
   frameNum: null,
+  step: 1,
   timestamp: null,
   timeline: [],
   latitude: [],
@@ -22,11 +23,19 @@ export default function realtimePlayback(state = initialState, action) {
         }
       };
     case 'GET_FLIGHT_GEO_COMPLETE':
+      let step = 1;
+      if (action.payload.response.timeline.length > 1) {
+        let timelineStep = action.payload.response.timeline[1] -
+          action.payload.response.timeline[0];
+        step = 1000 / timelineStep; // should get 1 second
+      }
+
       return { ...state,
         ...{
           flightId: action.payload.request.flightId,
           status: 'ready',
           frameNum: 0,
+          step: step,
           timestamp: (action.payload.response.timeline
               && action.payload.response.timeline.length > 0)
             ? action.payload.response.timeline[0]
@@ -42,28 +51,85 @@ export default function realtimePlayback(state = initialState, action) {
       };
 
     case 'FLIGHT_GEO_FLY':
-      if (state.frameNum < state.timeline.length) {
+      if (action.payload.frameNum
+        && state.timeline[action.payload.frameNum]
+      ) {
         return { ...state,
           ...{
-            status: 'flying',
-            frameNum: state.frameNum + 100,
-            timestamp: state.timeline[state.frameNum + 1]
+            status: action.payload.state || state.status,
+            frameNum: action.payload.frameNum,
+            timestamp: state.timeline[action.payload.frameNum]
+          }
+        };
+      }
+
+      if (action.payload.timestamp) {
+        if (action.payload.timestamp <= state.timeline[0]) {
+          return { ...state,
+            ...{
+              status: action.payload.state || state.status,
+              frameNum: 0,
+              timestamp: state.timeline[0]
+            }
+          };
+        }
+
+        if (action.payload.timestamp >= state.timeline[state.timeline.length - 1]) {
+          return { ...state,
+            ...{
+              status: action.payload.state || state.status,
+              frameNum: state.timeline.length - 1,
+              timestamp: state.timeline[state.timeline.length - 1]
+            }
+          };
+        }
+
+        let index = 0;
+        let previousValue = state.timeline[index];
+        for (index in state.timeline) {
+          let currentValue = state.timeline[index];
+
+          if ((previousValue <= action.payload.timestamp)
+            && (currentValue > action.payload.timestamp)
+          ) {
+            break;
+          }
+
+          previousValue = currentValue;
+        }
+
+        return { ...state,
+          ...{
+            status: action.payload.state || state.status,
+            frameNum: parseInt(index),
+            timestamp: state.timeline[index]
+          }
+        };
+      }
+
+      if ((state.frameNum < 0)
+        || (state.frameNum > state.timeline.length)
+      ) {
+        return { ...state,
+          ...{
+            status: action.payload.state || state.status,
+            frameNum: 0,
+            timestamp: state.timeline[0]
           }
         };
       }
 
       return { ...state,
         ...{
-          status: 'flying',
-          frameNum: 0,
-          timestamp: state.timeline[0]
+          status: action.payload.state || state.status,
+          frameNum: state.frameNum + state.step,
+          timestamp: state.timeline[state.frameNum + 1]
         }
       };
-
-    case 'FLIGHT_GEO_FLY_MUTE':
+    case 'SET_FLIGHT_GEO_FLY_STATE':
       return { ...state,
         ...{
-          status: 'mute',
+          status: action.payload.state,
         }
       };
     default:
