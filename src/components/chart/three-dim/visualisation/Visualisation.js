@@ -1,16 +1,17 @@
-import './three-dim-visualisation.sass';
+import './visualisation.sass';
 
 import React, { Component } from 'react';
 import { Subject } from 'rxjs/Subject';
 
-import Viewer from 'components/chart/three-dim-cesium-viewer/ThreeDimCesiumViewer';
-import Model from 'components/chart/three-dim-cesium-model/ThreeDimCesiumModel';
-import Clock from 'components/chart/three-dim-cesium-clock/ThreeDimCesiumClock';
+import Viewer from 'components/chart/three-dim/viewer/Viewer';
+import Model from 'components/chart/three-dim/model/Model';
+import Clock from 'components/chart/three-dim/clock/Clock';
+import DataProvider from 'components/chart/three-dim/data-provider/DataProvider';
 
 const CHART_WITH_3D_RATIO = 0.6;
 const HEADER_HEIGHT = 105;
 
-export default class ThreeDimVisualisation extends Component {
+export default class Visualisation extends Component {
   constructor(props) {
     super(props);
 
@@ -37,7 +38,7 @@ export default class ThreeDimVisualisation extends Component {
         <Viewer setCesiumViewer={ this.setCesiumViewer.bind(this) } />
         <Model subjectViewer={ this.subjectViewer } />
         <Clock subjectViewer={ this.subjectViewer } />
-        <Camera subjectViewer={ this.subjectViewer } />
+        <DataProvider flightId={ this.props.flightId }/>
       </div>
     );
   }

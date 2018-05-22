@@ -1,10 +1,10 @@
 import './checkbox.sass'
 
 import React from 'react';
-import Guid from 'guid';
+import uuidV4 from 'uuid/v4';
 
 export default function Checkbox (props) {
-  const uid = Guid.create();
+  const uid = uuidV4().substring(0, 18).replace(/-/g, '');
   return (
     <section className='checkbox'>
       <div className='checkbox__container'>

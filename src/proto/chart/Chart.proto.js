@@ -81,7 +81,7 @@ function Chart(store) {
 Chart.prototype.handleChange = function() {
   let newState = this.store.getState();
 
-  if (newState.realtimePlayback.status === 'flying') {
+  if (newState.realtimePlayback.thresholdBinded) {
     if (this.state.realtimePlayback.frameNum
       !== newState.realtimePlayback.frameNum
     ) {
@@ -528,21 +528,17 @@ Chart.prototype.dispatchIntervalChange = function () {
 Chart.prototype.SupportLegendEvents = function(e) {
   var self = this;
 
-  //var loopCount = 0,
-  //looping = false;
   self.legend.on("mouseover", function(e){
     var el = $(e.target);
-    if(el.attr('class') == 'legendLabel'){
+    if (el.attr('class') == 'legendLabel') {
       var labelText = el.text().substring(),
         seriesLabel = labelText.substring(0, labelText.indexOf('=') - 2),
         seriesLabelHovered = seriesLabel,
         series = self.plot.getData();
-      for(var i = 0; i < series.length; i++){
+      for (var i = 0; i < series.length; i++) {
         labelText = series[i].label;
         seriesLabel = labelText.substring(0, labelText.indexOf('=') - 1);
-        if(seriesLabelHovered == seriesLabel){
-          //looping = true;
-          //transition(series[i], plot);
+        if (seriesLabelHovered == seriesLabel) {
           series[i].shadowSize += 2;
           series[i].lines.lineWidth += 2;
 
@@ -553,17 +549,17 @@ Chart.prototype.SupportLegendEvents = function(e) {
     }
   });
 
-  self.legend.on("mouseout", function(e){
+  self.legend.on("mouseout", function(e) {
     var el = $(e.target);
-    if(el.attr('class') == 'legendLabel'){
+    if (el.attr('class') == 'legendLabel') {
       var labelText = el.text().substring(),
         seriesLabel = labelText.substring(0, labelText.indexOf('=') - 2),
         seriesLabelHovered = seriesLabel,
         series = self.plot.getData();
-      for(var i = 0; i < series.length; i++){
+      for (var i = 0; i < series.length; i++) {
         labelText = series[i].label;
         seriesLabel = labelText.substring(0, labelText.indexOf('=') - 1);
-        if(seriesLabelHovered == seriesLabel){
+        if (seriesLabelHovered == seriesLabel) {
           //looping = false;
           series[i].shadowSize -= 2;
           series[i].lines.lineWidth -= 2;
@@ -596,6 +592,10 @@ Chart.prototype.playbackThreshold = function(timestamp) {
 }
 
 Chart.prototype.setThresholdState = function() {
+  if (this.state.realtimePlayback.thresholdBinded) {
+    return;
+  }
+
   if (this.Legnd.crosshairLocked) {
     this.Legnd.RemoveSectionBar($(this.Legnd.vizirBarContainer));
     this.plot.unlockCrosshair();
@@ -610,11 +610,6 @@ Chart.prototype.setThresholdState = function() {
     this.Legnd.crosshairLocked = !this.Legnd.crosshairLocked;
     this.Legnd.displayNeed = false;
     this.Legnd.ShowSeriesNames();
-
-    this.store.dispatch(transmit(
-      'FLIGHT_GEO_FLY',
-       { timestamp: this.Legnd.vizirFreezeTimestamp.x }
-    ));
   }
 }
 //=============================================================

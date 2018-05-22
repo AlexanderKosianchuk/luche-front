@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import ThreeDimVisualisation from 'components/chart/three-dim-visualisation/ThreeDimVisualisation';
+import ThreeDimVisualisation from 'components/chart/three-dim/visualisation/Visualisation';
 
 import trigger from 'actions/trigger';
 import request from 'actions/request';

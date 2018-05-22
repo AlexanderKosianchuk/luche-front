@@ -7,7 +7,7 @@ import Print from 'components/chart/print/Print';
 import FullSize from 'components/chart/full-size/FullSize';
 import ParamsToggle from 'components/chart/params-toggle/ParamsToggle';
 import ThreeDimToggle from 'components/chart/three-dim-toggle/ThreeDimToggle';
-import Player from 'components/chart/player/Player';
+import BindThreshold from 'components/chart/bind-threshold/BindThreshold';
 
 import NavbarToggle from 'controls/navbar-toggle/NavbarToggle';
 
@@ -24,9 +24,6 @@ export default class Toolbar extends Component {
             <FlightViewOptionsSwitch
               flightId={ this.props.flightId }
             />
-            <Player
-              flightId={ this.props.flightId }
-            />
             <Print
               flightId={ this.props.flightId }
             />
@@ -35,6 +32,9 @@ export default class Toolbar extends Component {
             <ThreeDimToggle
               threeDimIsShown={ this.props.threeDimIsShown }
               toggleThreeDimIsShown={ this.props.toggleThreeDimIsShown }
+            />
+            <BindThreshold
+              threeDimIsShown={ this.props.threeDimIsShown }
             />
           </div>
         </div>

@@ -1,10 +1,10 @@
 import './dialog.sass'
 
 import React from 'react';
-import Guid from 'guid';
+import uuidV4 from 'uuid/v4';
 
 export default function Dialog (props) {
-  let id = "dialog-" + Guid.create();
+  let id = 'dialog-' + uuidV4().substring(0, 18).replace(/-/g, '');
 
   if (props.hasOwnProperty('id')) {
     id = props.id;

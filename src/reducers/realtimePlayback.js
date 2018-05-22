@@ -4,13 +4,15 @@ const initialState = {
   frameNum: null,
   step: 1,
   timestamp: null,
+  thresholdBinded: false,
   timeline: [],
   latitude: [],
   longitude: [],
   altitude: [],
   yaw: [],
   pitch: [],
-  roll: []
+  roll: [],
+  modelUrl: null
 };
 
 export default function realtimePlayback(state = initialState, action) {
@@ -40,13 +42,15 @@ export default function realtimePlayback(state = initialState, action) {
               && action.payload.response.timeline.length > 0)
             ? action.payload.response.timeline[0]
             : 0,
+          thresholdBinded: true,
           timeline: action.payload.response.timeline,
           latitude: action.payload.response.latitude,
           longitude: action.payload.response.longitude,
           altitude: action.payload.response.altitude,
           yaw: action.payload.response.yaw,
           pitch: action.payload.response.pitch,
-          roll: action.payload.response.roll
+          roll: action.payload.response.roll,
+          modelUrl: action.payload.response.modelUrl
         }
       };
 
@@ -130,6 +134,12 @@ export default function realtimePlayback(state = initialState, action) {
       return { ...state,
         ...{
           status: action.payload.state,
+        }
+      };
+    case 'SET_FLIGHT_GEO_THRESHOLD_STATE':
+      return { ...state,
+        ...{
+          thresholdBinded: action.payload.state,
         }
       };
     default:

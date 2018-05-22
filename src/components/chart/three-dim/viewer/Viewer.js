@@ -9,7 +9,7 @@ import {
 
 const MAPBOX_ACCESS_TOKEN = 'pk.eyJ1IjoiZGVkYW5hYW4wMCIsImEiOiJjamc2bDBnNjAxMmY3MnpzMG9sdnVsMGhsIn0.qAgylJX9eHK0n9ni6rUkKg';
 
-export default class ThreeDimCesiumViewer extends Component {
+export default class ThreeDimViewer extends Component {
   componentDidMount() {
     // Mapbox tile provider
     let mapbox = new MapboxImageryProvider({
@@ -18,10 +18,10 @@ export default class ThreeDimCesiumViewer extends Component {
     });
 
     this.viewer = new Viewer('cesiumContainer', {
-      shouldAnimate : true,
+      shouldAnimate: true,
       imageryProvider: mapbox,
       baseLayerPicker: false,
-      animation: false,
+      animation: true,
       geocoder: false,
       homeButton: false,
       fullscreenButton: false,
@@ -30,7 +30,6 @@ export default class ThreeDimCesiumViewer extends Component {
       selectionIndicator: false,
       navigationHelpButton: false,
       navigationInstructionsInitiallyVisible: false,
-      timeline: false
     });
 
     this.props.setCesiumViewer(this.viewer);

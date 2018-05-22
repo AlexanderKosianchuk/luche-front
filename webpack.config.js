@@ -35,6 +35,7 @@ module.exports = {
     fs: 'empty'
   },
   resolve: {
+    mainFields: ['main'],
     modules: [
       resolve('./src'),
       resolve('./node_modules')
@@ -127,5 +128,11 @@ module.exports = {
     }),
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin()
-  ]
+  ],
+  node: {
+    console: true,
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty'
+  }
 };
