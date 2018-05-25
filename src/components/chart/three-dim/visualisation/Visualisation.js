@@ -2,6 +2,7 @@ import './visualisation.sass';
 
 import React, { Component } from 'react';
 import { Subject } from 'rxjs/Subject';
+import { connect } from 'react-redux';
 
 import Viewer from 'components/chart/three-dim/viewer/Viewer';
 import Model from 'components/chart/three-dim/model/Model';
@@ -11,7 +12,7 @@ import DataProvider from 'components/chart/three-dim/data-provider/DataProvider'
 const CHART_WITH_3D_RATIO = 0.6;
 const HEADER_HEIGHT = 105;
 
-export default class Visualisation extends Component {
+class Visualisation extends Component {
   constructor(props) {
     super(props);
 
@@ -33,9 +34,13 @@ export default class Visualisation extends Component {
     return (
       <div
         id='cesiumContainer'
+        className={ 'chart-three-dim-visualisation'
+          + (this.props.isDisplayed ? '' : ' chart-three-dim-visualisation--is-hidden') }
         ref={ (container) => this.container = container }
       >
-        <Viewer setCesiumViewer={ this.setCesiumViewer.bind(this) } />
+        <Viewer
+          setCesiumViewer={ this.setCesiumViewer.bind(this) }
+        />
         <Model subjectViewer={ this.subjectViewer } />
         <Clock subjectViewer={ this.subjectViewer } />
         <DataProvider flightId={ this.props.flightId }/>
@@ -43,3 +48,15 @@ export default class Visualisation extends Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    isDisplayed: state.realtimePlayback.isDisplayed
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Visualisation);

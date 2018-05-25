@@ -309,6 +309,14 @@ const translationsRu = {
         header: 'Результаты логического анализа входных данных'
       }
     },
+    chart: {
+      threeDim: {
+        model: {
+          follow: 'Следовать',
+          freeCamera: 'Свободная камера',
+        }
+      }
+    },
     topMenu: {
       brand: 'Luch',
       calibrate: 'Калибровка',

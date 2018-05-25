@@ -5,6 +5,8 @@ const initialState = {
   step: 1,
   timestamp: null,
   thresholdBinded: false,
+  trackingEntityState: true,
+  isDisplayed: true,
   timeline: [],
   latitude: [],
   longitude: [],
@@ -43,6 +45,7 @@ export default function realtimePlayback(state = initialState, action) {
             ? action.payload.response.timeline[0]
             : 0,
           thresholdBinded: true,
+          isDisplayed: true,
           timeline: action.payload.response.timeline,
           latitude: action.payload.response.latitude,
           longitude: action.payload.response.longitude,
@@ -62,7 +65,7 @@ export default function realtimePlayback(state = initialState, action) {
           ...{
             status: action.payload.state || state.status,
             frameNum: action.payload.frameNum,
-            timestamp: state.timeline[action.payload.frameNum]
+            timestamp: state.timeline[action.payload.frameNum],
           }
         };
       }
@@ -140,6 +143,18 @@ export default function realtimePlayback(state = initialState, action) {
       return { ...state,
         ...{
           thresholdBinded: action.payload.state,
+        }
+      };
+    case 'SET_FLIGHT_GEO_DISPLAY_STATE':
+      return { ...state,
+        ...{
+          isDisplayed: action.payload.isDisplayed,
+        }
+      };
+    case 'SET_FLIGHT_GEO_TRACKING_ENTITY_TYPE':
+      return { ...state,
+        ...{
+          trackingEntityState: action.payload.trackingEntityState,
         }
       };
     default:

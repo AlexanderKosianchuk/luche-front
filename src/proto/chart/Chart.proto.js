@@ -85,7 +85,7 @@ Chart.prototype.handleChange = function() {
     if (this.state.realtimePlayback.frameNum
       !== newState.realtimePlayback.frameNum
     ) {
-      this.playbackThresholdThrottle(newState.realtimePlayback.timestamp)();
+      this.playbackThreshold(newState.realtimePlayback.timestamp);
     }
   }
 
@@ -571,24 +571,33 @@ Chart.prototype.SupportLegendEvents = function(e) {
   });
 }
 
-Chart.prototype.playbackThresholdThrottle = function(timestamp) {
-  return _throttle(this.playbackThreshold.bind(this, timestamp), 1000);
-}
-
 Chart.prototype.playbackThreshold = function(timestamp) {
+  if (!timestamp) {
+    return;
+  }
+
+  if (!this.plotDataset) {
+    return;
+  }
+
   var values = this.Prm.GetValue(this.plotDataset, timestamp);
   var binaries = this.Prm.GetBinaries(this.plotDataset, timestamp);
   this.Legnd.UpdateLegend(timestamp, values, binaries);
   this.Legnd.crosshairLocked = true;
   this.plot.lockCrosshair(1);
+  console.log(this.Legnd.vizirBarContainer);
   this.Legnd.RemoveSectionBar($(this.Legnd.vizirBarContainer));
   this.Legnd.vizirFreezeTimestamp = this.pos;
   this.Legnd.vLineColor = "rgba(170, 0, 0, 0.80)";
-  this.Legnd.vizirBarContainer = this.Legnd.AppendSectionBar(timestamp).barMainContainer;
-  this.Legnd.vLineColor = 'darkgrey';
-  this.Legnd.UpdateBarContainersPos();
-  this.Legnd.displayNeed = false;
-  this.Legnd.ShowSeriesNames();
+
+  let newSection = this.Legnd.AppendSectionBar(timestamp);
+  if (newSection) {
+    this.Legnd.vizirBarContainer = newSection.barMainContainer;
+    this.Legnd.vLineColor = 'darkgrey';
+    this.Legnd.UpdateBarContainersPos();
+    this.Legnd.displayNeed = false;
+    this.Legnd.ShowSeriesNames();
+  }
 }
 
 Chart.prototype.setThresholdState = function() {

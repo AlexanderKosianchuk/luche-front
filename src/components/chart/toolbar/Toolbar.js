@@ -29,13 +29,8 @@ export default class Toolbar extends Component {
             />
             <FullSize/>
             <ParamsToggle/>
-            <ThreeDimToggle
-              threeDimIsShown={ this.props.threeDimIsShown }
-              toggleThreeDimIsShown={ this.props.toggleThreeDimIsShown }
-            />
-            <BindThreshold
-              threeDimIsShown={ this.props.threeDimIsShown }
-            />
+            <ThreeDimToggle />
+            <BindThreshold />
           </div>
         </div>
       </nav>

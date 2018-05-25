@@ -307,6 +307,14 @@ const translationsEs = {
         header: 'Stream data analysis'
       }
     },
+    chart: {
+      threeDim: {
+        model: {
+          follow: 'Follow',
+          freeCamera: 'Free camera',
+        }
+      }
+    },
     topMenu: {
       brand: 'Luche',
       calibrate: 'Сalibrate',

@@ -54,13 +54,13 @@ class Workspace extends Component {
         endFrame: this.props.toFrame,
         apParams: analogParamsCodes,
         bpParams: binaryParamsCodes,
-        threeDimIsShown: (this.props.hasCoordinates && this.props.threeDimIsShown)
+        threeDimIsShown: (this.props.hasCoordinates && this.props.isDisplayed)
       }]);
     });
   }
 
   showThreeDim() {
-    if (this.props.hasCoordinates && this.props.threeDimIsShown) {
+    if (this.props.hasCoordinates) {
       return <ThreeDimVisualisation flightId={ this.props.flightId } />;
     }
 
@@ -85,7 +85,7 @@ Workspace.propTypes = {
   params: PropTypes.array,
   stepLength: PropTypes.number,
   startFlightTime: PropTypes.string,
-  hasCoordinates: PropTypes.bool,
+  hasCoordinates: PropTypes.bool
 };
 
 function mapStateToProps(state) {

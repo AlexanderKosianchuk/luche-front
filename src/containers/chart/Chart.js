@@ -6,31 +6,12 @@ import Toolbar from 'components/chart/toolbar/Toolbar';
 import Workspace from 'components/chart/workspace/Workspace';
 
 class Chart extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      threeDimIsShown: true
-    };
-  }
-
-  toggleThreeDimIsShown() {
-    this.setState({
-      threeDimIsShown: !this.state.threeDimIsShown
-    });
-  }
-
   render () {
     return (
       <div>
         <Menu/>
-        <Toolbar
-          flightId={ this.props.flightId }
-          threeDimIsShown={ this.state.threeDimIsShown }
-          toggleThreeDimIsShown={ this.toggleThreeDimIsShown.bind(this) }
-        />
+        <Toolbar flightId={ this.props.flightId } />
         <Workspace
-          threeDimIsShown={ this.state.threeDimIsShown }
           flightId={ this.props.flightId }
           templateId={ this.props.templateId }
           fromFrame={ this.props.fromFrame }

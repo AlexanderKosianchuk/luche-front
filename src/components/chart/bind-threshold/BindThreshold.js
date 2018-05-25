@@ -13,8 +13,22 @@ class BindThreshold extends Component {
     });
   }
 
+  shouldComponentUpdate(nextProps) {
+    if (!nextProps.isDisplayed) {
+      this.props.transmit('SET_FLIGHT_GEO_THRESHOLD_STATE', {
+        state: false
+      });
+    }
+
+    return true;
+  }
+
   render() {
     if (this.props.hasCoordinates !== true) {
+      return null;
+    }
+
+    if (!this.props.isDisplayed) {
       return null;
     }
 
@@ -39,7 +53,8 @@ class BindThreshold extends Component {
 function mapStateToProps(state) {
   return {
     hasCoordinates: state.flight.hasCoordinates,
-    thresholdBinded: state.realtimePlayback.thresholdBinded
+    thresholdBinded: state.realtimePlayback.thresholdBinded,
+    isDisplayed: state.realtimePlayback.isDisplayed,
   };
 }
 

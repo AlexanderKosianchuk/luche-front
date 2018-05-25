@@ -1,16 +1,26 @@
 import 'cesium/Widgets/widgets.css';
 
 import React, { Component } from 'react';
-
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import {
   MapboxImageryProvider,
+  Credit,
   Viewer,
 } from 'cesium/Cesium';
 
 const MAPBOX_ACCESS_TOKEN = 'pk.eyJ1IjoiZGVkYW5hYW4wMCIsImEiOiJjamc2bDBnNjAxMmY3MnpzMG9sdnVsMGhsIn0.qAgylJX9eHK0n9ni6rUkKg';
 
-export default class ThreeDimViewer extends Component {
+class ThreeDimViewer extends Component {
   componentDidMount() {
+    this.create();
+  }
+
+  create() {
+    if (this.viewer) {
+      return;
+    }
+
     // Mapbox tile provider
     let mapbox = new MapboxImageryProvider({
         mapId: 'mapbox.streets-satellite',
@@ -18,7 +28,7 @@ export default class ThreeDimViewer extends Component {
     });
 
     this.viewer = new Viewer('cesiumContainer', {
-      shouldAnimate: true,
+      shouldAnimate: false,
       imageryProvider: mapbox,
       baseLayerPicker: false,
       animation: true,
@@ -35,14 +45,27 @@ export default class ThreeDimViewer extends Component {
     this.props.setCesiumViewer(this.viewer);
   }
 
-  componentWillUnmount() {
-    if (this.viewer) {
-      this.viewer.trackedEntity = null;
-      this.viewer.destroy();
+  shouldComponentUpdate(nextProps) {
+    if (!nextProps.isDisplayed) {
+      this.viewer.shouldAnimate = false;
     }
+
+    return false;
   }
 
   render() {
     return null;
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    idDisplayed: state.realtimePlayback.idDisplayed,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ThreeDimViewer);

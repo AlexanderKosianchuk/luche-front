@@ -4,12 +4,13 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import trigger from 'actions/trigger';
+import transmit from 'actions/transmit';
 
 class ThreeDimToggle extends Component {
   handleClick(event) {
-    this.props.toggleThreeDimIsShown();
-    this.props.trigger('toggleThreeDimIsShown');
+    this.props.transmit('SET_FLIGHT_GEO_DISPLAY_STATE', {
+      isDisplayed: !this.props.isDisplayed
+    });
   }
 
   render() {
@@ -25,7 +26,7 @@ class ThreeDimToggle extends Component {
             aria-hidden='true'
           >
             <span className={
-                this.props.threeDimIsShown ? 'three-dim-toggle__strikethrough' : ''
+                this.props.isDisplayed ? 'three-dim-toggle__strikethrough' : ''
             }>
             </span>
           </span>
@@ -37,13 +38,14 @@ class ThreeDimToggle extends Component {
 
 function mapStateToProps(state) {
   return {
-    hasCoordinates: state.flight.hasCoordinates
+    hasCoordinates: state.flight.hasCoordinates,
+    isDisplayed: state.realtimePlayback.isDisplayed,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    trigger: bindActionCreators(trigger, dispatch)
+    transmit: bindActionCreators(transmit, dispatch)
   };
 }
 

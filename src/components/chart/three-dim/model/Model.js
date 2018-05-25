@@ -1,8 +1,10 @@
+import './model.sass';
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-
+import { I18n } from 'react-redux-i18n';
 import {
   Transforms,
   Cartesian3,
@@ -12,11 +14,14 @@ import {
   JulianDate,
   TimeInterval,
   HeadingPitchRoll,
+  HeadingPitchRange,
   TimeIntervalCollection,
   SampledPositionProperty,
   VelocityOrientationProperty,
   PolylineGlowMaterialProperty
 } from 'cesium/Cesium';
+
+import transmit from 'actions/transmit';
 
 class ThreeDimModel extends Component {
   constructor(props) {
@@ -49,14 +54,15 @@ class ThreeDimModel extends Component {
     this.stop = JulianDate.fromDate(new Date(timeline[timeline.length - 1]));
 
     let property = new SampledPositionProperty();
-    for (let ii = 0; ii <= timeline.length; ii += 10) {
-        var time = JulianDate.fromDate(new Date(timeline[ii]));
-        var position = Cartesian3.fromDegrees(
-            longitude[ii],
-            latitude[ii],
-            altitude[ii]
-        );
-        property.addSample(time, position);
+    timeline.forEach((item, ii) => {
+      let time = JulianDate.fromDate(new Date(timeline[ii]));
+      let position = Cartesian3.fromDegrees(longitude[ii],latitude[ii],altitude[ii]);
+      property.addSample(time, position);
+    });
+
+    [0, Math.round(timeline.length / 2), (timeline.length - 1)]
+      .forEach((ii) => {
+        let position = Cartesian3.fromDegrees(longitude[ii],latitude[ii],altitude[ii]);
 
         this.viewer.entities.add({
           position: position,
@@ -67,7 +73,7 @@ class ThreeDimModel extends Component {
             outlineWidth: 1
           }
         });
-    }
+      });
 
     return property;
   }
@@ -82,7 +88,7 @@ class ThreeDimModel extends Component {
     return false;
   }
 
-  putModel(frameNum) {
+  putModel(frameNum = 0) {
     if (this.couldPutModel() && !this.model) {
       /*
       let modelMatrix = Cartesian3.fromDegrees(
@@ -105,7 +111,6 @@ class ThreeDimModel extends Component {
       let position = this.setPath();
 
       this.model = this.viewer.entities.add({
-        name: 'Aircraft',
         availability: new TimeIntervalCollection([new TimeInterval({
             start: this.start,
             stop: this.stop
@@ -126,12 +131,43 @@ class ThreeDimModel extends Component {
           width: 1
         }
       });
+
       this.viewer.trackedEntity = this.model;
     }
   }
 
+  handle() {
+    if (!this.model) {
+      return;
+    }
+
+    if (this.props.trackingEntityState) {
+      this.viewer.trackedEntity = undefined;
+      this.viewer.zoomTo(this.viewer.entities, new HeadingPitchRange(0, CesiumMath.toRadians(-90)));
+    } else {
+      this.viewer.trackedEntity = this.model;
+    }
+
+    this.props.transmit('SET_FLIGHT_GEO_TRACKING_ENTITY_TYPE', {
+      trackingEntityState: !this.props.trackingEntityState
+    });
+  }
+
   render() {
-    return null;
+    let btnText = this.props.trackingEntityState
+      ? I18n.t('chart.threeDim.model.freeCamera')
+      : I18n.t('chart.threeDim.model.follow');
+
+    return (
+      <div className='chart-three-dim-model'>
+        <div
+          className='chart-three-dim-model__tracked-entity-btn'
+          onClick={ this.handle.bind(this) }
+        >
+          { btnText }
+        </div>
+      </div>
+    );
   }
 }
 
@@ -139,6 +175,7 @@ function mapStateToProps(state) {
   return {
     status: state.realtimePlayback.status,
     frameNum: state.realtimePlayback.frameNum,
+    trackingEntityState: state.realtimePlayback.trackingEntityState,
     timeline: state.realtimePlayback.timeline,
     latitude: state.realtimePlayback.latitude,
     longitude: state.realtimePlayback.longitude,
@@ -151,7 +188,9 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return {}
+  return {
+    transmit: bindActionCreators(transmit, dispatch)
+  };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ThreeDimModel);
