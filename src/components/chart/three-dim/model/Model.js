@@ -88,22 +88,22 @@ class ThreeDimModel extends Component {
     return false;
   }
 
-  putModel(frameNum = 0) {
+  putModel(index = 0) {
     if (this.couldPutModel() && !this.model) {
       /*
       let modelMatrix = Cartesian3.fromDegrees(
-        this.props.longitude[frameNum],
-        this.props.latitude[frameNum],
-        this.props.altitude[frameNum]
+        this.props.longitude[index],
+        this.props.latitude[index],
+        this.props.altitude[index]
       );
 
       let hpr = new HeadingPitchRoll(
-        Math.toRadians(this.props.yaw[frameNum]),
-        this.props.pitch[frameNum],
-        this.props.roll[frameNum]
+        Math.toRadians(this.props.yaw[index]),
+        this.props.pitch[index],
+        this.props.roll[index]
       );
       let hpr = new HeadingPitchRoll(
-        CesiumMath.toRadians(this.props.yaw[frameNum]),
+        CesiumMath.toRadians(this.props.yaw[index]),
         0,
         0
       );
@@ -174,7 +174,7 @@ class ThreeDimModel extends Component {
 function mapStateToProps(state) {
   return {
     status: state.realtimePlayback.status,
-    frameNum: state.realtimePlayback.frameNum,
+    timestamp: state.realtimePlayback.timestamp,
     trackingEntityState: state.realtimePlayback.trackingEntityState,
     timeline: state.realtimePlayback.timeline,
     latitude: state.realtimePlayback.latitude,

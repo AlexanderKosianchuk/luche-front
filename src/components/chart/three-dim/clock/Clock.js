@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import _throttle from 'lodash.throttle';
 
 import {
+  knockout,
   Cartesian3,
   Math,
   JulianDate,
@@ -17,7 +18,11 @@ class Clock extends Component {
   constructor(props) {
     super(props);
 
-    this.handler = this.onTick.bind(this);
+    this.isAnimating = null;
+    this.handleTick = this.onTick.bind(this);
+    this.handleAnimationStateChange = this.onAnimationStateChange.bind(this);
+    this.handleTimelineScrub = this.onTimelineScrub.bind(this);
+    this.goToTimestampThrottle = _throttle(this.goToTimestamp.bind(this), 1000);
 
     props.subjectViewer.subscribe({
       next: (cesiumViewer) => {
@@ -25,33 +30,55 @@ class Clock extends Component {
           this.viewer = cesiumViewer;
 
           this.timestamp = new Date(JulianDate.toDate(this.viewer.clock.currentTime)).getTime();
-          this.viewer.clock.onTick.addEventListener(this.handler);
+          this.viewer.clock.onTick.addEventListener(this.handleTick);
 
-          Math.setRandomNumberSeed(3);
+          knockout.getObservable(
+            this.viewer.clockViewModel,
+            'shouldAnimate'
+          ).subscribe(this.handleAnimationStateChange);
+
+          this.viewer.timeline.addEventListener(
+            'settime',
+            this.handleTimelineScrub,
+            false
+          );
         }
       }
     });
   }
 
+  onTimelineScrub(event) {
+    let timestamp = new Date(JulianDate.toDate(event.clock.currentTime)).getTime();
+    this.timestamp = timestamp;
+    this.goToTimestampThrottle();
+  }
+
+  onAnimationStateChange(isAnimating) {
+    this.isAnimating = isAnimating;
+
+    this.props.transmit('SET_FLIGHT_GEO_FLY_STATE', {
+      status: isAnimating ? 'flying' : 'mute'
+    });
+  }
+
   onTick(clock) {
-    let timestamp = new Date(JulianDate.toDate(clock.currentTime)).getTime();
-    if (this.timestamp === timestamp) {
-      this.props.transmit('SET_FLIGHT_GEO_FLY_STATE', { state: 'mute' });
+    if (!this.isAnimating) {
       return;
     }
 
+    let timestamp = new Date(JulianDate.toDate(clock.currentTime)).getTime();
+
+    if ((this.props.status !== 'mute') && (this.timestamp !== timestamp)) {
+      this.goToTimestampThrottle();
+    }
+
     this.timestamp = timestamp;
-    this.goToTimestampThrottle(timestamp)();
   }
 
-  goToTimestampThrottle = function(timestamp) {
-    return _throttle(this.goToTimestamp.bind(this, timestamp), 500);
-  }
-
-  goToTimestamp(timestamp) {
+  goToTimestamp() {
     this.props.transmit('FLIGHT_GEO_FLY', {
-      state: 'flying',
-      timestamp: timestamp
+      status: 'flying',
+      timestamp: this.timestamp
     });
   }
 
@@ -102,7 +129,14 @@ class Clock extends Component {
 
   componentWillUnmount() {
     if (this.viewer) {
-      this.viewer.clock.onTick.removeEventListener(this.handler);
+      this.viewer.clock.onTick.removeEventListener(this.handleTick);
+
+      knockout.getObservable(
+        this.viewer.clockViewModel,
+        'shouldAnimate'
+      ).unsubscribe(this.handleAnimationStateChange);
+
+      this.viewer.timeline.removeEventListener(this.handleTimelineScrub);
     }
   }
 

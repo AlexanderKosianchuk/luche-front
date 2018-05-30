@@ -1,7 +1,6 @@
 const initialState = {
   status: null,
   flightId: null,
-  frameNum: null,
   step: 1,
   timestamp: null,
   thresholdBinded: false,
@@ -38,7 +37,6 @@ export default function realtimePlayback(state = initialState, action) {
         ...{
           flightId: action.payload.request.flightId,
           status: 'ready',
-          frameNum: 0,
           step: step,
           timestamp: (action.payload.response.timeline
               && action.payload.response.timeline.length > 0)
@@ -58,24 +56,11 @@ export default function realtimePlayback(state = initialState, action) {
       };
 
     case 'FLIGHT_GEO_FLY':
-      if (action.payload.frameNum
-        && state.timeline[action.payload.frameNum]
-      ) {
-        return { ...state,
-          ...{
-            status: action.payload.state || state.status,
-            frameNum: action.payload.frameNum,
-            timestamp: state.timeline[action.payload.frameNum],
-          }
-        };
-      }
-
       if (action.payload.timestamp) {
         if (action.payload.timestamp <= state.timeline[0]) {
           return { ...state,
             ...{
-              status: action.payload.state || state.status,
-              frameNum: 0,
+              status: action.payload.status || state.status,
               timestamp: state.timeline[0]
             }
           };
@@ -84,59 +69,30 @@ export default function realtimePlayback(state = initialState, action) {
         if (action.payload.timestamp >= state.timeline[state.timeline.length - 1]) {
           return { ...state,
             ...{
-              status: action.payload.state || state.status,
-              frameNum: state.timeline.length - 1,
+              status: action.payload.status || state.status,
               timestamp: state.timeline[state.timeline.length - 1]
             }
           };
         }
 
-        let index = 0;
-        let previousValue = state.timeline[index];
-        for (index in state.timeline) {
-          let currentValue = state.timeline[index];
-
-          if ((previousValue <= action.payload.timestamp)
-            && (currentValue > action.payload.timestamp)
-          ) {
-            break;
-          }
-
-          previousValue = currentValue;
-        }
-
         return { ...state,
           ...{
-            status: action.payload.state || state.status,
-            frameNum: parseInt(index),
-            timestamp: state.timeline[index]
+            status: action.payload.status || state.status,
+            timestamp: action.payload.timestamp
           }
         };
       }
 
-      if ((state.frameNum < 0)
-        || (state.frameNum > state.timeline.length)
-      ) {
-        return { ...state,
-          ...{
-            status: action.payload.state || state.status,
-            frameNum: 0,
-            timestamp: state.timeline[0]
-          }
-        };
+    return { ...state,
+      ...{
+        status: action.payload.status || state.status,
+        timestamp: state.timestamp + 1000
       }
-
-      return { ...state,
-        ...{
-          status: action.payload.state || state.status,
-          frameNum: state.frameNum + state.step,
-          timestamp: state.timeline[state.frameNum + 1]
-        }
-      };
+    };
     case 'SET_FLIGHT_GEO_FLY_STATE':
       return { ...state,
         ...{
-          status: action.payload.state,
+          status: action.payload.status,
         }
       };
     case 'SET_FLIGHT_GEO_THRESHOLD_STATE':

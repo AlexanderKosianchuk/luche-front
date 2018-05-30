@@ -25,7 +25,7 @@ var HEADER_HEIGHT = 105;
 function Chart(store) {
   this.store = store;
 
-  this.state = store.getState();
+  this.state = Object.assign({}, store.getState());
 
   this.mainChartColor = this.state.settings.items.mainChartColor || 'fff';
   this.lineWidth = this.state.settings.items.lineWidth || 1;
@@ -72,9 +72,9 @@ function Chart(store) {
   this.mouseInChat = false;
   this.threeDimIsShown = false;
 
-  $(document).on('chart:hideParamsList', this.hideParamsList.bind(this) );
-  $(document).on('chart:showParamsList', this.showParamsList.bind(this) );
-  $(document).on('chart:fullSize', this.fullSize.bind(this) );
+  $(document).on('chart:hideParamsList', this.hideParamsList.bind(this));
+  $(document).on('chart:showParamsList', this.showParamsList.bind(this));
+  $(document).on('chart:fullSize', this.fullSize.bind(this));
   this.unsubscribe = this.store.subscribe(this.handleChange.bind(this));
 }
 
@@ -82,18 +82,24 @@ Chart.prototype.handleChange = function() {
   let newState = this.store.getState();
 
   if (newState.realtimePlayback.thresholdBinded) {
-    if (this.state.realtimePlayback.frameNum
-      !== newState.realtimePlayback.frameNum
+    if (this.state.realtimePlayback.timestamp
+      !== newState.realtimePlayback.timestamp
     ) {
       this.playbackThreshold(newState.realtimePlayback.timestamp);
     }
   }
 
-  this.state = newState;
+  if (this.state.realtimePlayback.isDisplayed
+    !== newState.realtimePlayback.isDisplayed
+  ) {
+    this.threeDimIsShown = newState.realtimePlayback.isDisplayed;
+    this.fullSize();
+  }
+
+  this.state = Object.assign({}, newState);
 }
 
 Chart.prototype.SetChartData = function(data){
-
   this.flightId = parseInt(data.flightId);
   this.templateId = data.templateId;
   this.stepLength = parseFloat(data.stepLength);
@@ -502,27 +508,33 @@ Chart.prototype.SupportPlotEvents = function(e) {
 }
 
 Chart.prototype.dispatchIntervalChange = function () {
-  var self = this;
-  var currXmin = self.plotAxes.xaxis.min / 1000, // to unix timestamp
-    currXmax = self.plotAxes.xaxis.max / 1000;
+  let self = this;
+  let currXmin = self.plotAxes.xaxis.min / 1000; // to unix timestamp
+  let currXmax = self.plotAxes.xaxis.max / 1000;
+  let startFrame = Math.min (self.endFrame,
+    Math.max (0,
+      Math.round((currXmin - self.startCopyTime) / self.stepLength)
+    )
+  );
+  let endFrame = Math.min (self.endFrame,
+    Math.max (0,
+      Math.floor((currXmax - self.startCopyTime) / self.stepLength)
+    )
+  );
 
-  self.store.dispatch(transmit(
-    'CHANGE_SELECTED_START_FRAME',
-     Math.min (self.endFrame,
-       Math.max (0,
-         Math.round((currXmin - self.startCopyTime) / self.stepLength)
-       )
-     )
-  ));
+  if (this.state.flight.selectedStartFrame !== startFrame) {
+    self.store.dispatch(transmit(
+      'CHANGE_SELECTED_START_FRAME',
+       startFrame
+    ));
+  }
 
-  self.store.dispatch(transmit(
-    'CHANGE_SELECTED_END_FRAME',
-     Math.min (self.endFrame,
-       Math.max (0,
-         Math.floor((currXmax - self.startCopyTime) / self.stepLength)
-       )
-     )
-  ));
+  if (this.state.flight.selectedEndFrame !== endFrame) {
+    self.store.dispatch(transmit(
+      'CHANGE_SELECTED_END_FRAME',
+      endFrame
+    ));
+  }
 }
 
 Chart.prototype.SupportLegendEvents = function(e) {
@@ -585,7 +597,6 @@ Chart.prototype.playbackThreshold = function(timestamp) {
   this.Legnd.UpdateLegend(timestamp, values, binaries);
   this.Legnd.crosshairLocked = true;
   this.plot.lockCrosshair(1);
-  console.log(this.Legnd.vizirBarContainer);
   this.Legnd.RemoveSectionBar($(this.Legnd.vizirBarContainer));
   this.Legnd.vizirFreezeTimestamp = this.pos;
   this.Legnd.vLineColor = "rgba(170, 0, 0, 0.80)";

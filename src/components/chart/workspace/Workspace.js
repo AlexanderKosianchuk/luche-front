@@ -85,7 +85,8 @@ Workspace.propTypes = {
   params: PropTypes.array,
   stepLength: PropTypes.number,
   startFlightTime: PropTypes.string,
-  hasCoordinates: PropTypes.bool
+  hasCoordinates: PropTypes.bool,
+  isDisplayed: PropTypes.bool.isRequired
 };
 
 function mapStateToProps(state) {
@@ -95,7 +96,8 @@ function mapStateToProps(state) {
     startFlightTime: state.flight.startFlightTime,
     startFlightTime: state.flight.startFlightTime,
     settings: state.settings.items,
-    hasCoordinates: state.flight.hasCoordinates
+    hasCoordinates: state.flight.hasCoordinates,
+    isDisplayed: state.realtimePlayback.isDisplayed
   };
 }
 
