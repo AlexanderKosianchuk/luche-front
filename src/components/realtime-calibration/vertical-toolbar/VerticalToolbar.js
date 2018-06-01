@@ -138,7 +138,11 @@ class VerticalToolbar extends Component {
     var data = new FormData();
     data.append('uid', this.props.uid);
     data.append('fdrId', this.props.chosenFdr.id);
-    data.append('calibrationId', this.props.chosenCalibration.id);
+    data.append('calibrationId',
+      this.props.chosenCalibration
+      ? this.props.chosenCalibration.id
+      : null
+    );
     data.append('ips', ips);
     data.append('fakeData', this.state.fakeData);
     data.append('cors', window.location.hostname);

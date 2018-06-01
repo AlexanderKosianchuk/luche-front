@@ -32,7 +32,7 @@ class Clock extends Component {
           this.timestamp = new Date(JulianDate.toDate(this.viewer.clock.currentTime)).getTime();
           this.viewer.clock.onTick.addEventListener(this.handleTick);
 
-          knockout.getObservable(
+          this.shouldAnimateObserver = knockout.getObservable(
             this.viewer.clockViewModel,
             'shouldAnimate'
           ).subscribe(this.handleAnimationStateChange);
@@ -130,13 +130,11 @@ class Clock extends Component {
   componentWillUnmount() {
     if (this.viewer) {
       this.viewer.clock.onTick.removeEventListener(this.handleTick);
-
-      knockout.getObservable(
-        this.viewer.clockViewModel,
-        'shouldAnimate'
-      ).unsubscribe(this.handleAnimationStateChange);
-
       this.viewer.timeline.removeEventListener(this.handleTimelineScrub);
+    }
+
+    if (this.shouldAnimateObserver) {
+      this.shouldAnimateObserver.dispose();
     }
   }
 
