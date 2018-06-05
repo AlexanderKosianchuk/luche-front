@@ -127,7 +127,7 @@ module.exports = {
     }),
     new webpack.DefinePlugin({
       NODE_ENV: JSON.stringify('production'),
-      REST_URL: JSON.stringify('http://rest.luche.com/'),
+      REST_URL: JSON.stringify('http://localhost:808/'),
       INTERACTION_URL: JSON.stringify('http://localhost:1337/'),
       CESIUM_BASE_URL: JSON.stringify('')
     }),
