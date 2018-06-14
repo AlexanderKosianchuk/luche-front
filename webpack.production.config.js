@@ -1,6 +1,7 @@
 'use strict';
 
 const NODE_ENV = 'production';
+const NODE_HOST = process.env.NODE_HOST || 'luch15.com';
 
 const webpack = require('webpack');
 const path = require('path');
@@ -127,8 +128,8 @@ module.exports = {
     }),
     new webpack.DefinePlugin({
       NODE_ENV: JSON.stringify('production'),
-      REST_URL: JSON.stringify('http://luch15.com:808/'),
-      INTERACTION_URL: JSON.stringify('http://luch15.com:1337/'),
+      REST_URL: JSON.stringify('http://'+NODE_HOST+':808/'),
+      INTERACTION_URL: JSON.stringify('http://'+NODE_HOST+':1337/'),
       CESIUM_BASE_URL: JSON.stringify('')
     }),
     new MiniCssExtractPlugin({

@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=dev webpack-dev-server --mode development --open",
+    "build:dev": "cross-env NODE_HOST=localhost webpack --mode production --config webpack.production.config.js --progress --profile --colors",
     "build": "webpack --mode production --config webpack.production.config.js --progress --profile --colors",
     "watch": "cross-env NODE_ENV=dev webpack --watch",
     "clean": "rimraf dist",

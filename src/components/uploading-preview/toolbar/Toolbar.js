@@ -4,12 +4,10 @@ import { bindActionCreators } from 'redux';
 import { Translate } from 'react-redux-i18n';
 
 import trigger from 'actions/trigger';
-import redirect from 'actions/redirect';
 
 class Toolbar extends React.Component {
   handleUploadClick() {
     this.props.trigger('uploadPreviewedFlight');
-    this.props.redirect('/');
   }
 
   render() {
@@ -44,8 +42,7 @@ class Toolbar extends React.Component {
 
 function mapDispatchToProps(dispatch) {
   return {
-    trigger: bindActionCreators(trigger, dispatch),
-    redirect: bindActionCreators(redirect, dispatch)
+    trigger: bindActionCreators(trigger, dispatch)
   }
 }
 

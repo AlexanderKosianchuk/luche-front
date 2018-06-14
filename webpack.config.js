@@ -1,6 +1,7 @@
 'use strict';
 
 const NODE_ENV = process.env.NODE_ENV || 'prod';
+const NODE_HOST = process.env.NODE_HOST || 'localhost';
 
 const webpack = require('webpack');
 const path = require('path');
@@ -122,8 +123,8 @@ module.exports = {
     }),
     new webpack.DefinePlugin({
       NODE_ENV: JSON.stringify('dev'),
-      REST_URL: JSON.stringify('http://rest.luche.com:808/'),
-      INTERACTION_URL: JSON.stringify('http://localhost:1337/'),
+      REST_URL: JSON.stringify('http://'+NODE_HOST+':808/'),
+      INTERACTION_URL: JSON.stringify('http://'+NODE_HOST+':1337/'),
       CESIUM_BASE_URL: JSON.stringify('')
     }),
     new webpack.NamedModulesPlugin(),
