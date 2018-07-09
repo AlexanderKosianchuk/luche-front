@@ -13,6 +13,10 @@ export default function calibration(state = initialState, action) {
         ...{ pending: true }
       };
     case 'GET_CALIBRATIONS_COMPLETE':
+      if (state.pending !== true) {
+        return state;
+      }
+
       return { ...state, ...{
         pending: false,
         items: action.payload.response,
@@ -20,6 +24,7 @@ export default function calibration(state = initialState, action) {
       }};
     case 'SET_CHOSEN_CALIBRATION':
       return { ...state, ...{
+        pending: false,
         chosen: action.payload.chosen || null
       }};
     case 'POST_DELETE_CALIBRATION_COMPLETE':

@@ -156,10 +156,6 @@ class VerticalToolbar extends Component {
 
   handleSaveClick() {
     //88ac42ed2685402f/fdr-id/1/calibration-id/9
-    this.props.uid;
-    this.props.chosenFdr.id;
-    this.props.chosenCalibration.id;
-
     let url = '/uploading/'
       + this.props.uid
       + '/fdr-id/'
@@ -279,7 +275,9 @@ function mapStateToProps(state) {
   return {
     isRunning: state.realtimeCalibrationData.status,
     chosenFdr: state.fdrs.chosen,
+    fdr: state.fdrs,
     chosenCalibration: state.calibrations.chosen,
+    calibration: state.calibrations
   };
 }
 

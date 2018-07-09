@@ -36,7 +36,7 @@ export default function facade(store) {
   $(document).on('uploadPreviewedFlight', function(uploadingUid, fdrId, calibrationId) {
     let FU = new FlightUploader(store);
     FU.uploadPreviewed().then(() => {
-      //store.dispatch(push('/'));
+      store.dispatch(push('/'));
     });
   });
 
