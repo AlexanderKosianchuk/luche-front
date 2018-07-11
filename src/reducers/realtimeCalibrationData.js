@@ -11,7 +11,7 @@ const initialState = {
   errorCode: null
 };
 
-const MAX_POINT_COUNT = 100;
+const MAX_POINT_COUNT = 200;
 
 export default function realtimeCalibrationData(state = initialState, action) {
   switch (action.type) {

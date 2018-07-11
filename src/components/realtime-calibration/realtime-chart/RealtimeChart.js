@@ -8,10 +8,15 @@ import { Line, defaults } from 'react-chartjs-2';
 
 import transmit from 'actions/transmit';
 
+const LOCKED_SCALE_TIMEOUT = 2000;
+
 class RealtimeChart extends Component {
   constructor(props) {
     super(props);
     defaults.global.animation = false;
+    this.isScaleAllowed = { min: true, max: true };
+    this.yAxesMin = this.props.param.minValue;
+    this.yAxesMax = this.props.param.maxValue;
   }
 
   getData() {
@@ -27,8 +32,52 @@ class RealtimeChart extends Component {
     };
   }
 
+  lockScale(val) {
+    if (this.isScaleAllowed[val] === false) {
+      return;
+    }
+
+    this.isScaleAllowed[val] = false;
+
+    setTimeout(() => {
+      this.isScaleAllowed[val] = true;
+    }, LOCKED_SCALE_TIMEOUT);
+  }
+
+  calcAxesVal(side, current) {
+    let region = this.props.param.minValue + this.props.param.maxValue;
+
+    let minOnLine = (this.props.line.length > 0)
+      ? Math.min(...this.props.line) : this.props.param.minValue;
+    let maxOnLine = (this.props.line.length > 0)
+      ? Math.max(...this.props.line) : this.props.param.maxValue;
+
+    let axisValue = 0;
+
+    if (side === 'min') {
+      axisValue = Math[side](
+        this.props.param[side + 'Value'] - region * 0.2,
+        minOnLine - Math.abs((maxOnLine - minOnLine) * 0.2)
+      );
+    } else if (side === 'max') {
+      axisValue = Math[side](
+        this.props.param[side + 'Value'] + region * 0.2,
+        maxOnLine + Math.abs((maxOnLine - minOnLine) * 0.2)
+      );
+    }
+
+    if ((axisValue !== current)
+        && this.isScaleAllowed[side]
+    ) {
+      this.lockScale(side);
+      return axisValue;
+    }
+
+    return current;
+  }
+
   getOptions() {
-    return {
+    let options = {
       scales: {
         xAxes: [{
           type: 'time',
@@ -41,6 +90,19 @@ class RealtimeChart extends Component {
         onClick: (e) => e.stopPropagation()
       }
     };
+
+    if ((this.yAxesMin !== 0) && (this.yAxesMax !== 1)) {
+      options.scales.yAxes = [{
+         display: true,
+         stacked: true,
+         ticks: {
+           min: this.yAxesMin,
+           max: this.yAxesMax
+         }
+      }]
+    }
+
+    return options;
   }
 
   handleClick() {

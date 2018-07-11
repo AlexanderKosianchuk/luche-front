@@ -48,6 +48,8 @@ class ChooseParamsButtons extends Component {
   }
 
   handleSwitch(elem, state) {
+    this.clearParams();
+
     if (state === true) {
       this.props.changeParamsSource('template');
     } else {
@@ -56,6 +58,10 @@ class ChooseParamsButtons extends Component {
   }
 
   handleFdrTemplateChange() {
+    this.clearParams();
+  }
+
+  clearParams() {
     this.props.transmit('CLEAR_REALTIME_CALIBRATION_PARAMS');
   }
 

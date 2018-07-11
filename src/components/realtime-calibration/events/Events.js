@@ -9,8 +9,18 @@ import moment from 'moment';
 import TileItem from 'components/realtime-calibration/tile-item/TileItem';
 
 class RealtimeEvents extends Component {
+  eventsExist() {
+    if ((this.props.events.length === 0)
+      || (this.props.events[this.props.events.length - 1].length === 0)
+    ) {
+      return false;
+    }
+
+    return true;
+  }
+
   buildTile() {
-    if (this.props.events.length === 0) {
+    if (!this.eventsExist()) {
       return null;
     }
 
@@ -44,7 +54,7 @@ class RealtimeEvents extends Component {
     return (
       <div className='realtime-calibration-evenst'>
         <div className='realtime-calibration-evenst__header'>
-          { (this.props.events.length !== 0) &&
+          { (this.eventsExist()) &&
             <Translate value='realtimeCalibration.events.header' />
           }
         </div>
