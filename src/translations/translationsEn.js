@@ -312,7 +312,8 @@ const translationsEn = {
       },
       events: {
         header: 'Stream data analysis'
-      }
+      },
+      ungrouped: 'Ungrouped'
     },
     chart: {
       threeDim: {

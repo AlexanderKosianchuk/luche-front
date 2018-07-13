@@ -307,7 +307,8 @@ const translationsRu = {
       },
       events: {
         header: 'Результаты логического анализа входных данных'
-      }
+      },
+      ungrouped: 'Вне групп'
     },
     chart: {
       threeDim: {

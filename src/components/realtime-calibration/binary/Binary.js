@@ -6,31 +6,62 @@ import { bindActionCreators } from 'redux';
 import { Translate } from 'react-redux-i18n';
 
 import TileItem from 'components/realtime-calibration/tile-item/TileItem';
+import groupParams from 'components/realtime-calibration/utils/groupParams';
 
 class Binary extends Component {
   buildTile() {
-    return this.props.params.binary.map((item, index) => {
-      let value = false;
+    let binary = this.props.params.binary;
+    let groups = groupParams(binary);
 
-      if (this.props.data.length > 0) {
-        let lastTriggeredBp = this.props.data[this.props.data.length - 1];
-        let searchedIndex = lastTriggeredBp.findIndex((binary) => {
-          return item.id === binary.id;
-        });
-
-        if (searchedIndex !== -1) {
-          value = true;
+    if (groups === null) {
+      return binary.map((item, index) => {
+        return this.getTile(item);
+      });
+    } else {
+      let groupsTile = [];
+      for (let ii = 0; ii < groups.names.length; ii++) {
+        if (groups.blocks[groups.names[ii]].length) {
+          groupsTile.push(
+            <div className='realtime-calibration-binary__group' key={ 'groupsTile'+ii }>
+              <p className='realtime-calibration-binary__group-title'>
+                { groups.titles[ii] }
+              </p>
+              {
+                groups.blocks[groups.names[ii]]
+                  .map((item, index) => {
+                    return this.getTile(item);
+                  })
+              }
+            </div>
+          );
         }
       }
 
-      return (<TileItem
-        key={ index }
-        param={ item }
-        value={ value }
-        canChartDisplay={ true }
-        onlyBinaryValue={ true }
-      />);
-    });
+      return groupsTile;
+    }
+  }
+
+  getTile(param) {
+    let value = false;
+
+    if (this.props.binary.length > 0) {
+      let lastTriggeredBp = this.props.binary[this.props.binary.length - 1];
+      let searchedIndex = lastTriggeredBp.findIndex((binary) => {
+        return param.id === binary.id;
+      });
+
+      if (searchedIndex !== -1) {
+        value = true;
+      }
+    }
+
+    return (<TileItem
+      key={ 'BinaryTileItem' + param.id }
+      param={ param }
+      value={ value }
+      canChartDisplay={ true }
+      onlyBinaryValue={ true }
+    />);
   }
 
   render() {
@@ -52,7 +83,7 @@ class Binary extends Component {
 function mapStateToProps(state) {
   return {
     currentFrame: state.realtimeCalibrationData.currentFrame,
-    data: state.realtimeCalibrationData.binary,
+    binary: state.realtimeCalibrationData.binary,
     params: state.realtimeCalibrationParams
   };
 }
