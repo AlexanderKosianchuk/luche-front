@@ -205,6 +205,13 @@ const translationsRu = {
       toolbar: {
         title: 'Градуировка для %{fdrName}'
       },
+      spreadsheetTitle: {
+        code: 'Код',
+        physics: 'Физика'
+      },
+      spreadsheet: {
+        addButton: 'Добавить строку'
+      },
       param: {
         code: 'Код параметра',
         name: 'Название (е.и.)',

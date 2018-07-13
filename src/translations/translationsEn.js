@@ -210,6 +210,13 @@ const translationsEn = {
       toolbar: {
         title: 'Calibration for FDR %{fdrName}'
       },
+      spreadsheetTitle: {
+        code: 'Code',
+        physics: 'Physics'
+      },
+      spreadsheet: {
+        addButton: 'Add row'
+      },
       param: {
         code: 'Code',
         name: 'Name (dim)',
