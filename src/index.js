@@ -34,12 +34,7 @@ store.dispatch(loadTranslations(translationsObject));
 
 facade(store);
 
-let browserLang = (navigator.language || navigator.userLanguage).substring(0, 2);
-if (Object.keys(translationsObject).indexOf(browserLang) !== -1) {
-  store.dispatch(setLocale(browserLang.toLowerCase()));
-} else {
-  store.dispatch(setLocale('en'));
-}
+store.dispatch(setLocale('ru'));
 
 ReactDOM.render(
   <App store={ store } history={ history } />,

@@ -91,10 +91,10 @@ class RealtimeChart extends Component {
       }
     };
 
-    this.yAxesMin = this.calcAxesVal('min', this.yAxesMin);
-    this.yAxesMax = this.calcAxesVal('max', this.yAxesMax);
-
-    if ((this.yAxesMin !== 0) && (this.yAxesMax !== 1)) {
+    if ((this.props.param.minValue !== 0) && (this.props.param.maxValue !== 1)) {
+      this.yAxesMin = this.calcAxesVal('min', this.yAxesMin);
+      this.yAxesMax = this.calcAxesVal('max', this.yAxesMax);
+      
       options.scales.yAxes = [{
          display: true,
          stacked: true,

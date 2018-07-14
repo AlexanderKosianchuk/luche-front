@@ -104,9 +104,6 @@ class TopMenu extends React.Component {
             <a href='#' className='dropdown-toggle is-hoverable' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'>
             { this.props.userLang.toUpperCase() }
            </a>
-            <ul className='top-menu__dropdown-menu top-menu__language-menu dropdown-menu'>
-            { this.languageMenu }
-            </ul>
           </li>
           <li><a className='is-hoverable' onClick={ () => { this.props.redirect('/user-settings') }} href='#'>
             <span className='glyphicon glyphicon-cog'></span>

@@ -222,7 +222,8 @@ const translationsEn = {
         name: 'Name (dim)',
         channels: 'Channels',
         minValue: 'Min value',
-        maxValue: 'Max value'
+        maxValue: 'Max value',
+        deviationFromStandardView: 'Deviation from standard view'
       }
     },
     flightUploader: {

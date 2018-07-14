@@ -49,8 +49,15 @@ export default function flights(state = initialState, action) {
     }
     case 'FLIGHT_UPLOADING_COMPLETE':
       if (typeof action.payload.item === 'object') {
-        state.items.push(action.payload.item);
-        return { ...state };
+
+        let uploadedIndex = state.items.findIndex((item) => {
+          return item.id === action.payload.item.id;
+        });
+
+        if (uploadedIndex === -1) {
+          state.items.push(action.payload.item);
+          return { ...state };
+        }
       }
 
       return state;

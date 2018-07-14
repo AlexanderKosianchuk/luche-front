@@ -217,7 +217,8 @@ const translationsRu = {
         name: 'Название (е.и.)',
         channels: 'Каналы',
         minValue: 'Мин. зн.',
-        maxValue: 'Макс. зн.'
+        maxValue: 'Макс. зн.',
+        deviationFromStandardView: 'Отклонение от стандартного вида'
       }
     },
     flightUploader: {
