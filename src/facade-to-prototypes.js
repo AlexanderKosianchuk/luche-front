@@ -33,7 +33,7 @@ export default function facade(store) {
     FU.FillFactoryContaider($(container), uploadingUid, fdrId, calibrationId);
   });
 
-  $(document).on('uploadPreviewedFlight', function(uploadingUid, fdrId, calibrationId) {
+  $(document).on('uploadPreviewedFlight', function() {
     let FU = new FlightUploader(store);
     FU.uploadPreviewed().then(() => {
       store.dispatch(push('/'));

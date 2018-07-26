@@ -14,7 +14,7 @@ const translationsRu = {
     flightsTree: {
       apply: 'Принять',
       toolbar: {
-        flightList: 'Перечень полетов'
+        flightList: 'Перечень записей'
       },
       menuDropdown: {
         fileMenu: 'Меню',
@@ -82,7 +82,8 @@ const translationsRu = {
         printTableStep: 'Шаг цифропечати',
         mainChartColor: 'Заливка графика',
         lineWidth: 'Толщина линий на графике',
-        flightShowAction: 'Действие с полетом по умолчанию'
+        flightShowAction: 'Действие с записью по умолчанию',
+        pointsMaxCount: 'Максимальное количество точек на графике'
       }
     },
     flightStatistics: {
@@ -361,7 +362,7 @@ const translationsRu = {
       }
     },
     mainMenu: {
-      flights: 'Полеты',
+      flights: 'Записи',
       fdrs: 'Регистраторы',
       calibration: 'Градуировки',
       users: 'Пользователи',

@@ -87,7 +87,8 @@ const translationsEn = {
         printTableStep: 'Print table step',
         mainChartColor: 'Main chart background color',
         lineWidth: 'Сhart lines width',
-        flightShowAction: 'Flight show action'
+        flightShowAction: 'Flight show action',
+        pointsMaxCount: 'Max points count on chart'
       }
     },
     flightStatistics: {

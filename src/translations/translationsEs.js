@@ -80,7 +80,8 @@ const translationsEs = {
         printTableStep: 'Paso mesa de impresión',
         mainChartColor: 'Color principal fondo de la carta',
         lineWidth: 'Сhart líneas de ancho',
-        flightShowAction: 'Flight show action'
+        flightShowAction: 'Flight show action',
+        pointsMaxCount: 'Max points count on chart'
       }
     },
     flightStatistics: {

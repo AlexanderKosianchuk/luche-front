@@ -14,8 +14,6 @@ import request from 'actions/request';
 import redirect from 'actions/redirect';
 import transmit from 'actions/transmit';
 
-const UID = uuidV4().substring(0, 18).replace(/-/g, '');
-
 class Wrapper extends Component {
   navigate(paramsSource = null) {
     let fdrId = this.props.fdrId;
@@ -73,6 +71,8 @@ class Wrapper extends Component {
   }
 
   componentWillMount() {
+    this.UID = uuidV4().substring(0, 18).replace(/-/g, '');
+
     this.navigate();
     this.setContainerParams();
   }
@@ -111,12 +111,12 @@ class Wrapper extends Component {
     return (
       <div className='realtime-calibration-wrapper'>
         <div className='row'>
-          <Timeline uid={ UID } fdrId={ parseInt(this.props.fdrId) }/>
+          <Timeline uid={ this.UID } fdrId={ parseInt(this.props.fdrId) }/>
         </div>
         <div className='row'>
           <div className='col-sm-3 col-lg-2'>
             <VerticalToolbar
-              uid={ UID }
+              uid={ this.UID }
               fdrId={ parseInt(this.props.fdrId) }
               paramsSource={ this.props.paramsSource }
               fdrTemplateId={ this.props.fdrTemplateId }
@@ -124,7 +124,7 @@ class Wrapper extends Component {
             />
           </div>
           <div className='col-sm-9 col-lg-10'>
-            <DataContainer uid={ UID } />
+            <DataContainer uid={ this.UID } />
           </div>
         </div>
       </div>

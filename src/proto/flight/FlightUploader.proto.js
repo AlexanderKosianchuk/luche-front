@@ -552,8 +552,8 @@ FlightUploader.prototype.uploadPreviewed = function() {
 
       var calibrationId = null;
 
-      if ($el.data("calibration-id").length) {
-        calibrationId = parseInt($el.data("calibration-id"));
+      if ($el.attr('data-calibration-id').length) {
+        calibrationId = parseInt($el.attr('data-calibration-id'));
       }
 
       if((ignoreDueUploading.prop('checked') == false) &&
