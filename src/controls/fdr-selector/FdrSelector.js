@@ -135,6 +135,7 @@ class FdrSelector extends Component {
         <a href='#'><Select
           className='fdr-selector__select'
           data={ this.buildList() }
+          disabled={ (this.props.disabled === true) }
           value={ chosen }
           onSelect={ this.handleSelect.bind(this) }
           ref={(select) => { this.selectFdrType = select; }}
@@ -154,6 +155,7 @@ FdrSelector.propTypes = {
   chosenFdrId: PropTypes.number,
   handleChange: PropTypes.func,
   methodHandler: PropTypes.object,
+  disabled: PropTypes.bool,
 
   pending:  PropTypes.bool,
   fdrs: PropTypes.array,

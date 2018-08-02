@@ -81,6 +81,18 @@ export default function realtimeCalibrationData(state = initialState, action) {
         binary: action.payload.response.binary,
         events: action.payload.response.events,
       }}
+    case 'CLEAR_REALTIME_CALIBRATION_DATA':
+      return {
+        ...initialState,
+        ...{
+          timeline: [],
+          fullTimeline: [],
+          phisics: [],
+          binary: [],
+          events: [],
+          voiceStreams: []
+        }
+      };
     default:
       return state;
   }

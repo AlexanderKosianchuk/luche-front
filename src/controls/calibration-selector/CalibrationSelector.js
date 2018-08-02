@@ -80,6 +80,7 @@ class CalibrationSelector extends Component {
     return (
       <li className={ "calibration-selector " + (isHidden ? 'is-hidden' : '') }>
         <a href="#"><Select
+          disabled={ (this.props.disabled === true) }
           data={ this.buildList(this.props.calibrations) }
           value={ this.props.chosen.id || null }
           onSelect={ this.handleSelect.bind(this) }
@@ -95,6 +96,7 @@ class CalibrationSelector extends Component {
 CalibrationSelector.propTypes = {
   handleReady: PropTypes.func,
   methodHandler: PropTypes.object,
+  disabled: PropTypes.bool,
 
   pending:  PropTypes.bool,
   calibrations: PropTypes.array,

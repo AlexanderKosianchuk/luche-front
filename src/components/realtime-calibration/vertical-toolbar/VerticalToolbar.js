@@ -13,6 +13,7 @@ import ChooseParamsButtons from 'components/realtime-calibration/choose-params-b
 import transmit from 'actions/transmit';
 import request from 'actions/request';
 import redirect from 'actions/redirect';
+import trigger from 'actions/trigger';
 
 class VerticalToolbar extends Component {
   static form = null;
@@ -22,6 +23,7 @@ class VerticalToolbar extends Component {
 
     this.state = {
       fakeData: false,
+      sessionStarted: false,
       sources: ['192.168.88.101:2017', '192.168.88.102:2017']
     }
   }
@@ -37,6 +39,10 @@ class VerticalToolbar extends Component {
         data
       );
     }
+
+    this.props.transmit('CLEAR_REALTIME_CALIBRATION_DATA');
+
+    this.setState({ sessionStarted: true });
   }
 
   handleStartClick(event) {
@@ -51,6 +57,8 @@ class VerticalToolbar extends Component {
         'REALTIME_CALIBRATION_RECEIVING',
         data
       );
+
+      this.setState({ sessionStarted: true });
     }
   }
 
@@ -91,6 +99,7 @@ class VerticalToolbar extends Component {
       ips.push(<input
         key={ ii }
         className='form-control'
+        disabled={ this.state.sessionStarted ? 'disabled' : '' }
         name='ip[]'
         value={ this.state.sources[ii] }
         onChange={ this.handleChange.bind(this, ii) }
@@ -220,15 +229,24 @@ class VerticalToolbar extends Component {
         </div>
         <div>
           <ul className='realtime-calibration-vertical-toolbar__fdr-type'>
-            <FdrSelector chosenFdrId={ this.props.fdrId } />
-            <CalibrationSelector/>
+            <FdrSelector
+              chosenFdrId={ this.props.fdrId }
+              disabled={ this.state.sessionStarted }
+            />
+            <CalibrationSelector
+              disabled={ this.state.sessionStarted }
+            />
           </ul>
         </div>
         <div className='realtime-calibration-vertical-toolbar__label'>
           <Translate value='realtimeCalibration.verticalToolbar.connectionType'/>
         </div>
         <div className='realtime-calibration-vertical-toolbar__controll'>
-          <select className='form-control' name='connectionType'>
+          <select
+            className='form-control'
+            disabled={ this.state.sessionStarted ? 'disabled' : '' }
+            name='connectionType'
+          >
             <option value='udp'>UDP</option>
           </select>
         </div>
@@ -241,6 +259,7 @@ class VerticalToolbar extends Component {
         <div className='realtime-calibration-vertical-toolbar__button'>
           <button
             className='btn btn-default'
+            disabled={ this.state.sessionStarted ? 'disabled' : '' }
             onClick={ this.handleAddSourceClick.bind(this) }
           >
             <Translate value='realtimeCalibration.verticalToolbar.addSource'/>
@@ -257,7 +276,10 @@ class VerticalToolbar extends Component {
             <Translate value='realtimeCalibration.verticalToolbar.fakeData'/>
           </div>
           <div className='realtime-calibration-vertical-toolbar__inline-label'>
-            <input className='form-control realtime-calibration-vertical-toolbar__checkbox' type='checkbox'
+            <input
+              className='form-control realtime-calibration-vertical-toolbar__checkbox'
+              type='checkbox'
+              disabled={ this.state.sessionStarted ? 'disabled' : '' }
               onChange={ this.handleFakeDataClick.bind(this) }
               checked={ (this.state.fakeData === true) ? 'checked' : '' }
             />
@@ -285,7 +307,8 @@ function mapDispatchToProps(dispatch) {
   return {
     transmit: bindActionCreators(transmit, dispatch),
     request: bindActionCreators(request, dispatch),
-    redirect: bindActionCreators(redirect, dispatch)
+    redirect: bindActionCreators(redirect, dispatch),
+    trigger: bindActionCreators(trigger, dispatch)
   }
 }
 
