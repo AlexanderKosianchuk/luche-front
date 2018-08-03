@@ -400,21 +400,19 @@ Chart.prototype.SupportPlotEvents = function(e) {
   self.placeholder.on('plothover', function (event, pos, item) {
     self.pos = pos;
 
+    var updatePosX = pos.x;
+
     if (self.Legnd.crosshairLocked) {
-      _throttle(() => {
-        var values = self.Prm.GetValue(self.plotDataset, self.Legnd.vizirFreezeTimestamp.x);
-        var binaries = self.Prm.GetBinaries(self.plotDataset, self.Legnd.vizirFreezeTimestamp.x);
-        self.Legnd.UpdateLegend(self.Legnd.vizirFreezeTimestamp.x, values, binaries);
-      }, 100)();
-    } else {
-      _throttle(() => {
-        var values = self.Prm.GetValue(self.plotDataset, pos.x);
-        var binaries = self.Prm.GetBinaries(self.plotDataset, pos.x);
-        self.Legnd.UpdateLegend(pos.x, values, binaries);
-      }, 100)();
+      updatePosX = self.Legnd.vizirFreezeTimestamp.x;
     }
 
-    if(self.clicked){
+    _throttle(() => {
+      var values = self.Prm.GetValue(self.plotDataset, updatePosX);
+      var binaries = self.Prm.GetBinaries(self.plotDataset, updatePosX);
+      self.Legnd.UpdateLegend(updatePosX, values, binaries);
+    }, 100)();
+
+    if (self.clicked) {
       //listenning for ctrl pressed
       var y = "y" + self.clickedItem.series.yaxis.n;
       if(!self.ctrlPressed){

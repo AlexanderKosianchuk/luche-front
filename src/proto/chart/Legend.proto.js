@@ -9,8 +9,18 @@
 //╋╋╋╋╋╋╋┗━━┛
 //=============================================================
 
-function Legend(flightId, legendContainer, apParams, bpParams, associativeParamsArr,
-  plotXaxis, plotYaxes, plotDataset, placeholder, contentChartContainer){
+function Legend(
+  flightId,
+  legendContainer,
+  apParams,
+  bpParams,
+  associativeParamsArr,
+  plotXaxis,
+  plotYaxes,
+  plotDataset,
+  placeholder,
+  contentChartContainer
+) {
 
   this.flightId = flightId;
   this.dataset = plotDataset;

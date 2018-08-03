@@ -220,16 +220,15 @@ Param.prototype.GetValue = function(dataset, x) {
 //=============================================================
 //Get value by x coord by interpolating
 Param.prototype.GetBinaries = function(dataset, x){
-  var bpPrasentArray = new Array();
+  var bpPresentArray = new Array();
   for (var i = this.apCount; i < this.paramCount; ++i) {
     var series = dataset[i],
-      bpPrasent = false,
+      bpPresent = false,
       notFound = true;
 
     // Find the nearest points, x-wise
     for (var j = 0; j < series.data.length; ++j) {
-      if(series.data[j] != null)
-      {
+      if ((series.data[j] !== null) && (series.data[j] !== 'null')) {
         if (series.data[j][0] > x) {
           notFound = false;
           break;
@@ -239,15 +238,16 @@ Param.prototype.GetBinaries = function(dataset, x){
       };
     }
 
-    if((j > 0) && (!notFound)){
-      if(series.data[j - 1] != null){
-        bpPrasent = true;
+    if ((j > 0) && (!notFound)){
+      if (series.data[j - 1] != null){
+        bpPresent = true;
       };
     }
 
-    bpPrasentArray.push(bpPrasent);
+    bpPresentArray.push(bpPresent);
   }
-  return bpPrasentArray;
+
+  return bpPresentArray;
 };
 
 export default Param;
