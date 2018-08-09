@@ -290,17 +290,22 @@ const translationsEn = {
         date: 'Date'
       }
     },
-    realtimeCalibration: {
+    supervision: {
       verticalToolbar: {
         connectionParams: 'Connection params',
         fdrType: 'FDR type',
+        start: 'Run',
+        stop: 'Stop',
+        save: 'Save',
+      },
+      dataSource: {
+        KVviaUDP: 'KV via UDP',
+        file: 'File',
         connectionType: 'Connection type',
         sourceIps: 'Sources IP addresses',
         addSource: 'Add source',
         fakeData: 'Test data',
-        start: 'Run',
-        stop: 'Stop',
-        save: 'Save',
+        chooseFile: 'Choose file',
         enterIpToConnect: 'Please enter IP to connect'
       },
       chooseParamsButtons: {
@@ -334,7 +339,7 @@ const translationsEn = {
     },
     topMenu: {
       brand: 'Luch',
-      calibrate: 'Сalibrate',
+      supervision: 'Supervision',
       fileImport: 'Import',
       upload: 'Upload',
       flightImporterDropdown: {

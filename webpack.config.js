@@ -1,6 +1,6 @@
 'use strict';
 
-const NODE_ENV = process.env.NODE_ENV || 'prod';
+const NODE_ENV = process.env.NODE_ENV || 'development';
 const NODE_HOST = process.env.NODE_HOST || 'localhost';
 
 const webpack = require('webpack');

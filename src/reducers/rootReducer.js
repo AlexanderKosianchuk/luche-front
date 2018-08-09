@@ -11,9 +11,9 @@ import calibration from 'reducers/calibration';
 import calibrations from 'reducers/calibrations';
 import flightUploadingState from 'reducers/flightUploadingState';
 import realtimePlayback from 'reducers/realtimePlayback';
-import realtimeCalibrationData from 'reducers/realtimeCalibrationData';
-import realtimeCalibrationParams from 'reducers/realtimeCalibrationParams';
-import realtimeCalibrationCharts from 'reducers/realtimeCalibrationCharts';
+import supervisionData from 'reducers/supervisionData';
+import supervisionParams from 'reducers/supervisionParams';
+import supervisionCharts from 'reducers/supervisionCharts';
 import webSockets from 'reducers/webSockets';
 import settings from 'reducers/settings';
 import fdrTemplates from 'reducers/fdrTemplates';
@@ -35,9 +35,9 @@ const appReducer = combineReducers({
   calibrations,
   flightUploadingState,
   realtimePlayback,
-  realtimeCalibrationData,
-  realtimeCalibrationCharts,
-  realtimeCalibrationParams,
+  supervisionData,
+  supervisionCharts,
+  supervisionParams,
   webSockets,
   flightFilter,
   fdrTemplates,

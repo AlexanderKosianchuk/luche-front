@@ -285,17 +285,22 @@ const translationsRu = {
         date: 'Дата'
       }
     },
-    realtimeCalibration: {
+    supervision: {
       verticalToolbar: {
         connectionParams: 'Параметры подключения',
         fdrType: 'Тип регистратора',
+        start: 'Пуск',
+        stop: 'Стоп',
+        save: 'Сохранить'
+      },
+      dataSource: {
+        KVviaUDP: 'KV по UDP',
+        file: 'Файл',
         connectionType: 'Тип подключения',
         sourceIps: 'IP адреса источников',
         addSource: 'Добавить источник',
         fakeData: 'Тестовые данные',
-        start: 'Пуск',
-        stop: 'Стоп',
-        save: 'Сохранить',
+        chooseFile: 'Выбрать файл',
         enterIpToConnect: 'Пожалуйста введите IP для подключения'
       },
       chooseParamsButtons: {
@@ -329,7 +334,7 @@ const translationsRu = {
     },
     topMenu: {
       brand: 'Luch',
-      calibrate: 'Калибровка',
+      supervision: 'Калибровка',
       fileImport: 'Импорт',
       upload: 'Загрузка',
       flightImporterDropdown: {

@@ -67,11 +67,11 @@ class TopMenu extends React.Component {
           <ul className='nav navbar-nav'>
           <li className='dropdown'>
             <a href='#'
-            className='realtime-calibration dropdown-toggle is-hoverable'
+            className='supervision dropdown-toggle is-hoverable'
             role='button'
-            onClick={ () => { this.props.redirect('/realtime-calibration') }}
+            onClick={ () => { this.props.redirect('/supervision') }}
             >
-            { I18n.t('topMenu.calibrate') }
+            { I18n.t('topMenu.supervision') }
             </a>
           </li>
           </ul>

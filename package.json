@@ -84,12 +84,14 @@
     "webpack-node-externals": "^1.6.0"
   },
   "dependencies": {
+    "babel-plugin-emotion": "^9.2.6",
     "babel-preset-stage-0": "^6.24.1",
     "bootstrap": "^3.3.7",
     "cesium-react": "^0.2.1",
     "chart.js": "^2.7.1",
     "chosen-js": "^1.7.0",
     "datatables": "^1.10.13",
+    "emotion": "^9.2.6",
     "event-emitter": "^0.3.5",
     "flot-charts": "^0.8.3",
     "form-urlencoded": "^2.0.0",
@@ -119,6 +121,7 @@
     "react-collapse": "^4.0.2",
     "react-color": "^2.11.7",
     "react-dom": "^16.2.0",
+    "react-emotion": "^9.2.6",
     "react-motion": "^0.5.0",
     "react-redux-i18n": "^1.9.1",
     "react-router-redux": "^5.0.0-alpha.9",

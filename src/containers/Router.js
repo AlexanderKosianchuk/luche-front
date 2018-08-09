@@ -10,7 +10,7 @@ import FlightStatistics from 'containers/flight-statistics/FlightStatistics';
 import Settings from 'containers/settings/Settings';
 import Calibrations from 'containers/calibrations/Calibrations';
 import CalibrationForm from 'containers/calibration-form/CalibrationForm';
-import RealTimeCalibration from 'containers/realtime-calibration/RealTimeCalibration';
+import Supervision from 'containers/supervision/Supervision';
 import UsersTable from 'containers/users-table/UsersTable';
 import UserActivity from 'containers/user-activity/UserActivity';
 import UserForm from 'containers/user-form/UserForm';
@@ -43,10 +43,10 @@ class Router extends Component {
 
       { isExact: true, path: '/calibration/update/:calibrationId', component: CalibrationForm },
       { isExact: true, path: '/calibration/create/fdr-id/:fdrId', component: CalibrationForm },
-      { isExact: true, path: '/realtime-calibration/fdr-id/:fdrId/params-sourse/:paramsSource/fdr-template-id/:fdrTemplateId', component: RealTimeCalibration },
-      { isExact: true, path: '/realtime-calibration/fdr-id/:fdrId/params-sourse/:paramsSource/', component: RealTimeCalibration },
-      { isExact: true, path: '/realtime-calibration/fdr-id/:fdrId/', component: RealTimeCalibration },
-      { isExact: true, path: '/realtime-calibration/', component: RealTimeCalibration },
+      { isExact: true, path: '/supervision/fdr-id/:fdrId/params-sourse/:paramsSource/fdr-template-id/:fdrTemplateId', component: Supervision },
+      { isExact: true, path: '/supervision/fdr-id/:fdrId/params-sourse/:paramsSource/', component: Supervision },
+      { isExact: true, path: '/supervision/fdr-id/:fdrId/', component: Supervision },
+      { isExact: true, path: '/supervision/', component: Supervision },
 
       { isExact: true, path: '/users', component: UsersTable },
       { isExact: true, path: '/user/create/', component: UserForm },
