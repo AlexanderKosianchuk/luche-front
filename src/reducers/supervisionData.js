@@ -15,17 +15,17 @@ const MAX_POINT_COUNT = 200;
 
 export default function supervisionData(state = initialState, action) {
   switch (action.type) {
-    case 'POST_SUPERVISION_DATA_RECEIVING_COMPLETE':
+    case 'POST_START_SUPERVISION_DATA_TRANSMITTIG_COMPLETE':
       return { ...state,
         ...{ status: true }
       };
-    case 'POST_SUPERVISION_DATA_FREEZE_COMPLETE':
+    case 'POST_PAUSE_SUPERVISION_DATA_TRANSMITTIG_COMPLETE':
       state.fullTimeline.push(null);
 
       return { ...state,
         ...{ status: false }
       };
-    case 'POST_SUPERVISION_DATA_BREAK_COMPLETE':
+    case 'POST_STOP_SUPERVISION_DATA_TRANSMITTIG_COMPLETE':
       return { ...state,
         ...{ status: null }
       };

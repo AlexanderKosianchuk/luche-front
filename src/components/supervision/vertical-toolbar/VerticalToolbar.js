@@ -23,94 +23,96 @@ class VerticalToolbar extends Component {
 
     this.dataSource = { get: () => {} };
 
-    this.state = { sessionStarted: false }
+    this.state = { sessionStarted: false };
+
+    /*window.onbeforeunload = () => {
+      return 'Are you sure you want to leave?';
+    };*/
   }
 
   componentWillUnmount() {
-    if (this.props.isRunning !== null) {
-      let data = this.gatherInteractionData();
+    window.onbeforeunload = null;
 
-      this.props.request(
-        INTERACTION_URL + 'supervision/stopUdp',
-        'post',
-        'SUPERVISION_DATA_BREAK',
-        data
-      );
+    if (this.props.isRunning === null) {
+      return false;
     }
 
-    this.props.transmit('CLEAR_SUPERVISION_DATA');
+    this.sendRequest(
+      'STOP_SUPERVISION_DATA_TRANSMITTIG',
+      'stop'
+    );
 
-    this.setState({ sessionStarted: true });
+    this.props.transmit('CLEAR_SUPERVISION_DATA');
   }
 
   handleStartClick(event) {
     event.preventDefault();
 
-    this.dataSource.get();
+    if (this.props.isRunning !== null) {
+      return false;
+    }
 
-    /*if (this.props.isRunning === null) {
-      let data = this.gatherInteractionData();
+    this.sendRequest(
+      'START_SUPERVISION_DATA_TRANSMITTIG',
+      'start'
+    );
 
-      this.props.request(
-        INTERACTION_URL + 'supervision/startUdp',
-        'post',
-        'SUPERVISION_DATA_RECEIVING',
-        data
-      );
-
-      this.setState({ sessionStarted: true });
-    }*/
+    this.setState({ sessionStarted: true });
   }
 
   handlePauseClick(event) {
     event.preventDefault();
 
-    if (this.props.isRunning === true) {
-      let data = this.gatherInteractionData();
-
-      this.props.request(
-        INTERACTION_URL + 'supervision/pauseUdp',
-        'post',
-        'SUPERVISION_DATA_FREEZE',
-        data
-      );
+    if (this.props.isRunning !== true) {
+      return false;
     }
+
+    this.sendRequest(
+      'PAUSE_SUPERVISION_DATA_TRANSMITTIG',
+      'pause'
+    );
+
+    this.setState({ sessionStarted: false });
   }
 
   handleResumeClick(event) {
     event.preventDefault();
 
-    if (this.props.isRunning === false) {
-      let data = this.gatherInteractionData();
-
-      this.props.request(
-        INTERACTION_URL + 'supervision/startUdp',
-        'post',
-        'SUPERVISION_DATA_RECEIVING',
-        data
-      );
+    if (this.props.isRunning !== false) {
+      return false;
     }
+
+    this.sendRequest(
+      'START_SUPERVISION_DATA_TRANSMITTIG',
+      'start'
+    );
+
+    this.setState({ sessionStarted: true });
   }
 
-  gatherInteractionData() {
+  sendRequest (actionType, interactionAction) {
+    let source = this.dataSource.get();
+
+    if (!source) {
+      return null;
+    }
+
+    let avaliableSupervisionControllers = [
+      { id: 1, controller: 'SupervisionFakeData' },
+      { id: 2, controller: 'SupervisionFakeData' },
+      { id: 3, controller: 'SupervisionFakeData' }
+    ];
+
+    let chosen = avaliableSupervisionControllers.find(item => (item.id === source.id));
+
+    if (!chosen) {
+      return null;
+    }
+
     let fdrId = null;
     let calibrationId = null;
 
-    let ipInputs = this.form.querySelectorAll('input[name="ip[]"]');
-    let ips = [];
-
-    ipInputs.forEach((item) => {
-      if (item.value.length >= 7) {
-        ips.push(item.value);
-      }
-    });
-
-    if (ips.length === 0) {
-      alert(I18n.t('supervision.verticalToolbar.enterIpToConnect'));
-      return;
-    }
-
-    var data = new FormData();
+    let data = new FormData();
     data.append('uid', this.props.uid);
     data.append('fdrId', this.props.chosenFdr.id);
     data.append('calibrationId',
@@ -118,10 +120,28 @@ class VerticalToolbar extends Component {
       ? this.props.chosenCalibration.id
       : null
     );
-    data.append('ips', ips);
     data.append('cors', window.location.hostname);
 
-    return data;
+    for (var key in source) {
+      if (source.hasOwnProperty(key)) {
+        data.append(key, source[key]);
+      }
+    }
+
+    let url = INTERACTION_URL + chosen.controller + '/' + interactionAction;
+
+    this.props.request(
+      url,
+      'post',
+      actionType,
+      data
+    );
+
+    return {
+      url: url,
+      sentData: data,
+      sourceData: source
+    };
   }
 
   handleSaveClick() {
