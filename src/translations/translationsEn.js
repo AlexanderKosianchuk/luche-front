@@ -301,6 +301,7 @@ const translationsEn = {
       dataSource: {
         KVviaUDP: 'KV via UDP',
         file: 'File',
+        fileViaUDP: 'File via UDP',
         connectionType: 'Connection type',
         sourceIps: 'Sources IP addresses',
         addSource: 'Add source',

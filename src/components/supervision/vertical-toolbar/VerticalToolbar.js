@@ -15,6 +15,8 @@ import request from 'actions/request';
 import redirect from 'actions/redirect';
 import trigger from 'actions/trigger';
 
+import objectToFormData from 'utilities/objectToFormData';
+
 class VerticalToolbar extends Component {
   static form = null;
 
@@ -55,9 +57,13 @@ class VerticalToolbar extends Component {
     this.sendRequest(
       'START_SUPERVISION_DATA_TRANSMITTIG',
       'start'
-    );
-
-    this.setState({ sessionStarted: true });
+    ).then(() => {
+      this.setState({ sessionStarted: true });
+    }).catch((resp) => {
+      if (resp && resp.message) {
+        alert(resp.message);
+      }
+    })
   }
 
   handlePauseClick(event) {
@@ -97,51 +103,26 @@ class VerticalToolbar extends Component {
       return null;
     }
 
-    let avaliableSupervisionControllers = [
-      { id: 1, controller: 'SupervisionFakeData' },
-      { id: 2, controller: 'SupervisionFakeData' },
-      { id: 3, controller: 'SupervisionFakeData' }
-    ];
+    let formData = objectToFormData({
+      ...{ uid: this.props.uid,
+        fdrId: this.props.chosenFdr.id,
+        calibrationId: this.props.chosenCalibration
+          ? this.props.chosenCalibration.id
+          : null,
+        cors: window.location.hostname
+      },
+      ...source
+    });
 
-    let chosen = avaliableSupervisionControllers.find(item => (item.id === source.id));
+    let url = INTERACTION_URL + source.controller + '/' + interactionAction;
 
-    if (!chosen) {
-      return null;
-    }
-
-    let fdrId = null;
-    let calibrationId = null;
-
-    let data = new FormData();
-    data.append('uid', this.props.uid);
-    data.append('fdrId', this.props.chosenFdr.id);
-    data.append('calibrationId',
-      this.props.chosenCalibration
-      ? this.props.chosenCalibration.id
-      : null
-    );
-    data.append('cors', window.location.hostname);
-
-    for (var key in source) {
-      if (source.hasOwnProperty(key)) {
-        data.append(key, source[key]);
-      }
-    }
-
-    let url = INTERACTION_URL + chosen.controller + '/' + interactionAction;
-
-    this.props.request(
+    return this.props.request(
       url,
       'post',
       actionType,
-      data
+      formData,
+      { credentials: 'ommit' }
     );
-
-    return {
-      url: url,
-      sentData: data,
-      sourceData: source
-    };
   }
 
   handleSaveClick() {

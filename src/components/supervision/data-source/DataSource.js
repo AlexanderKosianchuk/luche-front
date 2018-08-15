@@ -11,21 +11,32 @@ class DataSource extends Component {
     super(props);
 
     this.state = {
-      selectedId: 3,
+      selectedId: 2,
+      file: null,
+      remoteSources: DEFAULT_DATA_SOURCE_IPS,
       options: [
         {
           id: 1,
           name: I18n.t('supervision.dataSource.KVviaUDP'),
-          sources: DEFAULT_DATA_SOURCE_IPS
+          controller: 'SupervisionExternalUdp',
+          aditional: 'remoteSources'
         },
         {
           id: 2,
           name: I18n.t('supervision.dataSource.file'),
-          file: null
+          controller: 'SupervisionFile',
+          aditional: 'file'
         },
         {
           id: 3,
+          name: I18n.t('supervision.dataSource.fileViaUDP'),
+          controller: 'SupervisionFileViaUdp',
+          aditional: 'file'
+        },
+        {
+          id: 4,
           name: I18n.t('supervision.dataSource.fakeData'),
+          controller: 'SupervisionFakeData'
         }
       ]
     }
@@ -36,7 +47,15 @@ class DataSource extends Component {
   }
 
   getDataSource() {
-    return this.state.options.find((option) => { return  option.id === this.state.selectedId })
+    let source =  this.state.options.find(
+      (option) => { return  option.id === this.state.selectedId }
+    );
+
+    if (source.aditional && this.state[source.aditional]) {
+      source[source.aditional] = this.state[source.aditional];
+    }
+
+    return source;
   }
 
   handleChange(index, event) {
@@ -57,6 +76,10 @@ class DataSource extends Component {
 
   handleSelectChange (event){
     this.setState({ selectedId: parseInt(event.target.value) });
+  }
+
+  handleFileChange(event) {
+    this.setState({ file: event.target.files[0] });
   }
 
   buildSourceIps(option) {
@@ -101,8 +124,8 @@ class DataSource extends Component {
   buildFileInput(value) {
     return (
       <label className={ ButtonFile + ' btn btn-default'}>
-        <Translate value='supervision.dataSource.chooseFile'/>
-        <input type='file'/>
+        { this.state.file ? this.state.file.name : I18n.t('supervision.dataSource.chooseFile') }
+        <input type='file' onChange={ this.handleFileChange.bind(this) } />
       </label>
     );
   }
@@ -176,6 +199,7 @@ const Control = css`
 const ButtonFile = css`
   position: relative;
   overflow: hidden;
+  text-overflow: ellipsis;
 
   input[type=file] {
     position: absolute;

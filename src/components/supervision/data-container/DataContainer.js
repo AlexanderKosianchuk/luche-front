@@ -13,6 +13,8 @@ import VoiceStreams from 'components/supervision/voice-streams/VoiceStreams';
 
 import bindSocketEvent from 'actions/bindSocketEvent';
 
+const SUPERVISION_NEW_DATA_SOCKET_EVENT = 'newData';
+
 class DataContainer extends Component {
   componentDidMount() {
     if (this.props.status === true) {
@@ -29,10 +31,10 @@ class DataContainer extends Component {
   bindSocketEvent(props) {
     props.bindSocketEvent({
       io: props.io,
-      ioEvent: 'newData',
+      ioEvent: SUPERVISION_NEW_DATA_SOCKET_EVENT,
       bindedEvents: props.bindedEvents,
       registerUrl: INTERACTION_URL + 'socket/registerToSupervisionDataRoom?uid='+ props.uid,
-      reducerEvent: 'RECEIVED_SUPERVISION_DATA_NEW_FRAME'
+      reducerEvent: 'RECEIVED_SUPERVISION_NEW_DATA'
     });
   }
 

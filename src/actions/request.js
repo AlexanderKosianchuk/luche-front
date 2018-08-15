@@ -5,7 +5,8 @@ export default function request(
   action,
   method,
   actionType = null,
-  payload = {}
+  payload = {},
+  fetchOptions = null
 ) {
   return function(dispatch) {
     if (actionType !== null) {
@@ -23,12 +24,10 @@ export default function request(
       url = REST_URL + action.join('/');
     }
 
-    let options = {
-      credentials: 'include',
-      method: 'get'
-    };
+    let options = fetchOptions || { credentials: 'include' };
 
     if (method === 'get') {
+      options.method = 'get';
       url += '/' + queryString.stringify(payload).replace(/[\&\?=]/g, '/');
     } else {
       options.method = 'post';
@@ -88,7 +87,11 @@ export default function request(
             reject(response);
             return response;
           }
-        );
+        ).catch((response) => {
+          if (response && response.message) {
+            alert(resp.message);
+          }
+        })
       } catch (exception) {
         if (actionType !== null) {
           dispatch({

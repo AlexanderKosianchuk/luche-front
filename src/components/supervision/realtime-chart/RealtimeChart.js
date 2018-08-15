@@ -8,7 +8,7 @@ import { Line, defaults } from 'react-chartjs-2';
 
 import transmit from 'actions/transmit';
 
-const LOCKED_SCALE_TIMEOUT = 2000;
+const LOCKED_SCALE_TIMEOUT = 200;
 
 class RealtimeChart extends Component {
   constructor(props) {

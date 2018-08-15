@@ -29,7 +29,7 @@ export default function supervisionData(state = initialState, action) {
       return { ...state,
         ...{ status: null }
       };
-    case 'RECEIVED_SUPERVISION_DATA_NEW_FRAME':
+    case 'RECEIVED_SUPERVISION_NEW_DATA':
       if (!check(action.payload.response.phisics, 'number')) {
         return state;
       }

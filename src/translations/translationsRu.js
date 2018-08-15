@@ -296,6 +296,7 @@ const translationsRu = {
       dataSource: {
         KVviaUDP: 'KV по UDP',
         file: 'Файл',
+        fileViaUDP: 'Файл по UDP',
         connectionType: 'Тип подключения',
         sourceIps: 'IP адреса источников',
         addSource: 'Добавить источник',
