@@ -11,32 +11,32 @@ class DataSource extends Component {
     super(props);
 
     this.state = {
-      selectedId: 2,
+      selectedId: 3,
       file: null,
       remoteSources: DEFAULT_DATA_SOURCE_IPS,
       options: [
         {
           id: 1,
-          name: I18n.t('supervision.dataSource.KVviaUDP'),
-          controller: 'SupervisionExternalUdp',
+          name: I18n.t('supervision.dataSource.kvViaUdp'),
+          sourceType: 'kvViaUdp',
           aditional: 'remoteSources'
         },
         {
           id: 2,
           name: I18n.t('supervision.dataSource.file'),
-          controller: 'SupervisionFile',
+          sourceType: 'file',
           aditional: 'file'
         },
         {
           id: 3,
-          name: I18n.t('supervision.dataSource.fileViaUDP'),
-          controller: 'SupervisionFileViaUdp',
+          name: I18n.t('supervision.dataSource.fileViaUdp'),
+          sourceType: 'fileViaUdp',
           aditional: 'file'
         },
         {
           id: 4,
           name: I18n.t('supervision.dataSource.fakeData'),
-          controller: 'SupervisionFakeData'
+          sourceType: 'fakeData',
         }
       ]
     }
@@ -168,6 +168,9 @@ class DataSource extends Component {
                   );
                   break;
                 case 2:
+                  return this.buildFileInput();
+                  break;
+                case 3:
                   return this.buildFileInput();
                   break;
                 default:

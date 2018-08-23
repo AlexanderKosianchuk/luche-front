@@ -114,7 +114,7 @@ class VerticalToolbar extends Component {
       ...source
     });
 
-    let url = INTERACTION_URL + source.controller + '/' + interactionAction;
+    let url = INTERACTION_URL + 'SupervisionBroadcasting' + '/' + interactionAction;
 
     return this.props.request(
       url,

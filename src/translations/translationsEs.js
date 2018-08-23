@@ -292,9 +292,9 @@ const translationsEs = {
         save: 'Save',
       },
       dataSource: {
-        KVviaUDP: 'KV via UDP',
+        kvViaUdp: 'KV via UDP',
         file: 'File',
-        fileViaUDP: 'File via UDP',
+        fileViaUdp: 'File via UDP',
         connectionType: 'Connection type',
         sourceIps: 'Sources IP addresses',
         addSource: 'Add source',
