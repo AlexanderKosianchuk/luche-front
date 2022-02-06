@@ -16,6 +16,7 @@ Thumbs.db
 .tmp
 
 /node_modules
+/dist
 package-lock.json
 .cache/
 .local/
