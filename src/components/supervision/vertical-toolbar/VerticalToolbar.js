@@ -121,7 +121,7 @@ class VerticalToolbar extends Component {
       'post',
       actionType,
       formData,
-      { credentials: 'ommit' }
+      { credentials: 'omit' }
     );
   }
 

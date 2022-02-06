@@ -4,12 +4,13 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import {
-  MapboxImageryProvider,
+  BingMapsImageryProvider,
+  BingMapsStyle,
   Credit,
   Viewer,
 } from 'cesium/Cesium';
 
-const MAPBOX_ACCESS_TOKEN = 'pk.eyJ1IjoiZGVkYW5hYW4wMCIsImEiOiJjamc2bDBnNjAxMmY3MnpzMG9sdnVsMGhsIn0.qAgylJX9eHK0n9ni6rUkKg';
+const MAP_ACCESS_TOKEN = 'ApsVJXOGQxuQ9trqqhGIlHd0rkTXvY9Fo4WCdvi4gQR64TQEZ4LtiTEjUkXwKTwa';
 
 class ThreeDimViewer extends Component {
   componentDidMount() {
@@ -21,15 +22,15 @@ class ThreeDimViewer extends Component {
       return;
     }
 
-    // Mapbox tile provider
-    let mapbox = new MapboxImageryProvider({
-        mapId: 'mapbox.streets-satellite',
-        accessToken: MAPBOX_ACCESS_TOKEN
+    var mapprovider = new BingMapsImageryProvider({
+        url : '//dev.virtualearth.net',
+        key : MAP_ACCESS_TOKEN,
+        mapStyle : BingMapsStyle.AERIAL
     });
 
     this.viewer = new Viewer('cesiumContainer', {
       shouldAnimate: false,
-      imageryProvider: mapbox,
+      imageryProvider: mapprovider,
       baseLayerPicker: false,
       animation: true,
       geocoder: false,

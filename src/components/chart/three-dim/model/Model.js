@@ -118,7 +118,7 @@ class ThreeDimModel extends Component {
         position: position,
         orientation: new VelocityOrientationProperty(position),
         model: {
-          uri: REST_URL + this.props.modelUrl,
+          uri: '/src/static/models/CesiumAir/Cesium_Air.glb',
           minimumPixelSize: 100,
           maximumScale: 100
         },
